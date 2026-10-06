@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Instructor dashboard · AI@GSB Workshop 2</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  .dash { max-width: 1180px; margin: 0 auto; padding: 24px 24px 80px; }
+  .dash-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .dash-head h1 { font-size: 1.8rem; margin: 0; flex: 1; }
+  .room-pick { display: flex; gap: 6px; align-items: center; }
+  .room-pick .input { width: 180px; padding: .5em .8em; }
+  .live { font-size: .82rem; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
+  .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 var(--green); animation: pulse 2s infinite; }
+  .live.stale::before { background: var(--coral); animation: none; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px transparent; } }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
+  .tile { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .tile b { display: block; font: 800 2rem/1.1 var(--font-display); }
+  .tile span { font-size: .85rem; color: var(--ink-2); }
+  .grid2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+  .panel { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; margin-bottom: 16px; }
+  .panel h2 { font-size: 1.15rem; margin: 0 0 4px; }
+  .psub { margin: 0 0 12px; font-size: .86rem; color: var(--ink-3); }
+  .where-row { display: grid; grid-template-columns: 34px 170px 1fr; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--paper-2); }
+  .where-row:first-of-type { border-top: 0; }
+  .where-n { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font: 800 .85rem/1 var(--font-display); background: var(--rc, var(--ink)); color: #fff; }
+  .where-t { font-weight: 600; font-size: .92rem; line-height: 1.2; }
+  .where-t small { display: block; color: var(--ink-3); font-weight: 500; }
+  .where-bar { position: relative; height: 22px; background: var(--paper-2); border-radius: 6px; overflow: hidden; }
+  .where-bar i { position: absolute; inset: 0 auto 0 0; background: var(--rc, var(--ink)); opacity: .85; border-radius: 6px; transition: width .6s var(--spring); }
+  .where-bar span { position: absolute; left: 8px; top: 2px; font-size: .78rem; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  .here { grid-column: 3; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .chip { font-size: .76rem; background: var(--sun-soft); color: #6B5000; border-radius: 999px; padding: .2em .6em; }
+  .chip.here-now { background: var(--sun); color: var(--ink); font-weight: 700; }
+  .sub-row { display: grid; grid-template-columns: 54px 1fr 60px; gap: 10px; align-items: center; font-size: .9rem; padding: 4px 0; }
+  .mini { height: 10px; background: var(--paper-2); border-radius: 6px; overflow: hidden; }
+  .mini i { display: block; height: 100%; background: var(--blue); }
+  .time-row { display: grid; grid-template-columns: 170px 1fr 80px; gap: 10px; align-items: center; font-size: .9rem; padding: 5px 0; }
+  .time-row .mini i { background: var(--rc, var(--violet)); }
+  .rating-row { display: grid; grid-template-columns: 30px 1fr 30px; gap: 8px; align-items: center; font-size: .9rem; }
+  .rating-row .mini i { background: var(--sun); }
+  .comments { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; max-height: 420px; overflow: auto; }
+  .comments li { background: var(--paper); border-radius: 12px; padding: 10px 12px; margin: 0; font-size: .92rem; }
+  .comments .meta { font-size: .78rem; color: var(--ink-3); margin-bottom: 4px; }
+  table.students { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  table.students th { text-align: left; font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); padding: 8px; border-bottom: 2px solid var(--line); cursor: pointer; white-space: nowrap; }
+  table.students td { padding: 8px; border-bottom: 1px solid var(--paper-2); vertical-align: top; }
+  .table-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .table-tools .input { max-width: 260px; padding: .5em .8em; }
+  .dots { display: flex; gap: 3px; }
+  .dots i { width: 10px; height: 10px; border-radius: 3px; background: var(--line); }
+  .dots i.on { background: var(--rc, var(--ink)); }
+  .gate { max-width: 420px; margin: 80px auto; }
+  .empty { color: var(--ink-3); font-size: .92rem; }
+  .scroll-x { overflow-x: auto; }
+  @media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } .where-row { grid-template-columns: 34px 1fr; } .where-bar, .here { grid-column: 1 / -1; } .time-row { grid-template-columns: 120px 1fr 60px; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="9" width="15" height="15" rx="4" fill="#FF7A45" transform="rotate(-8 9.5 16.5)"/><rect x="9" y="5" width="15" height="15" rx="4" fill="#7C5CFF" opacity=".92"/><rect x="15" y="12" width="15" height="15" rx="4" fill="#14B8A6" opacity=".9" transform="rotate(6 22.5 19.5)"/></svg>
+    <span class="brand-text">AI@GSB <small>Workshop 2 · Instructor dashboard</small></span>
+  </div>
+  <div class="spacer"></div>
+  <span class="live" id="live" hidden>Live</span>
+  <button type="button" class="btn small ghost" id="lock" hidden>Lock</button>
+</header>
+
+<form class="gate card" id="gate" hidden>
+  <h2>Instructor dashboard</h2>
+  <p class="muted">Enter the instructor key (the <code>INSTRUCTOR_KEY</code> set in Vercel). It stays in this browser until you press Lock.</p>
+  <label class="field"><span>Key</span><input id="key" type="password" autocomplete="current-password"></label>
+  <p class="form-err" id="gate-err" hidden></p>
+  <button class="btn" type="submit">Open dashboard</button>
+</form>
+
+<main class="dash" id="dash" hidden>
+  <div class="dash-head">
+    <h1>Room: <span id="room-name">default</span></h1>
+    <form class="room-pick" id="room-form"><input class="input" id="room" list="room-list" placeholder="room name" aria-label="Room"><datalist id="room-list"></datalist><button class="btn small" type="submit">Switch</button></form>
+    <button type="button" class="btn small" id="csv">Export CSV</button>
+  </div>
+  <p class="form-err" id="dash-err" hidden></p>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="grid2">
+    <div>
+      <section class="panel"><h2>Where the room is</h2><p class="psub">Finished each step, and who is on it now.</p><div id="where"></div></section>
+      <section class="panel"><h2>Median time per step</h2><p class="psub">From when a student opened the step to when they checked it off. Pre-work steps can run long; they're done at home.</p><div id="time"></div></section>
+    </div>
+    <div>
+      <section class="panel"><h2>Setup (step 0)</h2><p class="psub">Each sub-step checked off. 0.6 is optional.</p><div id="prep"></div><div id="prep-missing"></div></section>
+      <section class="panel"><h2>Feedback</h2><p class="psub" id="fb-sub">Ratings and comments from the finish screen.</p><div id="ratings"></div><ul class="comments" id="comments"></ul></section>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>Students</h2>
+    <div class="table-tools"><input class="input" id="filter" type="search" placeholder="Filter by name, email or step"><span class="empty" id="count"></span></div>
+    <div class="scroll-x"><table class="students"><thead><tr>
+      <th data-sort="name">Name</th><th data-sort="email">Email</th><th data-sort="cur">On step</th><th data-sort="done">Done</th><th>Steps</th><th data-sort="prep">Setup</th><th data-sort="updated">Last active</th><th data-sort="rating">Rating</th>
+    </tr></thead><tbody id="rows"></tbody></table></div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var TITLES = { setup: "Sign in and set up", what: "What you're building", db: "First look at a database", skills: "Get your skills", company: "Add a company", person: "Add a person", capture: "Capture a conversation", build: "Build your own brief-me", next: "Design your next workflow", finish: "Finish" };
+  var NUM = { setup: "0", what: "1", db: "2", skills: "3", company: "4", person: "5", capture: "6", build: "7", next: "8", finish: "✓" };
+  var COLOR = { setup: "#3B82F6", what: "#3B82F6", db: "#3B82F6", skills: "#1F1B2D", company: "#FF7A45", person: "#FF7A45", capture: "#7C5CFF", build: "#14B8A6", next: "#1F1B2D", finish: "#22A06B" };
+  var KEYSTORE = "aigsb-w2-instructor-key";
+  var params = new URLSearchParams(location.search);
+  var room = cleanRoom(params.get("room"));
+  var key = ""; try { key = localStorage.getItem(KEYSTORE) || ""; } catch (e) {}
+  var data = null, timer = null, sortBy = "cur", sortDir = 1;
+
+  function $(s) { return document.querySelector(s); }
+  function cleanRoom(v) { return (String(v || "default").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 40)) || "default"; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function ago(iso, now) {
+    if (!iso) return "–";
+    var m = Math.round((now - new Date(iso).getTime()) / 60000);
+    if (m < 1) return "just now"; if (m < 60) return m + " min ago";
+    var h = Math.round(m / 60); if (h < 24) return h + " h ago";
+    return Math.round(h / 24) + " d ago";
+  }
+  function median(xs) { if (!xs.length) return null; var s = xs.slice().sort(function (a, b) { return a - b; }); var m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+  function fmtMin(m) { if (m == null) return "–"; if (m < 1) return "<1 min"; if (m < 90) return Math.round(m) + " min"; if (m < 60 * 24) return (m / 60).toFixed(1) + " h"; return Math.round(m / 1440) + " d"; }
+
+  function showGate(msg) {
+    stop(); $("#dash").hidden = true; $("#gate").hidden = false; $("#lock").hidden = true; $("#live").hidden = true;
+    $("#gate-err").hidden = !msg; $("#gate-err").textContent = msg || ""; $("#key").focus();
+  }
+  $("#gate").addEventListener("submit", function (e) { e.preventDefault(); key = $("#key").value.trim(); if (!key) return; try { localStorage.setItem(KEYSTORE, key); } catch (err) {} load(true); });
+  $("#lock").addEventListener("click", function () { try { localStorage.removeItem(KEYSTORE); } catch (e) {} key = ""; $("#key").value = ""; showGate(""); });
+  $("#room-form").addEventListener("submit", function (e) {
+    e.preventDefault(); room = cleanRoom($("#room").value);
+    history.replaceState(null, "", location.pathname + (room === "default" ? "" : "?room=" + room)); load(true);
+  });
+
+  function load(first) {
+    return fetch("/api/instructor?room=" + encodeURIComponent(room), { headers: { "x-instructor-key": key }, cache: "no-store" })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; }); })
+      .then(function (res) {
+        if (res.status === 401) return showGate("That key isn't right.");
+        if (!res.body.ok) {
+          if (first) return showGate(res.body.message || "Couldn't load the dashboard.");
+          $("#live").classList.add("stale"); return;
+        }
+        data = res.body;
+        $("#gate").hidden = true; $("#dash").hidden = false; $("#lock").hidden = false; $("#live").hidden = false; $("#live").classList.remove("stale");
+        render();
+        if (first) start();
+      })
+      .catch(function () { if (first) showGate("Couldn't reach the server."); else $("#live").classList.add("stale"); });
+  }
+  function start() { stop(); timer = setInterval(function () { if (!document.hidden) load(false); }, 5000); }
+  function stop() { clearInterval(timer); timer = null; }
+
+  function derive() {
+    var steps = data.steps, subs = data.subSteps, now = new Date(data.now).getTime();
+    var fbBy = {}; data.feedback.forEach(function (f) { fbBy[f.id] = f; });
+    var BREAK = 3 * 60;
+    var durations = {}; steps.forEach(function (id) { durations[id] = []; });
+    var students = data.students.map(function (s) {
+      var cur = "finish";
+      for (var i = 0; i < steps.length; i++) if (!s.steps[steps[i]]) { cur = steps[i]; break; }
+      var anchor = s.joinedAt ? new Date(s.joinedAt).getTime() : null;
+      steps.forEach(function (id) {
+        if (!s.stepAt[id]) return;
+        var t = new Date(s.stepAt[id]).getTime();
+        var start = s.viewAt && s.viewAt[id] ? new Date(s.viewAt[id]).getTime() : null;
+        var d = null;
+        if (start !== null && t >= start) d = (t - start) / 60000;
+        else if (anchor !== null && t >= anchor && (t - anchor) / 60000 < BREAK) d = (t - anchor) / 60000;
+        if (d !== null) durations[id].push(d);
+        anchor = t;
+      });
+      return {
+        id: s.id, name: s.name, email: s.email, steps: s.steps, cur: cur, done: s.doneCount,
+        prep: subs.filter(function (x) { return x !== "setup-6" && s.steps[x]; }).length,
+        updatedAt: s.updatedAt, joinedAt: s.joinedAt, fb: fbBy[s.id] || null,
+      };
+    });
+    return { steps: steps, subs: subs, now: now, students: students, durations: durations };
+  }
+
+  function render() {
+    var d = derive(), n = d.students.length;
+    $("#room-name").textContent = data.room;
+    $("#room").value = data.room;
+    $("#room-list").innerHTML = (data.rooms || []).map(function (r) { return '<option value="' + esc(r) + '">'; }).join("");
+    var ratings = data.feedback.map(function (f) { return f.rating; }).filter(Boolean);
+    var avg = ratings.length ? (ratings.reduce(function (a, b) { return a + b; }, 0) / ratings.length).toFixed(1) : "–";
+    var active = d.students.filter(function (s) { return s.updatedAt && d.now - new Date(s.updatedAt).getTime() < 10 * 60000; }).length;
+    var tiles = [
+      [n, "signed in"],
+      [d.students.filter(function (s) { return s.steps.setup; }).length, "finished setup (step 0)"],
+      [d.students.filter(function (s) { return s.steps.db; }).length, "finished pre-work (0–2)"],
+      [d.students.filter(function (s) { return s.cur === "finish"; }).length, "finished the workshop"],
+      [active, "active in the last 10 min"],
+      [avg, "average rating (" + ratings.length + ")"],
+    ];
+    $("#tiles").innerHTML = tiles.map(function (t) { return '<div class="tile"><b>' + esc(t[0]) + "</b><span>" + esc(t[1]) + "</span></div>"; }).join("");
+
+    var hereBy = {}; d.students.forEach(function (s) { (hereBy[s.cur] = hereBy[s.cur] || []).push(s); });
+    $("#where").innerHTML = d.steps.concat(["finish"]).map(function (id) {
+      var done = id === "finish" ? (hereBy.finish || []).length : d.students.filter(function (s) { return s.steps[id]; }).length;
+      var here = id === "finish" ? [] : (hereBy[id] || []);
+      var pct = n ? Math.round(100 * done / n) : 0;
+      return '<div class="where-row" style="--rc:' + COLOR[id] + '"><span class="where-n">' + NUM[id] + '</span><span class="where-t">' + esc(TITLES[id]) +
+        "<small>" + (id === "finish" ? done + " finished" : done + " done · " + here.length + " here now") + "</small></span>" +
+        '<div class="where-bar"><i style="width:' + pct + '%"></i><span>' + pct + "%</span></div>" +
+        (here.length ? '<div class="here">' + here.map(function (s) { return '<span class="chip here-now">' + esc(s.name) + "</span>"; }).join("") + "</div>" : "") + "</div>";
+    }).join("");
+
+    $("#prep").innerHTML = d.subs.map(function (id) {
+      var c = d.students.filter(function (s) { return s.steps[id]; }).length;
+      return '<div class="sub-row"><b>0.' + id.slice(-1) + '</b><div class="mini"><i style="width:' + (n ? 100 * c / n : 0) + '%"></i></div><span>' + c + " / " + n + "</span></div>";
+    }).join("");
+    var missing = d.students.filter(function (s) { return !s.steps.setup; });
+    $("#prep-missing").innerHTML = missing.length ? '<p class="psub" style="margin-top:12px">Not finished setup yet (' + missing.length + "):</p>" + '<div class="here" style="grid-column:auto">' +
+      missing.map(function (s) { return '<span class="chip">' + esc(s.name) + " · " + s.prep + "/5</span>"; }).join("") + "</div>" : (n ? '<p class="empty">Everyone has finished setup.</p>' : "");
+
+    var rows = d.steps.map(function (id) { return { id: id, med: median(d.durations[id]), n: d.durations[id].length }; });
+    var max = Math.max.apply(null, rows.map(function (r) { return Math.min(r.med || 0, 120); }).concat([1]));
+    $("#time").innerHTML = rows.some(function (r) { return r.n; }) ? rows.map(function (r) {
+      return '<div class="time-row" style="--rc:' + COLOR[r.id] + '"><span>' + NUM[r.id] + " · " + esc(TITLES[r.id]) + '</span><div class="mini"><i style="width:' + (r.med ? Math.min(100, 100 * Math.min(r.med, 120) / max) : 0) + '%"></i></div><span title="' + r.n + ' students">' + fmtMin(r.med) + "</span></div>";
+    }).join("") : '<p class="empty">No completed steps yet.</p>';
+
+    var dist = [5, 4, 3, 2, 1].map(function (v) { return [v, ratings.filter(function (r) { return r === v; }).length]; });
+    var dmax = Math.max.apply(null, dist.map(function (x) { return x[1]; }).concat([1]));
+    $("#ratings").innerHTML = dist.map(function (x) { return '<div class="rating-row"><span>' + x[0] + '★</span><div class="mini"><i style="width:' + 100 * x[1] / dmax + '%"></i></div><span>' + x[1] + "</span></div>"; }).join("");
+    var fbs = data.feedback.slice().sort(function (a, b) { return String(b.at).localeCompare(String(a.at)); });
+    $("#comments").innerHTML = fbs.filter(function (f) { return f.comment; }).map(function (f) {
+      return '<li><div class="meta">' + "★".repeat(f.rating || 0) + " · " + esc(f.name) + " · " + ago(f.at, d.now) + "</div>" + esc(f.comment) + "</li>";
+    }).join("") || '<li class="empty" style="background:none">No comments yet.</li>';
+
+    renderTable(d);
+  }
+
+  function renderTable(d) {
+    var q = $("#filter").value.trim().toLowerCase();
+    var list = d.students.filter(function (s) {
+      return !q || (s.name + " " + s.email + " " + TITLES[s.cur] + " step " + NUM[s.cur]).toLowerCase().indexOf(q) >= 0;
+    });
+    var order = d.steps.concat(["finish"]);
+    var val = {
+      name: function (s) { return s.name.toLowerCase(); }, email: function (s) { return s.email; },
+      cur: function (s) { return order.indexOf(s.cur); }, done: function (s) { return s.done; }, prep: function (s) { return s.prep; },
+      updated: function (s) { return s.updatedAt || ""; }, rating: function (s) { return s.fb ? s.fb.rating : 0; },
+    }[sortBy];
+    list.sort(function (a, b) { var x = val(a), y = val(b); return (x < y ? -1 : x > y ? 1 : 0) * sortDir; });
+    $("#count").textContent = list.length + " of " + d.students.length + " students";
+    $("#rows").innerHTML = list.map(function (s) {
+      return "<tr><td><strong>" + esc(s.name) + "</strong></td><td>" + esc(s.email) + "</td><td>" + NUM[s.cur] + " · " + esc(TITLES[s.cur]) + "</td><td>" + s.done + "/" + d.steps.length +
+        '</td><td><span class="dots">' + d.steps.map(function (id) { return '<i style="--rc:' + COLOR[id] + '" class="' + (s.steps[id] ? "on" : "") + '" title="' + esc(TITLES[id]) + '"></i>'; }).join("") + "</span></td>" +
+        "<td>" + s.prep + "/5</td><td>" + ago(s.updatedAt, d.now) + "</td><td>" + (s.fb ? s.fb.rating + "★" : "–") + "</td></tr>";
+    }).join("") || '<tr><td colspan="8" class="empty">No students yet. Share the site link' + (data.room !== "default" ? " with ?room=" + esc(data.room) : "") + ".</td></tr>";
+  }
+  $("#filter").addEventListener("input", function () { if (data) renderTable(derive()); });
+  document.querySelectorAll("th[data-sort]").forEach(function (th) {
+    th.addEventListener("click", function () { var k = th.dataset.sort; sortDir = sortBy === k ? -sortDir : 1; sortBy = k; if (data) renderTable(derive()); });
+  });
+
+  $("#csv").addEventListener("click", function () {
+    if (!data) return;
+    var d = derive();
+    var cols = ["name", "email", "on_step", "steps_done"].concat(d.subs.map(function (x) { return "done_0." + x.slice(-1); }), d.steps.map(function (x) { return "done_" + NUM[x] + "_" + x; }),
+      d.steps.map(function (x) { return "completed_at_" + NUM[x] + "_" + x; }), ["joined_at", "last_active", "rating", "comment"]);
+    var raw = {}; data.students.forEach(function (s) { raw[s.id] = s; });
+    var lines = [cols.join(",")].concat(d.students.map(function (s) {
+      var r = raw[s.id] || {};
+      var vals = [s.name, s.email, NUM[s.cur] + " " + TITLES[s.cur], s.done]
+        .concat(d.subs.map(function (x) { return s.steps[x] ? 1 : 0; }), d.steps.map(function (x) { return s.steps[x] ? 1 : 0; }),
+          d.steps.map(function (x) { return (r.stepAt || {})[x] || ""; }), [s.joinedAt || "", s.updatedAt || "", s.fb ? s.fb.rating : "", s.fb ? s.fb.comment : ""]);
+      return vals.map(function (v) { v = String(v == null ? "" : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(",");
+    }));
+    var blob = new Blob([lines.join("\n") + "\n"], { type: "text/csv" });
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = "workshop2-" + data.room + "-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  });
+
+  if (key) load(true); else showGate("");
+})();
+</script>
+</body>
+</html>

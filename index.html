@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Build your AI networking CRM · AI@GSB Workshop 2</title>
+<meta name="description" content="AI@GSB Workshop 2: build an AI networking CRM on Airtable with Claude skills, one step at a time.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="10" r="2" fill="currentColor"/><path d="M4 18l5-5 3 3 3-3 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 2v5h5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 10v5M12 18v.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-elephant" viewBox="0 0 64 64">
+    <ellipse cx="22" cy="28" rx="15" ry="17" fill="#C9C3D6"/>
+    <ellipse cx="22" cy="28" rx="9.5" ry="11.5" fill="#F4B6C2"/>
+    <circle cx="36" cy="26" r="17" fill="#B4ADC4"/>
+    <path d="M44 34c6 3 7 10 4 15-2 4-7 4-8 0" fill="none" stroke="#B4ADC4" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="41" cy="22" r="2.6" fill="#1F1B2D"/>
+    <circle cx="42" cy="21" r=".9" fill="#fff"/>
+    <path d="M30 30c2 2 5 2 7 0" fill="none" stroke="#8F879F" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M47 6l2 4 4 1-4 1-2 4-2-4-4-1 4-1z" fill="#FFD23F"/>
+  </symbol>
+</svg>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="9" width="15" height="15" rx="4" fill="#FF7A45" transform="rotate(-8 9.5 16.5)"/><rect x="9" y="5" width="15" height="15" rx="4" fill="#7C5CFF" opacity=".92"/><rect x="15" y="12" width="15" height="15" rx="4" fill="#14B8A6" opacity=".9" transform="rotate(6 22.5 19.5)"/></svg>
+    <span class="brand-text">AI@GSB <small>Workshop 2 · Your AI networking CRM</small></span>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Sections" id="tabs" hidden>
+    <span class="tab-pill" aria-hidden="true"></span>
+    <button class="tab" role="tab" data-tab="build" aria-selected="true">Workshop</button>
+    <button class="tab" role="tab" data-tab="quests" aria-selected="false">Side quests</button>
+  </div>
+  <div class="spacer"></div>
+  <div class="progress" id="progress" hidden>
+    <div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+    <span id="progress-text">0 of 9 done</span>
+  </div>
+  <button type="button" class="stuck-btn" id="stuck-open" hidden>Stuck?</button>
+  <div class="who" id="who-wrap" hidden>
+    <button type="button" class="who-btn" id="who-btn" aria-haspopup="true" aria-expanded="false" aria-label="Your account">K</button>
+    <div class="who-menu" id="who-menu" hidden>
+      <p id="whoami"></p>
+      <button type="button" id="change-name">Change name or email</button>
+      <button type="button" id="reset">Start over on this device</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SIGN IN ============ -->
+<main class="welcome" id="welcome" hidden>
+  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span>
+  <form class="welcome-card" id="signin" novalidate>
+    <div class="kicker"><span class="dot"></span>AI@GSB · Workshop 2</div>
+    <h1>Build your AI networking CRM</h1>
+    <p class="lede">One database for your network, and four Claude skills that keep it up to date. You'll build it step by step, and leave knowing how to build the next one yourself.</p>
+    <label class="field"><span>Your name</span><input id="who" name="name" autocomplete="name" placeholder="First and last name" required></label>
+    <label class="field"><span>Your email</span><input id="email" name="email" type="email" autocomplete="email" placeholder="you@stanford.edu" required></label>
+    <p class="form-err" id="form-err" hidden></p>
+    <button class="btn" id="go" type="submit" disabled>Let's go →</button>
+    <p class="privacy">We save your name, email and which steps you've finished, so the workshop team can see where the room is. It's deleted 30 days after the workshop. Your Airtable link is never saved. <span id="room-note"></span></p>
+  </form>
+</main>
+
+<!-- ============ APP ============ -->
+<div class="app" id="app" hidden>
+  <nav class="rail" aria-label="Workshop steps">
+    <div class="rail-scroll">
+      <ol class="rail-list" id="rail"><li class="rail-pill" aria-hidden="true"></li></ol>
+      <p class="rail-legend"><b>★</b><span>Checkpoint: the room regroups here.</span></p>
+    </div>
+  </nav>
+
+  <div class="stage" id="stage">
+    <div class="backbar" id="backbar" hidden><span id="backbar-text">You're looking back at an earlier step.</span><button type="button" class="btn small" id="backbar-go">Back to where you are →</button></div>
+    <div class="stage-inner">
+
+<!-- ================= STEP 0 ================= -->
+<section class="step" data-step="setup" data-num="0" data-title="Sign in and set up" data-group="Before class" data-part="pre" data-when="Pre-work" hidden
+  data-learned="You're set up: your own CRM in Airtable, connected to Claude.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">0</span><span class="when-chip">Pre-work · do this before class</span></div>
+    <h2>Sign in and set up</h2>
+    <p class="step-lede">You need an Airtable account with your own copy of the CRM, and Claude connected to that Airtable account. You do not need a paid plan.</p>
+  </header>
+
+  <p class="note">Already done some of this? Check off what you've finished and open only what you need. Each part has a <strong>Check</strong> so you know it worked before moving on.</p>
+
+  <!-- 0.1 -->
+  <div class="sub" data-sub="setup-1">
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.1</span><span class="sub-title">Create your Airtable account<small>About 3 minutes</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
+      <ol class="do">
+        <li>Go to Airtable's sign-up page and sign up with your <strong>Stanford.edu</strong> email address.<br>
+          <a class="go-link" data-verify href="https://airtable.com/signup" target="_blank" rel="noopener">airtable.com/signup</a>
+          <figure class="shot" data-shot="0.1-a"><figcaption>Sign-up page, email field and sign-up button highlighted.</figcaption></figure>
+        </li>
+        <li>Confirm your email if Airtable asks you to.
+          <figure class="shot" data-shot="0.1-b"><figcaption>The confirmation email and the button to click.</figcaption></figure>
+        </li>
+      </ol>
+      <div class="check"><p><strong>Check:</strong> you can sign in and see the Airtable home page. Airtable gives new .edu accounts a 120-day Team trial automatically.</p></div>
+      <figure class="shot" data-shot="0.1-c"><figcaption>Airtable home page after first sign-in (what "done" looks like).</figcaption></figure>
+      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-1">Stuck on 0.1?</button></div>
+    </div></div></div>
+  </div>
+
+  <!-- 0.2 -->
+  <div class="sub" data-sub="setup-2">
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.2</span><span class="sub-title">Make sure you have a workspace you own<small>About 1 minute</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
+      <p>A workspace is the folder that holds your bases. Airtable usually creates one when you sign up.</p>
+      <ol class="do">
+        <li>On the Airtable home page, look in the left sidebar for a workspace. If you do not see one, choose <strong>Add a workspace</strong> and name it anything you like.<br>
+          <a class="go-link" data-verify href="https://airtable.com" target="_blank" rel="noopener">airtable.com</a>
+          <figure class="shot" data-shot="0.2-a"><figcaption>Left sidebar with a workspace highlighted.</figcaption></figure>
+          <figure class="shot" data-shot="0.2-b"><figcaption>Where "Add a workspace" is, if there isn't one.</figcaption></figure>
+        </li>
+      </ol>
+      <div class="check"><p><strong>Check:</strong> you have a workspace, and you are its <strong>Owner</strong>. You need Owner or Creator permission to copy a base into it.</p></div>
+      <figure class="shot" data-shot="0.2-c"><figcaption>Where to see your role on the workspace (Owner).</figcaption></figure>
+      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-2">Stuck on 0.2?</button></div>
+    </div></div></div>
+  </div>
+
+  <!-- 0.3 -->
+  <div class="sub" data-sub="setup-3">
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.3</span><span class="sub-title">Copy the CRM base into your workspace<small>About 3 minutes</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
+      <ol class="do">
+        <li>Open the template link.<br>
+          <span class="link-pending" data-url-id="0.3-a">Template link coming soon</span>
+          <div class="draft-note">[URL 0.3-a] Template base share link: LINK PENDING (waiting on Kate's testing). Replace the span above with a go-link once it's ready.</div>
+          <figure class="shot" data-shot="0.3-a"><figcaption>The template page, <strong>Copy base</strong> button highlighted.</figcaption></figure>
+        </li>
+        <li>Click <strong>Copy base</strong> and choose your workspace as the destination.
+          <figure class="shot" data-shot="0.3-b"><figcaption>The destination picker with your workspace selected.</figcaption></figure>
+        </li>
+        <li>Open your copy and look at the three tabs at the top: Companies, People, Conversation Notes.
+          <figure class="shot" data-shot="0.3-c"><figcaption>Your copy, three tabs highlighted.</figcaption></figure>
+        </li>
+        <li>Copy your <strong>Base URL</strong> from the browser's address bar. You'll paste it into this site to get your skills (Step 3).
+          <figure class="shot" data-shot="0.3-d"><figcaption>Address bar with the Base URL highlighted (the part starting <code>https://airtable.com/app…</code>).</figcaption></figure>
+        </li>
+      </ol>
+      <div class="check"><p><strong>Check:</strong> in your copy, People shows Maya Chen linked to Cedar Labs and Jordan Lee linked to Harbor Health. These are fictional examples for practice. Do not research them online.</p></div>
+      <div class="draft-note">[UPDATE once Maya is removed from the starter records: Cedar Labs and Jordan Lee only.] Also update the Step 2 tour table (People tab) at the same time.</div>
+      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-3">Stuck on 0.3?</button></div>
+    </div></div></div>
+  </div>
+
+  <!-- 0.4 -->
+  <div class="sub" data-sub="setup-4">
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.4</span><span class="sub-title">Prepare Claude<small>About 2 minutes</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
+      <ol class="do">
+        <li>Sign in to Claude with the account you will use in the workshop.<br>
+          <a class="go-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+        </li>
+        <li>Confirm that you can use <strong>skills</strong> and <strong>code execution</strong> in your account. In <strong>Settings → Capabilities</strong>, make sure <strong>Code execution and file creation</strong> is on.<br>
+          <a class="go-link" data-verify href="https://claude.ai/settings/capabilities" target="_blank" rel="noopener">claude.ai/settings/capabilities</a>
+          <div class="draft-note">[VERIFY: exact settings names and what Stanford accounts allow.] Wording above is from Claude's help center ("Settings &gt; Capabilities", "Code execution and file creation"; Team/Enterprise orgs control it under Organization settings &gt; Plugins &amp; skills). Check it against a student account.</div>
+          <figure class="shot" data-shot="0.4-a"><figcaption>The settings page, code execution toggle highlighted.</figcaption></figure>
+          <figure class="shot" data-shot="0.4-b"><figcaption>The settings page, skills toggle highlighted (if separate).</figcaption></figure>
+        </li>
+      </ol>
+      <div class="check"><p><strong>Check:</strong> Customize → Skills opens, and you can see an option to upload a skill.</p></div>
+      <a class="go-link" data-verify href="https://claude.ai/customize/skills" target="_blank" rel="noopener">Customize → Skills</a>
+      <figure class="shot" data-shot="0.4-c"><figcaption>Customize in the left sidebar → Skills tab → New skill → Upload Skill.</figcaption></figure>
+      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-4">Stuck on 0.4?</button></div>
+    </div></div></div>
+  </div>
+
+  <!-- 0.5 -->
+  <div class="sub" data-sub="setup-5">
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.5</span><span class="sub-title">Connect Airtable to Claude<small>About 3 minutes. This is where most people get stuck.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
+      <ol class="do">
+        <li>In Claude, add the <strong>Airtable</strong> connector.<br>
+          <a class="go-link" data-verify href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">claude.ai/settings/connectors</a>
+          <div class="draft-note">[VERIFY: exact menu path.] Airtable's own page says: Settings → Connectors → install the Airtable connector.</div>
+          <figure class="shot" data-shot="0.5-a"><figcaption>Connectors page, Airtable highlighted.</figcaption></figure>
+          <figure class="shot" data-shot="0.5-b"><figcaption>The Connect button.</figcaption></figure>
+        </li>
+        <li>Sign in to Airtable when prompted and give Claude access to your copied base.
+          <figure class="shot" data-shot="0.5-c"><figcaption>Airtable's permission screen, with your copied base selected. This is the step people miss most: make sure your copy is selected.</figcaption></figure>
+          <figure class="shot" data-shot="0.5-d"><figcaption>The final "Grant access" / allow button.</figcaption></figure>
+        </li>
+        <li>Start a new conversation and ask:
+          <div class="copy-card" data-copy="list-bases" data-title="Paste into a new Claude chat" data-sub="A quick test of the connection"></div>
+          <figure class="shot" data-shot="0.5-e"><figcaption>A good result: your copied base in the list.</figcaption></figure>
+        </li>
+      </ol>
+      <div class="check"><p><strong>Check:</strong> your copied base appears in the list. If it does not, the connector was not given access to that base. Repeat step 2 and select it.</p></div>
+      <figure class="shot" data-shot="0.5-f"><figcaption>Where to reopen the connector's access settings to add the base.</figcaption></figure>
+      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-5">Stuck on 0.5?</button></div>
+    </div></div></div>
+  </div>
+
+  <!-- 0.6 -->
+  <div class="sub" data-sub="setup-6" data-optional>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.6</span><span class="sub-title">Optional: apply for the Airtable student plan<small>For long-term use. Not needed for the workshop.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
+      <p>The free plan is enough for the workshop. If you want to keep using your CRM afterward, apply for an Airtable student plan, which gives qualifying students 6–24 months of complimentary access.</p>
+      <ul>
+        <li>Apply through Airtable's student plan page:<br><a class="go-link" href="https://support.airtable.com/articles/4920135568-applying-for-non-profit-education-and-student-airtable-plans" target="_blank" rel="noopener">Applying for student Airtable plans</a></li>
+        <li>Use the same email address as your Airtable account.</li>
+        <li>Airtable says to expect a response in about 2 business days. After approval you have 4 weeks to activate the plan through Airtable support.</li>
+      </ul>
+      <p>You do not need approval before the workshop.</p>
+      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done</button><span class="opt-chip">Optional</span><button type="button" class="stuck-inline" data-stuck="setup-6">Questions about 0.6?</button></div>
+    </div></div></div>
+  </div>
+
+  <p class="foot-note" id="setup-gate">Check off 0.1 to 0.5 to finish this step. 0.6 is optional.</p>
+</section>
+
+<!-- ================= STEP 1 ================= -->
+<section class="step" data-step="what" data-num="1" data-title="What you're building" data-group="Before class" data-part="pre" data-when="Pre-work or opening" hidden
+  data-learned="Now you know the database is your core data asset, and the skills just make it easier to work with.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">1</span><span class="when-chip">Pre-work or opening</span></div>
+    <h2>What you're building</h2>
+    <p class="step-lede">A personal CRM for your network. The database is your core data asset. All of the skills you build around it are meant to make it easier to interact with it.</p>
+  </header>
+
+  <div class="diagram" role="img" aria-label="Diagram: your database (Companies, People, Conversation Notes) at the center; four core skills around it (add a company, add a person, capture a conversation, brief me); side quests on the outside.">
+    <svg viewBox="0 0 720 520">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4A4458"/></marker>
+      </defs>
+      <!-- outer ring: side quests -->
+      <circle cx="360" cy="260" r="238" fill="none" stroke="#D9D0C1" stroke-width="2" stroke-dasharray="4 9"/>
+      <g class="orbit"><g class="planet"><circle cx="528" cy="92" r="20" fill="#FFF4C7" stroke="#FFD23F" stroke-width="2"/><text x="528" y="98" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="18" fill="#8A6500">?</text></g><g class="planet"><circle cx="528" cy="428" r="20" fill="#FFF4C7" stroke="#FFD23F" stroke-width="2"/><text x="528" y="434" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="18" fill="#8A6500">?</text></g><g class="planet"><circle cx="192" cy="428" r="20" fill="#FFF4C7" stroke="#FFD23F" stroke-width="2"/><text x="192" y="434" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="18" fill="#8A6500">?</text></g><g class="planet"><circle cx="192" cy="92" r="20" fill="#FFF4C7" stroke="#FFD23F" stroke-width="2"/><text x="192" y="98" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="18" fill="#8A6500">?</text></g></g>
+      <text x="24" y="40" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="17" fill="#8A6500">Side quests</text>
+      <text x="24" y="58" font-size="12.5" fill="#7A7387">choose your own, on the outside</text>
+
+      <!-- arrows -->
+      <g stroke="#4A4458" stroke-width="2" fill="none" marker-end="url(#arr)">
+        <path d="M360 128 V182"/>
+        <path d="M528 260 H462"/>
+        <path d="M360 392 V338"/>
+        <path d="M192 260 H258"/>
+      </g>
+
+      <!-- database -->
+      <g>
+        <ellipse cx="360" cy="196" rx="100" ry="22" fill="#FF7A45"/>
+        <rect x="260" y="196" width="200" height="128" fill="#FFE8DD" stroke="#FF7A45" stroke-width="3"/>
+        <ellipse cx="360" cy="324" rx="100" ry="22" fill="#FFE8DD" stroke="#FF7A45" stroke-width="3"/>
+        <rect x="262" y="198" width="196" height="124" fill="#FFE8DD"/>
+        <ellipse cx="360" cy="196" rx="100" ry="22" fill="#FF7A45" stroke="#FF7A45" stroke-width="3"/>
+        <text x="360" y="202" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="17" fill="#fff">Your database</text>
+        <g font-size="13.5" font-weight="700" fill="#1F1B2D" text-anchor="middle">
+          <rect x="285" y="232" width="150" height="24" rx="7" fill="#fff"/><text x="360" y="249">Companies</text>
+          <rect x="285" y="262" width="150" height="24" rx="7" fill="#fff"/><text x="360" y="279">People</text>
+          <rect x="285" y="292" width="150" height="24" rx="7" fill="#fff"/><text x="360" y="309">Conversation Notes</text>
+        </g>
+      </g>
+
+      <!-- skills -->
+      <g font-family="DM Sans, sans-serif" text-anchor="middle">
+        <g class="skill-node"><rect x="270" y="78" width="180" height="50" rx="25" fill="#FF7A45"/><text x="360" y="100" font-weight="800" font-size="15" fill="#fff">Add a company</text><text x="360" y="117" font-size="11.5" fill="#fff" opacity=".9">crm-company</text></g>
+        <g class="skill-node"><rect x="528" y="235" width="150" height="50" rx="25" fill="#FF7A45"/><text x="603" y="257" font-weight="800" font-size="15" fill="#fff">Add a person</text><text x="603" y="274" font-size="11.5" fill="#fff" opacity=".9">crm-person</text></g>
+        <g class="skill-node"><rect x="250" y="392" width="220" height="50" rx="25" fill="#7C5CFF"/><text x="360" y="414" font-weight="800" font-size="15" fill="#fff">Capture a conversation</text><text x="360" y="431" font-size="11.5" fill="#fff" opacity=".9">crm-capture-convo</text></g>
+        <g class="skill-node"><rect x="42" y="235" width="150" height="50" rx="25" fill="#14B8A6"/><text x="117" y="257" font-weight="800" font-size="15" fill="#fff">Brief me</text><text x="117" y="274" font-size="11.5" fill="#fff" opacity=".9">you build this one</text></g>
+      </g>
+    </svg>
+  </div>
+  <p class="small muted">The four core skills are add a company, add a person, add a conversation, and brief me. Everything beyond that is a <strong>side quest</strong>: choose your own adventure and pick what makes sense for you.</p>
+
+  <h3>Where information sits</h3>
+  <div class="sits">
+    <div class="sit mem"><div class="k">Memory</div><div class="v">Who you are</div><div class="eg">Your goals, target roles, how you write</div></div>
+    <div class="sit skl"><div class="k">Skill</div><div class="v">How to do the task</div><div class="eg">The steps, the rules, your process</div></div>
+    <div class="sit cfg"><div class="k">Config</div><div class="v">Where the data lives</div><div class="eg">Which Airtable base</div></div>
+    <div class="sit db"><div class="k">Database</div><div class="v">What you know about your network</div><div class="eg">Companies, people, conversations</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="card" data-part="A">
+      <h4>What you'll leave with</h4>
+      <ul class="checklist">
+        <li>Your own CRM in Airtable, with real companies and people in it</li>
+        <li>Three skills that keep it up to date: add a company, add a person, capture a conversation</li>
+        <li>A brief-me skill you built yourself</li>
+      </ul>
+    </div>
+    <div class="card" data-part="C">
+      <h4>What you'll know how to do</h4>
+      <ul class="checklist">
+        <li>Read any skill: name, description, body</li>
+        <li>Change how a skill works, through its My process section</li>
+        <li>Build a skill with Claude's skill builder</li>
+        <li>Decide when a human should be in the loop</li>
+        <li>Design your next workflow with six questions</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>House rules</h3>
+  <ol class="rules" id="house-rules">
+    <li><strong>Maya, Jordan, Cedar Labs and Harbor Health are made up.</strong> They're fictional examples for practice. Don't research them online.</li>
+    <li><strong>Check Airtable, not just the chat.</strong> A step is done when you can see the record in your base, not when Claude says it saved.</li>
+    <li><strong>Edit My process. Leave the Safety rules alone.</strong> My process is yours to change. The Safety rules are what keep your CRM safe, and they win if the two conflict.</li>
+    <li><strong>Read before you confirm.</strong> When Claude says <strong>NOT SAVED YET. CONFIRM?</strong>, nothing has been written yet. Check what's being replaced before you say yes.</li>
+    <li><strong>Stuck for more than five minutes?</strong> Open <em>Stuck?</em> (top right), then raise your hand. Setup problems are normal and fixable.</li>
+  </ol>
+</section>
+
+<!-- ================= STEP 2 ================= -->
+<section class="step" data-step="db" data-num="2" data-title="First look at a database" data-group="Before class" data-part="pre" data-when="Pre-work" hidden
+  data-learned="Now you know a database is tables of records, and link fields connect them.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">2</span><span class="when-chip">Pre-work</span></div>
+    <h2>First look at a database</h2>
+    <p class="step-lede">For many of you this is your first database. It's a short tour: three tables, one record, one link.</p>
+  </header>
+
+  <div class="glossary">
+    <div class="gl"><b>Table</b><span>One kind of thing. Like a tab in a spreadsheet.</span><em>Companies, People, Conversation Notes</em></div>
+    <div class="gl"><b>Record</b><span>One row: one company, one person, one conversation.</span><em>Cedar Labs is a record in Companies</em></div>
+    <div class="gl"><b>Field</b><span>One column, with a type: text, date, URL, a pick-list.</span><em>Status is a single select with five options</em></div>
+    <div class="gl"><b>Link</b><span>A field that points to a record in another table.</span><em>People → Company points to the Cedar Labs record</em></div>
+  </div>
+
+  <p><strong>Try it here first.</strong> Click the tabs, then click a blue company chip in People.</p>
+  <div class="dbtour" id="dbtour">
+    <div class="db-tabs" role="tablist">
+      <button class="db-tab" role="tab" data-db="companies" aria-selected="true">Companies</button>
+      <button class="db-tab" role="tab" data-db="people" aria-selected="false">People</button>
+      <button class="db-tab" role="tab" data-db="notes" aria-selected="false">Conversation Notes</button>
+    </div>
+    <div class="db-panel" data-panel="companies">
+      <table class="db-table">
+        <thead><tr><th>Name<span class="ft">text</span></th><th>Website<span class="ft">URL</span></th><th>Industry<span class="ft">text</span></th><th>Priority<span class="ft">single select</span></th><th>People<span class="ft">link → People</span></th></tr></thead>
+        <tbody>
+          <tr data-rec="cedar"><td><strong>Cedar Labs</strong></td><td>cedar.example</td><td>Software</td><td></td><td><button type="button" class="db-link" data-goto="people:maya">Maya Chen</button></td></tr>
+          <tr data-rec="harbor"><td><strong>Harbor Health</strong></td><td>harbor.example</td><td>Healthcare</td><td></td><td><button type="button" class="db-link" data-goto="people:jordan">Jordan Lee</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="db-panel" data-panel="people" hidden>
+      <table class="db-table">
+        <thead><tr><th>Name<span class="ft">text</span></th><th>Company<span class="ft">link → Companies</span></th><th>Role<span class="ft">text</span></th><th>Status<span class="ft">single select</span></th><th>Next action<span class="ft">text</span></th></tr></thead>
+        <tbody>
+          <tr data-rec="maya"><td><strong>Maya Chen</strong></td><td><button type="button" class="db-link" data-goto="companies:cedar">Cedar Labs</button></td><td>Product lead</td><td><span class="db-select">To reach out</span></td><td></td></tr>
+          <tr data-rec="jordan"><td><strong>Jordan Lee</strong></td><td><button type="button" class="db-link" data-goto="companies:harbor">Harbor Health</button></td><td>Operations manager</td><td><span class="db-select">To reach out</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="db-panel" data-panel="notes" hidden>
+      <table class="db-table">
+        <thead><tr><th>Title<span class="ft">text</span></th><th>Person<span class="ft">link → People</span></th><th>Conversation date<span class="ft">date</span></th><th>Summary<span class="ft">long text</span></th></tr></thead>
+        <tbody><tr><td colspan="4" class="db-empty">Empty for now. You'll add the first one in Step 6.</td></tr></tbody>
+      </table>
+    </div>
+    <div class="db-caption" id="db-caption" aria-live="polite">Companies: one record per company. The People column shows who's linked to each one.</div>
+  </div>
+  <div class="draft-note">Tour data mirrors the current seed records. When Maya is removed from the template, remove her row here too (and the "Maya Chen" chip on Cedar Labs).</div>
+
+  <h3><span class="h-num">→</span>Now in your own base</h3>
+  <ol class="do">
+    <li>Open your copy of the CRM in Airtable and click the <strong>People</strong> tab.</li>
+    <li>Click a row to expand <strong>one record</strong>, for example Jordan Lee. Every field for that person is on one card.</li>
+    <li>In the Company field, click <strong>Harbor Health</strong>. It opens the company's record. That's a <strong>link</strong>: People points to the actual company record, not just the words "Harbor Health".</li>
+  </ol>
+  <figure class="shot" data-shot="2-a"><figcaption>An expanded People record, with the Company link highlighted.</figcaption></figure>
+  <div class="check"><p><strong>Check:</strong> you opened a record and followed its link to a company.</p></div>
+</section>
+
+<!-- ================= STEP 3 ================= -->
+<section class="step" data-step="skills" data-num="3" data-title="Get your skills" data-group="In class" data-part="core" data-when="In session" hidden
+  data-learned="Now you know how to install a skill and call it with /.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">3</span><span class="when-chip">In session</span></div>
+    <h2>Get your skills</h2>
+    <p class="step-lede">Paste your Base URL and this site makes your skill files, already pointed at your base. You'll install each one in the step where you first use it.</p>
+  </header>
+
+  <h3><span class="h-num">1</span>Paste your Base URL</h3>
+  <p>It's the link you copied in 0.3: open your copy of the CRM in Airtable and copy the address bar. It starts with <code>https://airtable.com/app…</code></p>
+  <div class="zipgen" data-skills="crm-company crm-person crm-capture-convo"></div>
+
+  <h3><span class="h-num">2</span>How to install a skill</h3>
+  <p>You'll do this three times today. Upload the <strong>.zip</strong> file itself; don't unzip it.</p>
+  <ol class="do">
+    <li>Click <strong>Customize</strong> in the left sidebar.<br><a class="go-link" data-verify href="https://claude.ai/customize/skills" target="_blank" rel="noopener">Customize → Skills</a>
+      <figure class="shot" data-shot="3-a"><figcaption>Customize in the left sidebar.</figcaption></figure></li>
+    <li>Open the <strong>Skills</strong> tab.
+      <figure class="shot" data-shot="3-b"><figcaption>Skills tab.</figcaption></figure></li>
+    <li>Choose <strong>New skill → Upload Skill</strong>.
+      <figure class="shot" data-shot="3-c"><figcaption>New skill → Upload Skill.</figcaption></figure>
+      <div class="draft-note">Claude's help center currently words this as "+" → "Create skill" → "Upload a skill". Kept Kate's observed wording; check which one students see.</div></li>
+    <li>Pick the zip from your Downloads folder.
+      <figure class="shot" data-shot="3-d"><figcaption>File picker with the zip.</figcaption></figure></li>
+    <li>Check it's in the list and switched on.
+      <figure class="shot" data-shot="3-e"><figcaption>The installed skill in the list.</figcaption></figure></li>
+  </ol>
+
+  <h3><span class="h-num">3</span>How to call a skill</h3>
+  <p>In a Claude chat, type <kbd>/</kbd> and start typing <strong>crm</strong>. You'll see all your CRM skills. Pick one, then say what you want.</p>
+  <figure class="shot" data-shot="3-f"><figcaption>Typing /crm in the message box, with the CRM skills listed.</figcaption></figure>
+  <div class="check"><p><strong>Check:</strong> you have three zips in your Downloads folder: crm-company, crm-person and crm-capture-convo. Don't install them yet; that happens in Steps 4–6.</p></div>
+</section>
+
+<!-- ================= STEP 4 ================= -->
+<section class="step" data-step="company" data-num="4" data-title="Add a company" data-sub-title="crm-company" data-group="Part A" data-part="A" data-when="In session" hidden
+  data-learned="Now you know the parts of a skill: the name and description decide when Claude uses it; the body decides how.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">4</span><span class="part-chip">Part A · Add a company and a person</span><span class="when-chip">In session</span></div>
+    <h2>Add a company: <code>crm-company</code></h2>
+    <p class="step-lede">This skill has all the parts, so we'll look at it closely before you use it. Then you'll add a real company and watch the skill do what it says.</p>
+  </header>
+
+  <h3><span class="h-num">1</span>Anatomy of a skill</h3>
+  <p><strong>Name and description decide <em>when</em> Claude uses the skill. The body decides <em>how</em>.</strong> Tap a part on the right to see where it is in the skill.</p>
+  <div class="anatomy" data-skill="crm-company" data-mode="full"><p class="anat-loading">Loading crm-company…</p></div>
+
+  <h3><span class="h-num">2</span>Open the zip</h3>
+  <p>Your <code>crm-company.zip</code> holds a folder with two files:</p>
+  <div class="ziptree">
+    <div class="zfile method">
+      <div class="fn"><svg><use href="#i-file"/></svg>SKILL.md</div>
+      <div class="role">The method</div>
+      <p>The same for everyone. How to add, research and update a company, and the rules it follows.</p>
+    </div>
+    <div class="zfile dest">
+      <div class="fn"><svg><use href="#i-file"/></svg>crm-config.txt</div>
+      <div class="role">The destination</div>
+      <p>Yours. Which Airtable base to write to.</p>
+      <pre class="config-preview">Base URL: <span class="fill missing" data-fill="url">paste your Base URL in Step 3</span>
+Base ID: <span class="fill missing" data-fill="id">…</span>
+Time zone: America/Los_Angeles
+Schema version: 1</pre>
+    </div>
+  </div>
+  <p>That's why this website generates the config and never touches SKILL.md: everyone gets the same method, and only the destination changes.</p>
+  <div class="fold">
+    <button type="button" class="fold-head" aria-expanded="false">Why we set it up like this, and how yours could be different<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="fold-body">
+      <p>There's no single right structure. A few ways it could have gone:</p>
+      <ul>
+        <li><strong>Facts about you moved to memory.</strong> We started with a <code>my-profile.txt</code> file in the zip, and moved it to Claude's memory. Who you are isn't specific to one skill.</li>
+        <li><strong>Config could live inside SKILL.md.</strong> Fine for a skill only you use. We split it out so one SKILL.md works for everyone.</li>
+        <li><strong>You could add reference files</strong>, like a schema file or example outputs, for Claude to read when it needs them.</li>
+        <li><strong>You could share one config</strong> across several skills.</li>
+      </ul>
+      <p>The skill you build in Step 7 may end up structured differently. That's the point.</p>
+    </div></div></div>
+  </div>
+
+  <h3><span class="h-num">3</span>Install it</h3>
+  <div class="zipgen compact" data-skills="crm-company"></div>
+  <p class="small">Upload it in <strong>Customize → Skills → New skill → Upload Skill</strong>. Need the clicks again? <button type="button" class="linkish" data-goto-step="skills">See Step 3</button>.</p>
+
+  <h3><span class="h-num">4</span>Run it on a real company</h3>
+  <p>Pick a company you're actually curious about, so you see real research. In a new chat:</p>
+  <div class="copy-card" data-copy="add-company" data-title="Example: change the company name" data-sub="Use a real company, not Cedar Labs or Harbor Health (they're fictional, so research is skipped)"></div>
+  <p>As it runs, match what Claude does to lines in the skill's <strong>Workflow</strong>:</p>
+  <table class="maptable">
+    <thead><tr><th>What you see in Claude</th><th></th><th>Why it happens</th></tr></thead>
+    <tbody>
+      <tr><td>Searching the web…</td><td class="arrow-cell">→</td><td>Workflow step 4. Web search runs because the skill says to research.</td></tr>
+      <tr><td>Airtable: create record</td><td class="arrow-cell">→</td><td>The Airtable connector is what allows the write. Without it, nothing saves (Safety rule 10).</td></tr>
+      <tr><td>Saved to Companies: &lt;link&gt;</td><td class="arrow-cell">→</td><td>Safety rule 5. It saves directly (no confirm step), reads the record back, and reports every field.</td></tr>
+      <tr><td>Want to set a Priority or Why interested?</td><td class="arrow-cell">→</td><td>Workflow step 8. Those are yours to fill in, never filled from research.</td></tr>
+    </tbody>
+  </table>
+  <p>Now open Airtable and find the record in Companies.</p>
+  <figure class="shot" data-shot="4-a"><figcaption>The new company in Airtable, with Research summary, sources and date filled in.</figcaption></figure>
+
+  <aside class="memory">
+    <svg class="elephant" aria-hidden="true"><use href="#i-elephant"/></svg>
+    <div>
+      <div class="label">Memory moment #1</div>
+      <h4>"Fit for me" uses what Claude knows about you.</h4>
+      <p>The research summary ends with a labeled <em>Fit for me</em> inference, based on your goals and target roles. If it's skipped, that's why: Claude doesn't know enough about you yet. Tell it in a chat ("I'm a first-year MBA looking at product roles in health tech"), then refresh the research.</p>
+      <div class="draft-note">Open question from the outline: is memory available to students on their plans, and can installed skills use it? If not, the "tell it in a chat" line is the fallback.</div>
+    </div>
+  </aside>
+  <div class="check"><p><strong>Check:</strong> your company is in Airtable with a research summary, and you can point to the Workflow line behind each thing Claude did.</p></div>
+</section>
+
+<!-- ================= STEP 5 ================= -->
+<section class="step" data-step="person" data-num="5" data-title="Add a person" data-sub-title="crm-person" data-group="Part A" data-part="A" data-when="In session" hidden
+  data-learned="Now you know Claude picks a skill from its description, and records link by ID, not by name.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">5</span><span class="part-chip">Part A · Add a company and a person</span><span class="when-chip">In session</span></div>
+    <h2>Add a person: <code>crm-person</code></h2>
+    <p class="step-lede">Person is more straightforward, so it's your practice round. Install it, then label its parts yourself using what you learned in Step 4.</p>
+  </header>
+
+  <h3><span class="h-num">1</span>Install it</h3>
+  <div class="zipgen compact" data-skills="crm-person"></div>
+
+  <h3><span class="h-num">2</span>Label it yourself</h3>
+  <p>Here's crm-person's SKILL.md with the labels taken off. Pick what each part is. One part is new: crm-company didn't have it.</p>
+  <div class="anatomy labeler" data-skill="crm-person" data-mode="label"><p class="anat-loading">Loading crm-person…</p></div>
+
+  <h3><span class="h-num">3</span>Add Maya Chen</h3>
+  <p>Add Maya Chen at Cedar Labs (a fictional sample), including that you're meeting her for coffee. That becomes her Next action and sets up Step 6. Or add a real person. If their company isn't in your CRM yet, crm-company runs on it automatically.</p>
+  <div class="copy-card" data-copy="add-maya" data-title="Paste into a new Claude chat" data-sub="Or describe a real person in your own words"></div>
+  <div class="draft-note">The coffee date matches the sample transcript's date (2026-10-05), so Step 6's "But wait…" example lines up. Change both together if the transcript date changes.</div>
+
+  <h3><span class="h-num">4</span>Follow the link in Airtable</h3>
+  <p>Open Maya in People, then click her <strong>Company</strong> link to Cedar Labs. Records are linked by ID, not by name: rename Cedar Labs and Maya still points to it.</p>
+  <figure class="shot" data-shot="5-a"><figcaption>Maya's record with the Company link to Cedar Labs, and Next action showing the coffee.</figcaption></figure>
+
+  <h3><span class="h-num">5</span>The description test</h3>
+  <p>In a new message, <strong>without a slash</strong>, say:</p>
+  <div class="copy-card" data-copy="emailed-maya" data-title="No slash this time" data-sub="Claude has to pick the skill on its own"></div>
+  <p>Claude picks crm-person from its <strong>description</strong>. That's the "when" part of a skill doing its job.</p>
+  <div class="draft-note">Open question from the outline: does a skill trigger reliably from natural language, without the slash? A Stuck? entry covers it if it doesn't.</div>
+  <div class="check"><p><strong>Check:</strong> Maya is in People, linked to Cedar Labs, and "I emailed Maya today" updated her without a slash.</p></div>
+</section>
+
+<!-- ================= STEP 6 ================= -->
+<section class="step" data-step="capture" data-num="6" data-title="Capture a conversation" data-sub-title="crm-capture-convo" data-group="Part B" data-part="B" data-when="In session" data-checkpoint hidden
+  data-learned="Now you know where a human belongs in the loop: anywhere AI can overwrite what you know.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">6</span><span class="part-chip">Part B · Capture a conversation</span><span class="when-chip">In session</span><span class="cp-chip">Checkpoint</span></div>
+    <h2>Capture a conversation: <code>crm-capture-convo</code></h2>
+  </header>
+
+  <aside class="butwait">
+    <div class="butwait-head"><svg><use href="#i-warn"/></svg>But wait…</div>
+    <div class="butwait-body">
+      <p>We've been updating the CRM without any human in the loop. What if we want more control?</p>
+      <p>Capture is where it matters: <strong>it can overwrite information.</strong> Maya's Next action currently says you're meeting her for coffee (from Step 5). Capturing the transcript replaces it with this conversation's action items. AI also wrote those from a transcript, so a misread commitment would land in your CRM.</p>
+      <p>So this skill shows you a preview first. It shows what's being replaced and dropped, and nothing is saved until you confirm:</p>
+      <div class="preview-mock" aria-label="Example preview">People › Maya Chen<br>
+Status: Conversation scheduled → Conversation held<br>
+Last contact: 2026-10-05<br>
+Next action: <span class="old">Coffee with Maya on 2026-10-05</span> → <span class="new">1) Send Maya your resume and a few lines on what you'd want to work on; 2) Waiting on Maya: intro to Priya, by Friday</span><br>
+Dropped from Next action: Coffee with Maya on 2026-10-05<br>
+…<br>
+<span class="confirm">NOT SAVED YET. CONFIRM?</span></div>
+      <p>Here's the Safety rule that creates the preview. crm-company and crm-person have a different rule 5 ("Save directly").</p>
+      <div class="rule-quote" id="capture-rule5">5. Preview, approve, write, verify. Before any write, show what will be saved and wait for my approval. Write only what was approved.</div>
+      <div class="draft-note">"But wait…" example built as drafted (outline: WAITING on Kate to confirm after seeing it on the site). The mock's Status line assumes Step 5 set Maya to "Conversation scheduled" (crm-person does this for a confirmed meeting); if students don't give a date, she may still be "To reach out". Rule 5's text is loaded from the live SKILL.md.</div>
+    </div>
+  </aside>
+
+  <h3><span class="h-num">1</span>Install it</h3>
+  <div class="zipgen compact" data-skills="crm-capture-convo"></div>
+
+  <h3><span class="h-num">2</span>Run it on the coffee chat</h3>
+  <p>Copy the Maya coffee-chat transcript, or use your own notes from a real conversation. In a new chat, say "Here's the transcript from my coffee with Maya Chen" and paste it.</p>
+  <div class="copy-card tall" data-copy="transcript" data-title="Coffee with Maya Chen: transcript (fictional)" data-sub="28 minutes, about 900 words" data-download="coffee-with-maya-transcript.md"></div>
+  <p><strong>Review the preview</strong> line by line. What's being replaced? What's being dropped? Then confirm.</p>
+  <figure class="shot" data-shot="6-a"><figcaption>Claude's preview ending in NOT SAVED YET. CONFIRM?</figcaption></figure>
+
+  <h3><span class="h-num">3</span>Look in Airtable</h3>
+  <div class="history-state">
+    <div class="hs hist"><div class="k">History</div><div class="t">The note · Conversation Notes</div>
+      <ul><li>A new record, linked to Maya</li><li>Notes: the long form</li><li>Summary: the short snapshot</li></ul></div>
+    <div class="hs now"><div class="k">Current state</div><div class="t">The person · People</div>
+      <ul><li>Status</li><li>Next action</li><li>Follow-up date</li></ul></div>
+  </div>
+  <p>The note is history: it never changes. The person is current state: it gets overwritten each time. That's why the overwrite is the part you approve.</p>
+
+  <h3><span class="h-num">4</span>Make it yours: edit My process</h3>
+  <p>Change capture's <strong>My process</strong> section, as much or as little as you want. Leave the Safety rules alone. Some ideas:</p>
+  <ul>
+    <li>Change the Summary format: fewer headings, or three bullets max.</li>
+    <li>"Under Suggestions, add 2 questions to ask next time."</li>
+    <li>Change how the Title reads, or what counts as an action item.</li>
+  </ul>
+  <p>Open the skill in <strong>Customize → Skills</strong> and use <strong>Edit with Claude</strong> (no re-upload needed), or edit the file and upload it again. Then run it again, in a new chat, on notes from a different conversation (a real one, or make one up).</p>
+  <p class="small muted">Why a different conversation? The same transcript again is a duplicate, so capture won't save it twice. Try that below.</p>
+  <figure class="shot" data-shot="6-b"><figcaption>Edit with Claude on an installed skill.</figcaption></figure>
+
+  <div class="fold">
+    <button type="button" class="fold-head" aria-expanded="false">Optional check: paste the same transcript again<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="fold-body">
+      <p>Paste the Maya transcript again in a new chat. Capture should recognize it as a repeat, change nothing, and link the existing record. That's the Event key at work (Workflow step 4).</p>
+    </div></div></div>
+  </div>
+  <div class="draft-note">Call made: the outline says "re-upload or edit in Claude, and run again" plus the optional duplicate check. Running again on the same transcript would trip the duplicate check, so "run again" points students to a different conversation.</div>
+  <div class="check"><p><strong>Check:</strong> a new Conversation Notes record linked to Maya, her Status, Next action and Follow-up date updated, and your edited My process used on a second run.</p></div>
+</section>
+
+<!-- ================= STEP 7 ================= -->
+<section class="step" data-step="build" data-num="7" data-title="Build your own brief-me" data-sub-title="Core exercise" data-group="Part C" data-part="C" data-when="In session" data-checkpoint hidden
+  data-learned="Now you know how to build a skill: answer six questions, tell it where your data lives, and test it before you save.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">7</span><span class="part-chip">Part C · Build your own</span><span class="when-chip">In session</span><span class="cp-chip">Checkpoint</span></div>
+    <h2>Build your own brief-me</h2>
+    <p class="step-lede">Before a coffee chat, you want a quick brief from your CRM. This time nobody hands you the skill: you write the request in your own words, and Claude's skill builder turns it into a skill. This site only supplies the CRM connection.</p>
+  </header>
+
+  <h3><span class="h-num">1</span>Think first <span class="muted small" style="font-family:var(--font-body);font-weight:500">about 2 minutes</span></h3>
+  <p>Six questions every skill should answer. Jot a few words for each. Your notes stay in this browser.</p>
+  <div class="six" data-key="build"></div>
+
+  <h3><span class="h-num">2</span>Write your request in the skill builder</h3>
+  <p>Open the skill builder and write a few sentences, in your own words, answering the six questions. Then paste the CRM card below at the end.</p>
+  <a class="go-link" data-verify href="https://claude.ai/customize/skills" target="_blank" rel="noopener">Customize → Skills → New skill</a>
+  <figure class="shot" data-shot="7-a"><figcaption>Where to start a new skill with Claude's skill builder.</figcaption></figure>
+  <div class="draft-note">New slot (not in the outline): screenshot 7-a and the skill builder link. [VERIFY] the exact path to the skill builder (Customize → Skills → New skill → create with Claude?).</div>
+
+  <div class="copy-card crm-card" data-copy="crm-card" data-title="Your CRM card" data-sub="Filled in with your Base URL and Base ID"></div>
+  <div class="zipgen compact" data-skills="" data-purpose="card"></div>
+
+  <div class="fold">
+    <button type="button" class="fold-head" aria-expanded="false">Need an example?<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="fold-body">
+      <div class="copy-card" data-copy="example-request" data-title="An example request" data-sub="Yours can be different. Then add the CRM card at the end."></div>
+    </div></div></div>
+  </div>
+
+  <h3><span class="h-num">3</span>Answer the builder's questions, test on Maya, save</h3>
+  <p>The builder will ask you a few things. Answer them, ask it to test the skill on Maya Chen before you save, and check the brief against what's in Airtable.</p>
+
+  <div class="reveal">
+    <div class="q">Notice your skill has one file, not two. Why did we bundle a config file for the skills we gave you?</div>
+    <div class="fold" style="background:#fff">
+      <button type="button" class="fold-head" aria-expanded="false">Think, then reveal<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+      <div class="collapse"><div class="collapse-inner"><div class="fold-body">
+        <p>The skills we gave you go to every student with the same SKILL.md. Only the destination changes, so this site could fill in a config file without touching the method. Your skill is built for one person, you, so the destination can live inside it, in its "My CRM" section. (The skill builder also saves a single SKILL.md.) Neither is wrong: structure follows who the skill is for.</p>
+      </div></div></div>
+    </div>
+  </div>
+
+  <h3><span class="h-num">4</span>Compare with ours</h3>
+  <p>Here's what the supplied crm-brief-me does. What did yours include? What did it miss?</p>
+  <ul class="compare">
+    <li><label><input type="checkbox" data-cmp="read-only"><span><strong>Read-only.</strong> Never creates, changes or deletes records, and never sends anything.</span></label></li>
+    <li><label><input type="checkbox" data-cmp="cites"><span><strong>Cites the records it used</strong>, with links.</span></label></li>
+    <li><label><input type="checkbox" data-cmp="missing"><span><strong>Says what isn't in the CRM</strong> instead of guessing.</span></label></li>
+    <li><label><input type="checkbox" data-cmp="window"><span><strong>Has a follow-up window:</strong> overdue plus the next 7 days, with the cutoff stated.</span></label></li>
+  </ul>
+  <p class="small muted">Expect your skill to differ from your neighbor's. The comparison is where gaps get caught.</p>
+
+  <aside class="memory">
+    <svg class="elephant" aria-hidden="true"><use href="#i-elephant"/></svg>
+    <div>
+      <div class="label">Memory moment #2</div>
+      <h4>The draft's tone comes from what Claude knows about you.</h4>
+      <p>Ask your skill for a follow-up note to Maya. How it sounds depends on what Claude knows about how you write. The skill says <em>how</em> to brief; memory says <em>who</em> it's briefing.</p>
+    </div>
+  </aside>
+
+  <div class="fold">
+    <button type="button" class="fold-head" aria-expanded="false">Fallback: use our crm-brief-me instead<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="fold-body">
+      <p>Short on time, or the builder isn't cooperating? Upload ours and move on. You can build your own later.</p>
+      <div class="zipgen compact" data-skills="crm-brief-me"></div>
+    </div></div></div>
+  </div>
+
+  <h3>Other ways to create a skill</h3>
+  <ul>
+    <li><strong>Turn a chat into a skill</strong> when you notice you're repeating the same prompting.</li>
+    <li><strong>Upload a file</strong>, like you did with the three zips.</li>
+  </ul>
+  <div class="draft-note">Open item from the outline: Kate to test this approach (CRM card plus the student's own request) in the skill builder. Are database reads still reliable without the field list? Does it fit workshop time?</div>
+  <div class="check"><p><strong>Check:</strong> you have a brief-me skill, yours or ours, and it gave you a brief on Maya that matches what's in Airtable.</p></div>
+</section>
+
+<!-- ================= STEP 8 ================= -->
+<section class="step" data-step="next" data-num="8" data-title="Design your next workflow" data-group="Wrap up" data-part="core" data-when="In session" hidden
+  data-learned="Now you know one framework for any workflow: the same six questions, then manual or scheduled.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">8</span><span class="when-chip">In session</span></div>
+    <h2>Design your next workflow</h2>
+    <p class="step-lede">Use the same six questions from Step 7 on a workflow of your own. One framework, not two.</p>
+  </header>
+  <p>Pick something you do again and again: following up after a recruiting event, keeping in touch with people who matter to you, prepping for a class, tracking applications. Then answer:</p>
+  <div class="six" data-key="next" data-variant="next"></div>
+  <h3>Then pick a side quest</h3>
+  <p>Side quests extend the core build, choose your own adventure. <button type="button" class="linkish" data-open-tab="quests">Open Side quests</button></p>
+  <div class="check"><p><strong>Check:</strong> you've answered the six questions (plus manual or scheduled) for one workflow of your own.</p></div>
+</section>
+
+<!-- ================= FINISH ================= -->
+<section class="step finale" data-step="finish" data-title="Finish" data-group="Wrap up" data-part="finish" hidden>
+  <div class="finish-hero">
+    <svg class="trophy" viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="56" fill="#DDF3E8"/>
+      <path d="M38 30h44v16a22 22 0 0 1-44 0z" fill="#FFD23F" stroke="#C99A00" stroke-width="3"/>
+      <path d="M38 36H26a12 12 0 0 0 14 16M82 36h12a12 12 0 0 1-14 16" fill="none" stroke="#C99A00" stroke-width="3"/>
+      <rect x="54" y="66" width="12" height="14" fill="#FFD23F" stroke="#C99A00" stroke-width="3"/>
+      <rect x="42" y="80" width="36" height="10" rx="3" fill="#7C5CFF"/>
+      <path d="M60 36l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="#fff"/>
+    </svg>
+    <h2>You built an AI networking CRM.</h2>
+    <p class="step-lede">And, more importantly, you know how to build the next one.</p>
+  </div>
+  <h3>Now you know</h3>
+  <ul class="recap" id="recap"></ul>
+
+  <div class="card" id="feedback">
+    <h3 style="margin-top:0">How was it?</h3>
+    <p class="small muted">Your rating and comment go to the workshop team.</p>
+    <div class="stars" role="radiogroup" aria-label="Rating, 1 to 5"></div>
+    <label class="field"><span>Anything we should change?</span><textarea id="fb-comment" rows="4" maxlength="2000" placeholder="What worked, what didn't, where you got stuck"></textarea></label>
+    <button type="button" class="btn" id="fb-send" disabled>Send feedback</button>
+    <p class="fb-status" id="fb-status" hidden></p>
+  </div>
+
+  <div class="card" data-part="C">
+    <h3 style="margin-top:0">Keep going</h3>
+    <p>Side quests extend the core build. Each one teaches something the core build doesn't. <button type="button" class="linkish" data-open-tab="quests">Open Side quests</button></p>
+  </div>
+</section>
+
+    </div><!-- /stage-inner -->
+  </div><!-- /stage -->
+</div><!-- /app -->
+
+<!-- ============ SIDE QUESTS ============ -->
+<main class="quests" id="quests" hidden>
+  <div class="quests-hero">
+    <div class="kicker" style="justify-content:center"><span class="dot"></span>Choose your own adventure</div>
+    <h1>Side quests</h1>
+    <p class="step-lede" style="max-width:560px;margin:10px auto 24px">The four core skills keep your database up to date. Side quests go beyond that: each one extends the core build and teaches something the core build doesn't.</p>
+  </div>
+  <div class="quests-map">
+    <svg viewBox="0 0 520 200" aria-hidden="true">
+      <path class="dash" d="M60 150 C140 40, 220 180, 260 100 S 400 30, 460 120" fill="none" stroke="#D9D0C1" stroke-width="4" stroke-linecap="round"/>
+      <g class="pin"><circle cx="60" cy="150" r="16" fill="#FF7A45"/><text x="60" y="156" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="16" fill="#fff">✓</text></g>
+      <g class="pin"><circle cx="260" cy="100" r="16" fill="#7C5CFF"/><text x="260" y="106" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="16" fill="#fff">?</text></g>
+      <g class="pin"><circle cx="460" cy="120" r="16" fill="#14B8A6"/><text x="460" y="126" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="16" fill="#fff">?</text></g>
+    </svg>
+    <h2 style="font-size:1.5rem">Coming soon</h2>
+    <p class="muted" style="max-width:440px;margin:0 auto">We're picking which side quests to build out. Check back after the workshop.</p>
+  </div>
+  <div class="draft-note" style="margin-top:20px">Empty tab for now (decided 2026-10-05). Candidates stay in the outline's parking lot.</div>
+</main>
+
+<!-- ============ STUCK DRAWER ============ -->
+<div class="drawer-wrap" id="drawer" hidden>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <header class="drawer-head">
+      <h2 id="drawer-title">Stuck?</h2>
+      <button type="button" class="btn small" data-close>Close</button>
+    </header>
+    <div class="drawer-search"><input class="input" id="stuck-search" type="search" placeholder="Search: e.g. base not in the list" aria-label="Search the Stuck? list"></div>
+    <div class="drawer-body" id="drawer-body">
+
+      <section class="stuck-group" data-group="setup-1"><h3>0.1 Create your Airtable account</h3>
+        <details class="stuck-item"><summary>I signed up with a personal email, not Stanford.edu</summary><div class="fix"><p>That works for the workshop: the free plan is enough. You just won't get the automatic .edu trial. Use this same account everywhere: when you copy the base and when you connect Claude.</p></div></details>
+        <details class="stuck-item"><summary>No confirmation email</summary><div class="fix"><p>Check Spam and Promotions, and search your inbox for "Airtable". Still nothing after a few minutes? Sign in to Airtable and use the resend option, or sign up again with the same email.</p></div></details>
+        <details class="stuck-item"><summary>I already have an Airtable account</summary><div class="fix"><p>Use it. Sign in and go straight to 0.2. You'll need a workspace you own (0.2) to copy the base into.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="setup-2"><h3>0.2 A workspace you own</h3>
+        <details class="stuck-item"><summary>I only see a workspace someone shared with me</summary><div class="fix"><p>That one isn't yours. Choose <strong>Add a workspace</strong> in the left sidebar and create your own. You'll be its Owner.</p></div></details>
+        <details class="stuck-item"><summary>My role shows Editor or Read only</summary><div class="fix"><p>You can't copy a base into that workspace. Create your own workspace (you'll be Owner), and copy the base there in 0.3.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="setup-3"><h3>0.3 Copy the CRM base</h3>
+        <details class="stuck-item"><summary>"Copy base" is missing</summary><div class="fix"><p>You're probably not signed in, or you don't have a workspace you own. Sign in to Airtable, check 0.2, then open the template link again.</p></div></details>
+        <details class="stuck-item"><summary>I copied it into the wrong workspace</summary><div class="fix"><p>That's fine if you're the Owner or a Creator there. Otherwise, open the template link again and copy it into your own workspace. Use the new copy from then on.</p></div></details>
+        <details class="stuck-item"><summary>I copied the URL of the template, not my copy</summary><div class="fix"><p>This site will tell you in Step 3 ("That's the workshop template"). Go to your Airtable home page, open <em>your</em> copy of the base, and copy the address bar from there.</p></div></details>
+        <details class="stuck-item"><summary>I don't see Maya Chen or Jordan Lee</summary><div class="fix"><p>Check you're on the <strong>People</strong> tab of your copy. If the tables are empty, the copy may not have included records: open the template link again and copy it once more.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="setup-4"><h3>0.4 Prepare Claude</h3>
+        <details class="stuck-item"><summary>There's no Customize option</summary><div class="fix"><p>Try claude.ai in a browser, or update the Claude app. Check you're signed in to the account you'll use in the workshop.</p></div></details>
+        <details class="stuck-item"><summary>Skills or code execution is greyed out</summary><div class="fix"><p>That's a plan or admin restriction. If your account is managed by an organization, an admin may have turned it off. Tell the workshop team before the session so we can sort it out.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="setup-5"><h3>0.5 Connect Airtable to Claude</h3>
+        <details class="stuck-item"><summary>My base isn't in the list</summary><div class="fix"><p>The connector wasn't given access to that base. Reopen the connector's access settings (screenshot 0.5-f), select your copied base, save, and ask again in a <strong>new</strong> conversation.</p></div></details>
+        <details class="stuck-item"><summary>Claude says it has no Airtable tools</summary><div class="fix"><p>The connector isn't enabled in this conversation. In the chat, open the tools menu by the message box and turn Airtable on. Then try again.</p></div></details>
+        <details class="stuck-item"><summary>I signed in to a different Airtable account</summary><div class="fix"><p>Disconnect Airtable in Claude's connector settings, connect again, and sign in with the account that owns your copy.</p></div></details>
+        <details class="stuck-item"><summary>Permission errors when Claude writes</summary><div class="fix"><p>Claude needs edit access to the base. Reconnect and make sure your copied base is selected, and that the base is in a workspace where you're Owner or Creator.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="setup-6"><h3>0.6 Student plan</h3>
+        <details class="stuck-item"><summary>Do I need the student plan for the workshop?</summary><div class="fix"><p>No. The free plan is enough. Apply only if you want to keep using your CRM afterward.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="db"><h3>2 First look at a database</h3>
+        <details class="stuck-item"><summary>Clicking a row doesn't open the record</summary><div class="fix"><p>Click the small expand icon at the left edge of the row, or press the spacebar with the row selected.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="skills"><h3>3 Get your skills</h3>
+        <details class="stuck-item"><summary>The site says my Base URL isn't valid</summary><div class="fix"><p>Open your copy of the base in Airtable and copy the whole address bar. It starts with <code>https://airtable.com/app</code>. A link with <code>shr</code> in it is a share link, not your base. If it says "That's the workshop template", you copied the template's link; open your own copy instead.</p></div></details>
+        <details class="stuck-item"><summary>I uploaded the unzipped folder</summary><div class="fix"><p>Upload the <strong>.zip</strong> itself. Safari unzips downloads automatically. If you only have a folder, right-click it → <strong>Compress</strong> to make a zip again, and upload that. Don't rename the folder inside: its name has to match the skill's name.</p></div></details>
+        <details class="stuck-item"><summary>I have crm-company (1).zip</summary><div class="fix"><p>You downloaded it twice. Either works if both came from this site with your Base URL. Upload the newest one, and delete the older copies so you don't mix them up.</p></div></details>
+        <details class="stuck-item"><summary>I reloaded the page and my Base URL is gone</summary><div class="fix"><p>That's on purpose: this site never saves your Base URL. Paste it again. The zips come out the same.</p></div></details>
+        <details class="stuck-item"><summary>The skill doesn't show up when I type /</summary><div class="fix"><p>Check it's switched on in Customize → Skills, then start a new chat.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="company"><h3>4 Add a company</h3>
+        <details class="stuck-item"><summary>Claude asks for my Base ID</summary><div class="fix"><p>The skill's config still has the placeholder: the zip didn't come from Step 3 with your Base URL. Make the zip again in Step 3, then upload it again.</p></div></details>
+        <details class="stuck-item"><summary>Claude says a field is missing or different</summary><div class="fix"><p>That's the schema check (Safety rule 2) doing its job. You renamed or deleted a field in Airtable, or Claude is looking at a different base. Rename the field back exactly as it was, or check your Base URL.</p></div></details>
+        <details class="stuck-item"><summary>No research happened</summary><div class="fix"><p>Research is skipped on purpose for fictional companies (an <code>.example</code> website, like Cedar Labs) and when you say "no research". Try a real company.</p></div></details>
+        <details class="stuck-item"><summary>There's no "Fit for me" section</summary><div class="fix"><p>Claude doesn't know enough about you yet (see Memory moment #1). Tell it your goals in a chat, then ask it to refresh the research.</p></div></details>
+        <details class="stuck-item"><summary>Claude says it saved, but I can't find the record</summary><div class="fix"><p>Refresh Airtable, and check you're in your copy, not the template. If it's still missing, tell Claude; it should report what didn't save (Safety rule 9).</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="person"><h3>5 Add a person</h3>
+        <details class="stuck-item"><summary>Claude didn't pick crm-person without the slash</summary><div class="fix"><p>Descriptions aren't perfect triggers, which is exactly why the description matters. Use <kbd>/crm-person</kbd> this time, and check the skill is switched on.</p></div></details>
+        <details class="stuck-item"><summary>There are now two Maya Chens</summary><div class="fix"><p>Tell Claude which one to keep. Skills never delete records, so delete the extra one yourself in Airtable.</p></div></details>
+        <details class="stuck-item"><summary>A new company didn't get researched</summary><div class="fix"><p>crm-person hands new companies to crm-company. Check crm-company is installed and switched on, or say "run crm-company on it".</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="capture"><h3>6 Capture a conversation</h3>
+        <details class="stuck-item"><summary>Nothing saved after the preview</summary><div class="fix"><p>That's the guardrail: nothing is written until you confirm. Reply "yes", or say what to change first.</p></div></details>
+        <details class="stuck-item"><summary>Claude says it's a repeat</summary><div class="fix"><p>You already captured this conversation, so it won't save it twice. That's the duplicate check (the Event key) working. Use notes from a different conversation.</p></div></details>
+        <details class="stuck-item"><summary>The new Next action dropped something I wanted to keep</summary><div class="fix"><p>Before you confirm, say "keep &lt;the action&gt;". The preview lists everything being dropped for exactly this reason.</p></div></details>
+        <details class="stuck-item"><summary>My My process edit didn't change anything</summary><div class="fix"><p>Start a new chat after editing, and check you edited the installed copy (Customize → Skills), not a file on your computer you didn't upload.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="build"><h3>7 Build your own brief-me</h3>
+        <details class="stuck-item"><summary>The builder copied my other CRM skills, or made two files</summary><div class="fix"><p>Remind it: "Build this from scratch as a single SKILL.md file. Don't open or copy my other CRM skills." That line is already in the CRM card.</p></div></details>
+        <details class="stuck-item"><summary>My skill can't find my base</summary><div class="fix"><p>Check it has a "My CRM" section with your Base ID, and that it says to always use that Base ID with the Airtable connector.</p></div></details>
+        <details class="stuck-item"><summary>My skill tried to change a record</summary><div class="fix"><p>A brief should be read-only. Ask the builder to add: "Read-only: never create, change, or delete records, and never send anything."</p></div></details>
+        <details class="stuck-item"><summary>I'm running out of time</summary><div class="fix"><p>Use the fallback in Step 7: upload our crm-brief-me zip. You can build your own later.</p></div></details>
+      </section>
+
+      <section class="stuck-group" data-group="any"><h3>Anywhere</h3>
+        <details class="stuck-item"><summary>Claude wants to research Maya Chen or Cedar Labs online</summary><div class="fix"><p>Say no. They're fictional examples for practice.</p></div></details>
+        <details class="stuck-item"><summary>I hit a usage limit</summary><div class="fix"><p>Wait for it to reset, then carry on. Everything already saved is in Airtable, so you lose nothing.</p></div></details>
+        <details class="stuck-item"><summary>I'm on a step I already finished</summary><div class="fix"><p>Use <strong>Back to where you are</strong> at the top of the page.</p></div></details>
+      </section>
+
+      <p class="stuck-empty" id="stuck-empty" hidden>Nothing matches. Raise your hand and we'll come to you.</p>
+
+      <section class="stuck-group">
+        <h3>House rules</h3>
+        <ol class="rules" id="drawer-rules"></ol>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<div class="ticker" id="ticker" role="status" aria-live="polite"><b>Now you know</b><span id="ticker-text"></span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<!-- ============ COPY-CARD SOURCES ============ -->
+<script type="text/plain" id="src-list-bases">List my Airtable bases.</script>
+
+<script type="text/plain" id="src-add-company">Add Stripe to my CRM.</script>
+
+<script type="text/plain" id="src-add-maya">Add Maya Chen, product lead at Cedar Labs, to my CRM. I'm meeting her for coffee on October 5, 2026.</script>
+
+<script type="text/plain" id="src-emailed-maya">I emailed Maya today</script>
+
+<script type="text/plain" id="src-crm-card">How to reach my CRM:
+- It's an Airtable base. Base URL: {{BASE_URL}}. Base ID: {{BASE_ID}}. Put these in a "My CRM" section near the top of the skill, and always use this Base ID with the Airtable connector. Never search for the base by name.
+- It has three linked tables: People, Companies, and Conversation Notes. Check the actual fields before reading. To look someone up, find them in People, then follow their Company link and their Conversation Notes links.
+- In Next action, "Waiting on <name>:" means it's their action, not mine.
+- Read-only: never create, change, or delete records, and never send anything.
+- Build this from scratch as a single SKILL.md file. Don't open or copy my other CRM skills.</script>
+
+<script type="text/plain" id="src-example-request">Help me build a skill called my-brief-me. Before a coffee chat I want a quick brief: who they are, what we talked about last time, anything I promised them, and 3 questions to ask. Keep it to one screen. I'll use it by saying things like "prep me for my chat with Maya." If something isn't in my CRM, say so instead of guessing. Test it on Maya Chen before I save it.</script>
+
+<script type="text/plain" id="src-transcript"># Coffee with Maya Chen — transcript (fictional)
+
+Fictional test material for crm-capture-convo. Maya Chen and Cedar Labs are invented seed records; do not research them online.
+
+Meeting: Coffee chat, Cedar Labs office café
+Date: Monday, October 5, 2026
+Duration: 28 min
+Speakers: Me, Maya Chen
+
+---
+
+**Maya:** Hey, sorry I'm a couple minutes late — our product review ran over. Did you find the place okay?
+
+**Me:** Totally fine, I just got here. Thanks so much for making time. I know you're slammed.
+
+**Maya:** Of course. Jordan said you were great, so happy to help. So — you're at the GSB, second year?
+
+**Me:** First year, actually. Before school I spent about four years in product and data roles, mostly working with healthcare customers. I'm trying to figure out whether I want to go back into product after graduation, and Cedar Labs keeps coming up.
+
+**Maya:** Nice. What's drawing you to us specifically?
+
+**Me:** Mostly the workflow automation work for clinics. It's close to what I did before, but you're further along on the AI side.
+
+**Maya:** Yeah, that's where most of the energy is right now. I lead product for the scheduling team — six people, two PMs reporting to me. We just shipped the AI intake assistant last month, and honestly it's been a lot. Adoption is great with the smaller clinics, harder with the hospital groups.
+
+**Me:** Why harder with the larger groups?
+
+**Maya:** Procurement, mostly. And IT reviews. A small clinic can turn it on in a week; a hospital system takes six months. We're trying to figure out whether to build a separate enterprise motion or just wait for the market to catch up.
+
+**Me:** That's really interesting. Is that something the team is actively hiring for?
+
+**Maya:** Not on my team yet. But we're opening a summer associate role on the strategy team — Priya Nair runs recruiting for it. It isn't posted yet; I think it goes up in early November.
+
+**Me:** I'd love to hear about it when it does.
+
+**Maya:** I can intro you to Priya. Let me do that this week — remind me if you don't hear anything by Friday.
+
+**Me:** That would be amazing, thank you.
+
+**Maya:** One thing that would help: send me your resume, and a few lines on what you'd want to work on. Then I can forward it with the intro and it doesn't just sit there.
+
+**Me:** Definitely. I'll send it by Wednesday.
+
+**Maya:** Perfect.
+
+**Me:** Can I ask how you think about the PM role at Cedar versus somewhere bigger? You were at a big company before, right?
+
+**Maya:** Yeah, I was at a large health insurer for five years before this. The difference is scope. Here, I own the whole scheduling surface. There, I owned one settings page. But you trade off structure — there's no real PM training here, you learn by shipping.
+
+**Me:** That's helpful. Is there anything you'd tell someone coming from an MBA program?
+
+**Maya:** Talk to customers early, and don't over-index on frameworks. The people who do well here can sit in a clinic for a day and come back with three things to fix. Oh — and we're raising again. Series B should close by the end of the year, so the team's going to grow a lot in 2027.
+
+**Me:** Good to know. On the enterprise question — do you think you'll build a separate team?
+
+**Maya:** Honestly, I don't know. That's a big open question for us. If you have thoughts after the summer role conversation, I'd genuinely like to hear them.
+
+**Me:** I'll think about it. Actually, I read a piece on how a couple of other health-tech companies handled hospital procurement. I'll send you the link.
+
+**Maya:** Please do.
+
+**Me:** Last thing — would it be okay to check in again after I talk to Priya?
+
+**Maya:** Of course. Let's grab coffee again in a month or so, once the role is posted.
+
+**Me:** Sounds great. Thanks again, Maya.
+
+**Maya:** Anytime. Good luck with the quarter.
+
+---
+
+*End of transcript*</script>
+
+<script src="js/zip.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

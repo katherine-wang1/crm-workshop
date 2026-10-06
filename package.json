@@ -1,0 +1,16 @@
+{
+  "name": "aigsb-workshop2-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Student-facing site for AI@GSB Workshop 2: build your AI networking CRM (Airtable + Claude skills).",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "check-skills": "node scripts/skills.mjs check",
+    "sync-skills": "node scripts/skills.mjs sync",
+    "test-zip": "node scripts/test-zip.mjs"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.38.3"
+  }
+}

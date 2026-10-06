@@ -1,0 +1,8 @@
+# crm-config.txt: which Airtable base this skill uses.
+# Replace appXXXXXXXXXXXXXX (in both lines below) with your own Base ID.
+# Use the same values in all four skills. Do not put personal preferences here.
+
+Base URL: https://airtable.com/appXXXXXXXXXXXXXX
+Base ID: appXXXXXXXXXXXXXX
+Time zone: America/Los_Angeles
+Schema version: 1
