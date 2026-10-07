@@ -14,10 +14,12 @@
 
   /* ---------- config ---------- */
 
-  const STEPS = ["setup", "what", "db", "skills", "company", "person", "capture", "build", "next"];
-  const SUBS = ["setup-1", "setup-2", "setup-3", "setup-4", "setup-5", "setup-6"];
-  const REQUIRED_SUBS = SUBS.slice(0, 5); // 0.6 is optional
-  const CHECKPOINTS = { capture: 1, build: 1 };
+  const STEPS = ["what", "setup", "db", "skills", "company", "person", "capture", "build"]; // the core build, in order
+  const BRANCHES = ["quests", "next"]; // after the "You made it!" hub: optional, open in any order
+  const SUBS = ["setup-1", "setup-2", "setup-3", "setup-4", "setup-5"];
+  const QUESTS = ["quest-1", "quest-2", "quest-3", "quest-4", "quest-5"]; // side quests: optional ticks, any order
+  const REQUIRED_SUBS = SUBS.slice(0, 4); // 0.5 is optional
+  const CHECKPOINTS = {}; // no checkpoints (2026-10-06): the room doesn't regroup
   const KEY = "aigsb-workshop2-v1";
 
   const params = new URLSearchParams(location.search);
@@ -31,7 +33,7 @@
 
   /* ---------- state + sync ---------- */
 
-  const state = { name: "", email: "", steps: {}, feedback: null, notes: {}, cmp: {}, labels: {} };
+  const state = { name: "", email: "", steps: {}, feedback: null, notes: {} };
   let syncOff = false;
   let saveTimer = null;
   let viewing = null;
@@ -47,7 +49,7 @@
       if (p && typeof p === "object") {
         if (typeof p.name === "string") state.name = p.name;
         if (typeof p.email === "string") state.email = p.email;
-        ["steps", "notes", "cmp", "labels"].forEach((k) => { if (p[k] && typeof p[k] === "object") state[k] = p[k]; });
+        ["steps", "notes"].forEach((k) => { if (p[k] && typeof p[k] === "object") state[k] = p[k]; });
         if (p.feedback && typeof p.feedback === "object") state.feedback = p.feedback;
       }
     } catch (e) { /* private window or blocked storage */ }
@@ -58,7 +60,7 @@
   function pushRemote() {
     if (syncOff || !state.name || !state.email) return Promise.resolve();
     const steps = {};
-    STEPS.concat(SUBS).forEach((s) => { if (state.steps[s]) steps[s] = true; });
+    STEPS.concat(BRANCHES, SUBS, QUESTS).forEach((s) => { if (state.steps[s]) steps[s] = true; });
     return fetch(API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -117,7 +119,7 @@
   const ctx = canvas.getContext("2d");
   let parts = [];
   let raf = 0;
-  const PALETTE = { A: ["#FF7A45", "#FFD23F", "#FFB08F"], B: ["#7C5CFF", "#FFD23F", "#B9A6FF"], C: ["#14B8A6", "#FFD23F", "#7FE0D4"], pre: ["#3B82F6", "#FFD23F", "#93C0FF"], core: ["#1F1B2D", "#FFD23F", "#FF7A45", "#7C5CFF", "#14B8A6"], finish: ["#22A06B", "#FFD23F", "#FF7A45", "#7C5CFF", "#14B8A6"] };
+  const PALETTE = { Q: ["#F59E0B", "#FFD23F", "#FFC870"], A: ["#FF7A45", "#FFD23F", "#FFB08F"], B: ["#7C5CFF", "#FFD23F", "#B9A6FF"], C: ["#14B8A6", "#FFD23F", "#7FE0D4"], pre: ["#3B82F6", "#FFD23F", "#93C0FF"], core: ["#1F1B2D", "#FFD23F", "#FF7A45", "#7C5CFF", "#14B8A6"], finish: ["#22A06B", "#FFD23F", "#FF7A45", "#7C5CFF", "#14B8A6"] };
   function sizeCanvas() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
@@ -155,7 +157,7 @@
 
   const sections = {};
   $all(".step[data-step]").forEach((s) => { sections[s.dataset.step] = s; });
-  const ORDER = STEPS.concat(["finish"]);
+  const ORDER = STEPS.concat(["fork"], BRANCHES, ["finish"]);
   const TITLES = {}; const LEARNED = {}; const PART = {};
   ORDER.forEach((id) => {
     const s = sections[id];
@@ -166,13 +168,17 @@
 
   const isDone = (id) => !!state.steps[id];
   const doneCount = () => STEPS.filter(isDone).length;
+  const isBranch = (id) => BRANCHES.indexOf(id) >= 0;
+  /* The first core step not done yet, or "fork" once the core build is done. */
   function currentId() {
     for (const id of STEPS) if (!isDone(id)) return id;
-    return "finish";
+    return "fork";
   }
   const idx = (id) => ORDER.indexOf(id);
+  /* Core steps unlock in order. Once the core is done, the hub, both branches and Finish are all open. */
   function reachable(id) {
-    return isDone(id) || idx(id) <= idx(currentId());
+    const cur = currentId();
+    return isDone(id) || idx(id) <= idx(cur) || cur === "fork";
   }
   function stepLabel(id) {
     const n = sections[id].dataset.num;
@@ -201,11 +207,11 @@
       const li = document.createElement("li");
       li.className = "rail-item" + (CHECKPOINTS[id] ? " checkpoint" : "");
       li.dataset.part = s.dataset.part || "core";
-      const num = s.dataset.num !== undefined ? s.dataset.num : "✓";
+      const num = s.dataset.num !== undefined ? s.dataset.num : (s.dataset.icon || "✓");
       const sub = s.dataset.subTitle || s.dataset.when || "";
       li.innerHTML = '<button type="button"><span class="node"><span class="n">' + esc(num) + '</span><svg class="tick"><use href="#i-check"/></svg></span>' +
         '<span class="rail-text"><span class="rail-title">' + esc(TITLES[id]) + "</span>" + (sub ? '<span class="rail-sub">' + esc(sub) + "</span>" : "") + "</span></button>";
-      li.querySelector("button").addEventListener("click", () => { if (reachable(id)) { showTab("build"); go(id); } else toast("Finish " + stepLabel(currentId()) + " first."); });
+      li.querySelector("button").addEventListener("click", () => { if (reachable(id)) go(id); else toast("Finish " + stepLabel(currentId()) + " first."); });
       rail.appendChild(li);
       railItems[id] = li;
     });
@@ -230,7 +236,7 @@
       railPill.style.transform = "translateY(" + li.offsetTop + "px)";
     }
   }
-  addEventListener("resize", () => { placeRailPill(); placeTabPill(); });
+  addEventListener("resize", () => { placeRailPill(); });
 
   /* progress bar */
   const bar = $("#progress-bar");
@@ -246,7 +252,7 @@
     const cur = currentId();
     ORDER.forEach((id) => {
       const li = railItems[id];
-      const done = id === "finish" ? cur === "finish" && !!state.feedback : isDone(id);
+      const done = id === "finish" ? cur === "fork" && !!state.feedback : isDone(id);
       li.classList.toggle("done", done);
       li.classList.toggle("current", id === viewing);
       li.classList.toggle("locked", !reachable(id));
@@ -265,7 +271,7 @@
     const show = viewing && viewing !== cur && $("#app") && !$("#app").hidden && idx(viewing) < idx(cur);
     const bb = $("#backbar");
     bb.hidden = !show;
-    if (show) $("#backbar-text").textContent = "You're looking back at " + stepLabel(viewing) + ". " + (cur === "finish" ? "You've finished every step." : "You're up to " + stepLabel(cur) + ": " + TITLES[cur] + ".");
+    if (show) $("#backbar-text").textContent = "You're looking back at " + stepLabel(viewing) + ". " + (cur === "fork" ? "You've finished the core build." : "You're up to " + stepLabel(cur) + ": " + TITLES[cur] + ".");
   }
   $("#backbar-go").addEventListener("click", () => go(currentId()));
   $("#backbar-go").textContent = "Back to where you are →";
@@ -273,7 +279,7 @@
   /* ---------- step footers ---------- */
 
   function renderFooter(id) {
-    if (id === "finish") return;
+    if (id === "finish" || id === "fork") return;
     const sec = sections[id];
     let foot = $(".step-foot", sec);
     if (!foot) { foot = document.createElement("div"); foot.className = "step-foot"; sec.appendChild(foot); }
@@ -285,13 +291,15 @@
       b.type = "button"; b.className = "btn complete is-done";
       b.innerHTML = '<svg class="tick"><use href="#i-check"/></svg> Done';
       foot.appendChild(b);
-      if (nextId && reachable(nextId)) {
+      const nextIds = isBranch(id) ? BRANCHES.filter((b) => b !== id && !isDone(b)).concat(["finish"]) : [nextId];
+      nextIds.forEach((nid) => {
+        if (!nid || !reachable(nid)) return;
         const n = document.createElement("button");
         n.type = "button"; n.className = "btn ghost";
-        n.textContent = (nextId === "finish" ? "Finish" : "Next: " + TITLES[nextId]) + " →";
-        n.addEventListener("click", () => go(nextId));
+        n.textContent = (nid === "finish" ? "Finish" : "Next: " + TITLES[nid]) + " →";
+        n.addEventListener("click", () => go(nid));
         foot.appendChild(n);
-      }
+      });
       if (!learned && LEARNED[id]) {
         learned = document.createElement("p");
         learned.className = "learned";
@@ -302,7 +310,7 @@
       if (learned) learned.remove();
       const b = document.createElement("button");
       b.type = "button"; b.className = "btn complete";
-      b.innerHTML = '<svg class="tick"><use href="#i-check"/></svg><span>' + (id === "next" ? "I'm done: finish the workshop" : "I've done this step") + "</span> →";
+      b.innerHTML = '<svg class="tick"><use href="#i-check"/></svg><span>' + (id === "quests" ? "I've done a side quest" : "I've done this step") + "</span> →";
       b.addEventListener("click", () => completeStep(id));
       foot.appendChild(b);
       if (id === "setup") {
@@ -311,8 +319,15 @@
         const note = document.createElement("span");
         note.className = "foot-note";
         const left = REQUIRED_SUBS.filter((s) => !isDone(s)).map((s) => "0." + s.slice(-1));
-        note.textContent = ok ? "All set. 0.6 is optional." : "Still to check: " + left.join(", ");
+        note.textContent = ok ? "All set. 0.5 is optional." : "Still to check: " + left.join(", ");
         foot.appendChild(note);
+      }
+      if (isBranch(id)) {
+        const back = document.createElement("button");
+        back.type = "button"; back.className = "btn ghost";
+        back.textContent = "← Back to your options";
+        back.addEventListener("click", () => go("fork"));
+        foot.appendChild(back);
       }
       const st = document.createElement("button");
       st.type = "button"; st.className = "stuck-inline"; st.textContent = "Stuck?";
@@ -334,7 +349,12 @@
   }
   function onShow(id) {
     if (id === "setup") openFirstSub();
+    if (id === "db") { requestAnimationFrame(() => drawDbAnno()); setTimeout(drawDbAnno, 800); }
     if (id === "finish") renderRecap();
+    if (id === "fork") {
+      if (!state.steps.fork) { state.steps.fork = true; save(); paintNav(); }
+      $all(".path-card", sections.fork).forEach((c) => c.classList.toggle("done", isDone(c.dataset.go)));
+    }
   }
 
   function go(id, instant) {
@@ -406,8 +426,13 @@
     learned.textContent = LEARNED[id];
     sec.appendChild(learned);
 
+    if (isBranch(id)) {
+      // optional pages: stay put and offer the other option and Finish
+      wait(900).then(() => { busy = false; renderFooter(id); });
+      return;
+    }
     const nextId = currentId();
-    if (nextId === "finish") {
+    if (nextId === "fork") {
       setTimeout(() => burst(innerWidth * 0.25, innerHeight * 0.9, 110, PALETTE.finish, 17), 300);
       setTimeout(() => burst(innerWidth * 0.75, innerHeight * 0.9, 110, PALETTE.finish, 17), 480);
     }
@@ -418,36 +443,26 @@
     });
   }
 
-  /* ---------- tabs: Workshop / Side quests ---------- */
+  /* ---------- in-page links to a step ---------- */
 
-  function placeTabPill() {
-    const sel = $('.tab[aria-selected="true"]');
-    const pill = $(".tab-pill");
-    if (!sel || !pill) return;
-    pill.style.width = sel.offsetWidth + "px";
-    pill.style.transform = "translateX(" + (sel.offsetLeft - 4) + "px)";
-    pill.style.left = "4px";
-  }
-  function showTab(tab) {
-    $all(".tab").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === tab)));
-    placeTabPill();
-    const q = $("#quests"); const app = $("#app");
-    const toQuests = tab === "quests";
-    if (q.hidden === !toQuests) return;
-    q.hidden = !toQuests;
-    app.hidden = toQuests;
-    (toQuests ? q : app).classList.remove("view-in"); void (toQuests ? q : app).offsetWidth;
-    (toQuests ? q : app).classList.add("view-in");
-    if (toQuests) { history.replaceState(null, "", location.pathname + location.search + "#side-quests"); }
-    else { history.replaceState(null, "", location.pathname + location.search); placeRailPill(); paintBackbar(); }
-    scrollTop();
-  }
-  $all(".tab").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
   document.addEventListener("click", (e) => {
-    const ot = e.target.closest("[data-open-tab]");
-    if (ot) showTab(ot.dataset.openTab);
+    const dg = e.target.closest("[data-go]");
+    if (dg) { e.preventDefault(); const id = dg.dataset.go; if (reachable(id)) go(id); else toast("Finish " + stepLabel(currentId()) + " first."); }
     const gs = e.target.closest("[data-goto-step]");
     if (gs) { const id = gs.dataset.gotoStep; if (reachable(id)) go(id); }
+    const jump = e.target.closest('a[href="#sq-basics"], a[href^="#quest-"]');
+    if (jump) {
+      e.preventDefault();
+      const target = $(jump.getAttribute("href"));
+      if (!target) return;
+      if (!drawer.hidden) closeDrawer();
+      const show = () => {
+        setOpen(target, true);
+        setTimeout(() => target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }), 120);
+      };
+      if (viewing !== "quests") { if (reachable("quests")) { go("quests"); setTimeout(show, 450); } else toast("Finish " + stepLabel(currentId()) + " first."); }
+      else show();
+    }
   });
 
   /* ---------- step 0 sub-steps ---------- */
@@ -464,7 +479,7 @@
       const b = $(".sub-done", el);
       if (b) {
         if (isDone(id)) { b.textContent = "Undo check"; b.classList.add("ghost"); b.classList.remove("accent"); }
-        else { b.textContent = id === "setup-6" ? "Done" : "Done, next →"; b.classList.remove("ghost"); b.classList.add("accent"); }
+        else { b.textContent = id === "setup-5" || QUESTS.indexOf(id) >= 0 ? "Done" : "Done, next →"; b.classList.remove("ghost"); b.classList.add("accent"); }
       }
     });
     const gate = $("#setup-gate");
@@ -472,8 +487,8 @@
     if (viewing === "setup" && !isDone("setup")) renderFooter("setup");
   }
   function openFirstSub() {
-    if ($(".sub.open")) return;
-    const first = SUBS.find((s) => !isDone(s) && s !== "setup-6");
+    if ($(".sub.open", sections.setup)) return;
+    const first = SUBS.find((s) => !isDone(s) && s !== "setup-5");
     if (first) setOpen($('.sub[data-sub="' + first + '"]'), true);
   }
   $all(".sub[data-sub]").forEach((el) => {
@@ -486,9 +501,14 @@
       const r = $(".sub-tick", el).getBoundingClientRect();
       burst(r.left + r.width / 2, r.top + r.height / 2, 28, PALETTE.pre, 7);
       paintSubs();
+      if (QUESTS.indexOf(id) >= 0) {
+        setTimeout(() => setOpen(el, false), 420);
+        toast(isDone("quests") ? "Side quest " + id.slice(-1) + " done." : "Side quest " + id.slice(-1) + " done. Pick another, or mark Side quests done at the bottom.");
+        return;
+      }
       setTimeout(() => {
         setOpen(el, false);
-        const next = SUBS.slice(SUBS.indexOf(id) + 1).find((s) => !isDone(s) && s !== "setup-6");
+        const next = SUBS.slice(SUBS.indexOf(id) + 1).find((s) => !isDone(s) && s !== "setup-5");
         if (next) {
           const nel = $('.sub[data-sub="' + next + '"]');
           setOpen(nel, true);
@@ -499,6 +519,31 @@
         }
       }, 420);
     });
+  });
+
+  /* ---------- "Upload the skill to Claude" (shared block, steps 3–5) ---------- */
+
+  function uploadSteps(skill) {
+    return '<figure class="shot" data-shot="claude-customize-skills"><figcaption>Customize in the left sidebar → Skills. Toggle to Yours to see your skills. + Add (top right) → Upload skill.</figcaption></figure>' +
+      '<ol class="do">' +
+      '<li>Click <strong>Customize</strong> in the left sidebar.</li>' +
+      "<li>Open the <strong>Skills</strong> tab.</li>" +
+      "<li>Click <strong>+ Add</strong> (top right) → <strong>Upload skill</strong>.</li>" +
+      "<li>Pick <code>" + esc(skill) + ".zip</code> from your Downloads folder. Upload the .zip itself; don't unzip it.</li>" +
+      "<li>Toggle to <strong>Yours</strong> and check <strong>" + esc(skill) + "</strong> is in your list and switched on.</li>" +
+      "</ol>" +
+      '<div class="fold zip-again"><button type="button" class="fold-head" aria-expanded="false">Need the zip again?<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>' +
+      '<div class="collapse"><div class="collapse-inner"><div class="fold-body"><div class="zipgen compact" data-skills="' + esc(skill) + '"></div></div></div></div></div>';
+  }
+  $all(".upload-skill[data-skill]").forEach((el) => {
+    const skill = el.dataset.skill;
+    if (el.hasAttribute("data-open")) {
+      el.classList.add("open-block");
+      el.innerHTML = uploadSteps(skill);
+    } else {
+      el.innerHTML = '<div class="fold"><button type="button" class="fold-head" aria-expanded="false">Upload <code>' + esc(skill) + '.zip</code> to Claude: show the steps again<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>' +
+        '<div class="collapse"><div class="collapse-inner"><div class="fold-body">' + uploadSteps(skill) + "</div></div></div></div>";
+    }
   });
 
   /* folds */
@@ -545,27 +590,28 @@
 
   /* ---------- copy cards ---------- */
 
-  function crmCardText() {
-    return srcText("crm-card")
+  const BASE_CARDS = { "brief-prompt": 1, "q2-builder": 1, "q4-watch": 1 };
+  function crmCardText(id) {
+    return srcText(id)
       .replace(/\{\{BASE_URL\}\}/g, BASE ? BASE.baseUrl : "{{BASE_URL}}")
       .replace(/\{\{BASE_ID\}\}/g, BASE ? BASE.baseId : "{{BASE_ID}}");
   }
-  function crmCardHtml() {
-    return esc(srcText("crm-card"))
+  function crmCardHtml(id) {
+    return esc(srcText(id))
       .replace(/\{\{BASE_URL\}\}/g, BASE ? '<span class="fill">' + esc(BASE.baseUrl) + "</span>" : '<span class="fill missing">your Base URL</span>')
       .replace(/\{\{BASE_ID\}\}/g, BASE ? '<span class="fill">' + esc(BASE.baseId) + "</span>" : '<span class="fill missing">your Base ID</span>');
   }
 
   function renderCopyCard(card) {
     const id = card.dataset.copy;
-    const isCrm = id === "crm-card";
-    const text = isCrm ? crmCardText() : srcText(id);
+    const isCrm = !!BASE_CARDS[id];
+    const text = isCrm ? crmCardText(id) : srcText(id);
     card.innerHTML =
       '<div class="copy-top"><div class="copy-title"><b>' + esc(card.dataset.title || "Copy this") + "</b>" +
       (card.dataset.sub ? "<span>" + esc(isCrm && !BASE ? "Paste your Base URL below to fill it in" : card.dataset.sub) + "</span>" : "") + "</div>" +
       '<div class="copy-actions"><button type="button" class="btn small copy-btn">Copy</button>' +
       (card.dataset.download ? '<button type="button" class="btn small ghost dl-btn">Download</button>' : "") + "</div></div>" +
-      '<pre class="copy-pre">' + (isCrm ? crmCardHtml() : esc(text)) + "</pre>";
+      '<pre class="copy-pre">' + (isCrm ? crmCardHtml(id) : esc(text)) + "</pre>";
     const pre = $(".copy-pre", card);
     requestAnimationFrame(() => {
       if (pre.scrollHeight > pre.clientHeight + 8 && !$(".copy-more", card)) {
@@ -580,12 +626,12 @@
     });
     const cb = $(".copy-btn", card);
     cb.addEventListener("click", () => {
-      if (isCrm && !BASE) { toast("Paste your Base URL first, so the card has your Base ID."); return; }
-      const t = isCrm ? crmCardText() : srcText(id);
+      if (isCrm && !BASE) { toast("Paste your Base URL first, so the prompt has your Base ID."); return; }
+      const t = isCrm ? crmCardText(id) : srcText(id);
       copyText(t).then(() => {
         cb.textContent = "Copied ✓"; cb.classList.add("copied");
         setTimeout(() => { cb.textContent = "Copy"; cb.classList.remove("copied"); }, 1800);
-        toast(isCrm ? "Copied. Paste it at the end of your request." : "Copied. Paste it into Claude.");
+        toast(id === "brief-prompt" ? "Copied. Paste it into the skill builder and fill in the blanks." : id === "q2-builder" ? "Copied. Paste it into the skill builder." : "Copied. Paste it into Claude.");
       }, () => toast("Copy was blocked. Select the text and copy it by hand."));
     });
     const db = $(".dl-btn", card);
@@ -596,10 +642,10 @@
   /* ---------- zip generator ---------- */
 
   const SKILL_INFO = {
-    "crm-company": { d: "Add, update or research a company.", step: "Install in Step 4" },
-    "crm-person": { d: "Add or update a person.", step: "Install in Step 5" },
-    "crm-capture-convo": { d: "Capture a conversation, with a preview before saving.", step: "Install in Step 6" },
-    "crm-brief-me": { d: "Our read-only brief-me. The fallback for Step 7.", step: "Fallback for Step 7" },
+    "crm-company": { d: "Add, update or research a company.", step: "Upload in Step 3" },
+    "crm-person": { d: "Add or update a person.", step: "Upload in Step 4" },
+    "crm-capture-convo": { d: "Capture a conversation, with a preview before saving.", step: "Upload in Step 5" },
+    "crm-brief-me": { d: "Our read-only brief-me. The fallback for Step 6.", step: "Fallback for Step 6" },
   };
   const fileCache = {};
   function fetchSkill(skill) {
@@ -654,12 +700,14 @@
       return;
     }
 
+    const all = el.hasAttribute("data-all") && skills.length > 1;
     const cards = skills.map((s) =>
       '<div class="zip-card' + (animate ? " flip" : "") + '" data-skill="' + s + '"><span class="zstep">' + esc(SKILL_INFO[s].step) + '</span><span class="zn">' + s + ".zip</span>" +
       '<span class="zd">' + esc(SKILL_INFO[s].d) + '</span><button type="button" class="btn small">Download</button></div>').join("");
     el.innerHTML =
       (compact ? "" : '<div class="zip-ok"><span class="idchip' + (animate ? " lift" : "") + '">Base ID ' + esc(BASE.baseId) + '</span><span class="url-echo">' + urlEcho(lastRaw || BASE.baseUrl, BASE.baseId) + "</span></div>") +
-      '<div class="zip-cards">' + cards + "</div>" +
+      (all ? '<div class="zip-all"><button type="button" class="btn big dl-all">Download all ' + skills.length + ' skills</button><span class="small muted">Three .zip files. Keep them zipped.</span></div>' : "") +
+      '<div class="zip-cards' + (all ? " small-cards" : "") + '">' + cards + "</div>" +
       '<p class="zip-foot">' + (compact ? "For base <code>" + esc(BASE.baseId) + "</code>. " : "Each zip has your Base URL and Base ID in crm-config.txt. SKILL.md is the same for everyone. ") +
       '<button type="button" class="linkish zip-clear">Use a different base</button></p>';
     $all(".zip-card", el).forEach((c, i) => {
@@ -667,13 +715,19 @@
       $(".btn", c).addEventListener("click", () => downloadSkill(c.dataset.skill, c));
     });
     $(".zip-clear", el).addEventListener("click", () => { BASE = null; lastRaw = ""; renderAllBase(); });
+    const dlAll = $(".dl-all", el);
+    if (dlAll) dlAll.addEventListener("click", () => {
+      dlAll.disabled = true;
+      skills.reduce((p, s, i) => p.then(() => (i ? new Promise((r) => setTimeout(r, 400)) : null)).then(() => downloadSkill(s, $('.zip-card[data-skill="' + s + '"]', el))), Promise.resolve())
+        .then(() => { dlAll.disabled = false; dlAll.textContent = "Downloaded ✓ (again?)"; toast("Downloaded all " + skills.length + " skills. Check your Downloads folder."); });
+    });
   }
 
   function renderAllBase(source) {
     $all(".zipgen").forEach((z) => renderZipgen(z, z === source));
-    $all('.copy-card[data-copy="crm-card"]').forEach(renderCopyCard);
+    $all(".copy-card[data-copy]").filter((c) => BASE_CARDS[c.dataset.copy]).forEach(renderCopyCard);
     $all("[data-fill]").forEach((f) => {
-      const v = BASE ? (f.dataset.fill === "url" ? BASE.baseUrl : BASE.baseId) : (f.dataset.fill === "url" ? "paste your Base URL in Step 3" : "…");
+      const v = BASE ? (f.dataset.fill === "url" ? BASE.baseUrl : BASE.baseId) : (f.dataset.fill === "url" ? "paste your Base URL in Step 2" : "…");
       f.textContent = v;
       f.classList.toggle("missing", !BASE);
     });
@@ -681,45 +735,22 @@
   }
   renderAllBase();
 
-  /* ---------- skill anatomy ---------- */
+  /* ---------- skill anatomy (step 3) ---------- */
 
   const ANAT = {
-    name: { k: "Name", wh: "when", v: "The skill's ID. It's what you pick when you type / to call it." },
-    desc: { k: "Description", wh: "when", v: "Decides when Claude uses the skill. Claude reads every installed skill's description and picks the one that matches what you asked, so it's written like a trigger: what it does, plus the phrases you'd actually say." },
-    title: { k: "Title", wh: "how", v: "A heading for people reading the file. The body starts here." },
-    what: { k: "What this skill does", wh: "how", v: "The job and its boundaries: it writes Companies only, never People or Conversation Notes." },
-    inputs: { k: "Inputs", wh: "how", v: "What you can give it." },
-    fields: { k: "Fields this skill uses", wh: "how", v: "The exact fields and types it expects. Before touching anything it checks these against your real base (Safety rule 2), so a renamed field stops it instead of breaking your data." },
-    workflow: { k: "Workflow", wh: "how", v: "The steps, in order. This is where tools come in: research uses web search; saving uses the Airtable connector." },
-    process: { k: "My process (edit this)", wh: "how", v: "Your defaults: response length, research sources, how Notes are written. Change these to match how you work." },
-    safety: { k: "Safety rules (do not edit)", wh: "how", v: "Rules that always apply and win over My process: use the right base, check the schema, never duplicate, never delete, verify every save." },
+    name: { k: "Name", v: "The skill's ID. It's what you pick when you type / to call it." },
+    desc: { k: "Description", v: "This is what Claude reads to decide whether to use this skill. It says what the skill does and the kinds of things you'd say when you want it. Claude compares your message with every skill's description and uses the one that fits." },
+    title: { k: "Title", v: "A heading for people reading the file. The body starts here." },
+    what: { k: "What this skill does", v: "The job and its boundaries: it writes Companies only, never People or Conversation Notes." },
+    inputs: { k: "Inputs", v: "What you can give it." },
+    fields: { k: "How to interact with the CRM", tag: "Fields this skill uses", v: "Which tables this skill reads and writes, and what goes in each column. Before it changes anything, it checks this list against your real base (Safety rule 2). If something has been renamed, it stops instead of breaking your data." },
+    workflow: { k: "Workflow", v: "The steps, in order. This is where tools come in: research uses web search; saving uses the Airtable connector." },
+    process: { k: "My process (edit this)", v: "Your defaults: response length, research sources, how Notes are written. Change these to match how you work." },
+    safety: { k: "Safety rules (do not edit)", v: "Rules that always apply and win over My process: use the right base, check the schema, never duplicate, never delete, verify every save." },
   };
   const HEADING_KEY = {
     "What this skill does": "what", "Inputs": "inputs", "Fields this skill uses": "fields", "Workflow": "workflow",
     "My process (edit this)": "process", "Safety rules (do not edit)": "safety",
-  };
-  /* "Label it yourself": answers are phrased by purpose, so it isn't just matching headings. */
-  const LABEL_OPTIONS = [
-    ["name", "The ID you call with /"],
-    ["desc", "Decides when Claude uses it"],
-    ["title", "A heading for people"],
-    ["what", "The job and its limits"],
-    ["inputs", "What you can give it"],
-    ["fields", "What it checks in your base"],
-    ["workflow", "The steps, in order"],
-    ["process", "Your defaults, yours to change"],
-    ["safety", "Always applies; wins over your defaults"],
-  ];
-  const PERSON_WHY = {
-    name: "crm-person: what you pick after /.",
-    desc: "Says what it does and what it doesn't (logging conversations, researching people online). The \"does not\" lines help Claude pick the right skill.",
-    title: "A heading for people. Claude goes by the description, not this.",
-    what: "Writes People only, plus a name-only company stub it hands to crm-company.",
-    inputs: "New here. crm-person never researches people online, so it spells out what it accepts: your words, pasted LinkedIn text, an intro email.",
-    fields: "People fields, plus two Companies fields for matching and stubs.",
-    workflow: "Step 8 is the hand-off: a new company goes to crm-company.",
-    process: "Status rules, the Next action format, the New company rule. Change these.",
-    safety: "Identical to crm-company's: both save directly and report what they saved (rule 5).",
   };
 
   function splitSkill(text) {
@@ -748,102 +779,28 @@
     return blocks.filter((b) => b.text.trim());
   }
 
-  function blockHtml(b, i, label) {
+  function anatRow(b) {
+    const a = ANAT[b.key] || { k: b.key, v: "" };
     const long = b.text.length > 700;
-    return '<div class="ablock' + (label ? " unlabeled" : " ac-" + b.key) + (long ? " long" : "") + '" data-key="' + b.key + '" data-i="' + i + '">' +
-      (label ? "" : '<span class="tag">' + esc(ANAT[b.key] ? ANAT[b.key].k.replace(/ \(.*\)$/, "") : b.key) + "</span>") +
-      (label ? '<div class="lab-pick"><select aria-label="What is this part?"><option value="">What is this part?</option>' +
-        LABEL_OPTIONS.map((o) => '<option value="' + o[0] + '">' + esc(o[1]) + "</option>").join("") + '</select><span class="verdict" aria-live="polite"></span></div>' : "") +
-      "<pre>" + esc(b.text) + "</pre>" + (long ? '<button type="button" class="more">Show all</button>' : "") + "</div>";
+    return '<div class="arow ac-' + (ANAT[b.key] ? b.key : "other") + '" data-key="' + b.key + '">' +
+      '<div class="ablock' + (long ? " long" : "") + '"><span class="tag">' + esc((a.tag || a.k).replace(/ \(.*\)$/, "")) + "</span><pre>" + esc(b.text) + "</pre>" +
+      (long ? '<button type="button" class="more">Show all</button>' : "") + "</div>" +
+      '<div class="aarrow" aria-hidden="true"></div>' +
+      '<div class="aexp"><span class="ak">' + esc(a.k) + '</span><span class="av">' + esc(a.v) + "</span></div></div>";
   }
 
   function renderAnatomy(el) {
     const skill = el.dataset.skill;
-    const label = el.dataset.mode === "label";
     fetch("skills/" + skill + "/SKILL.md", { cache: "no-store" }).then((r) => { if (!r.ok) throw 0; return r.text(); }).then((text) => {
       const blocks = splitSkill(text);
-      const doc = '<div class="anat-doc"><div class="anat-doc-top"><i></i><i></i><i></i>&nbsp;' + skill + '/SKILL.md</div><div class="anat-blocks">' +
-        blocks.map((b, i) => blockHtml(b, i, label)).join("") + "</div></div>";
-      if (!label) {
-        const keys = [];
-        blocks.forEach((b) => { if (ANAT[b.key] && keys.indexOf(b.key) < 0) keys.push(b.key); });
-        const key = '<div class="anat-key">' + keys.map((k) => '<button type="button" class="akey ac-' + k + '" data-key="' + k + '"><span class="ak">' + esc(ANAT[k].k) +
-          '<span class="when-how">' + (ANAT[k].wh === "when" ? "When" : "How") + '</span></span><span class="av">' + esc(ANAT[k].v) + "</span></button>").join("") + "</div>";
-        el.innerHTML = doc + key;
-        const focus = (k) => {
-          const on = el.classList.contains("focusing") && $(".akey.on", el) && $(".akey.on", el).dataset.key === k;
-          el.classList.toggle("focusing", !on);
-          $all(".akey", el).forEach((a) => a.classList.toggle("on", !on && a.dataset.key === k));
-          $all(".ablock", el).forEach((b) => {
-            const hit = !on && b.dataset.key === k;
-            b.classList.toggle("on", hit);
-            if (b.classList.contains("long")) {
-              b.classList.toggle("expanded", hit);
-              const m = $(".more", b); if (m) m.textContent = hit ? "Show less" : "Show all";
-            }
-          });
-          if (!on) {
-            const target = $('.ablock[data-key="' + k + '"]', el);
-            const box = $(".anat-blocks", el);
-            if (target && box) box.scrollTo({ top: target.offsetTop - box.offsetTop - 8, behavior: reduceMotion ? "auto" : "smooth" });
-          }
-        };
-        $all(".akey", el).forEach((a) => a.addEventListener("click", () => focus(a.dataset.key)));
-        $all(".ablock", el).forEach((b) => b.addEventListener("click", (e) => { if (!e.target.closest(".more")) focus(b.dataset.key); }));
-      } else {
-        el.innerHTML = '<div class="labeler-grid">' + doc + '<div class="lab-score"><div class="lab-meter"><i></i></div><span class="lab-count"></span><button type="button" class="btn small ghost lab-reveal">Show answers</button></div></div>';
-        el.style.display = "block";
-        const saved = state.labels[skill] || {};
-        const score = () => {
-          const all = $all(".ablock", el);
-          const right = all.filter((b) => b.classList.contains("right")).length;
-          $(".lab-meter i", el).style.width = (100 * right) / all.length + "%";
-          $(".lab-count", el).textContent = right + " of " + all.length + " labeled";
-          if (right === all.length && !el.dataset.cheered) {
-            el.dataset.cheered = "1";
-            const r = $(".lab-meter", el).getBoundingClientRect();
-            burst(r.left + r.width / 2, r.top, 60, PALETTE.A, 10);
-            toast("All labeled. You can read any skill now.");
-          }
-        };
-        const judge = (b, v, quiet) => {
-          const verdict = $(".verdict", b);
-          const ok = v === b.dataset.key;
-          b.classList.remove("right", "wrong", "unlabeled", "ac-" + b.dataset.key);
-          let why = $(".lab-why", b);
-          if (!v) { b.classList.add("unlabeled"); verdict.textContent = ""; if (why) why.remove(); return; }
-          if (ok) {
-            b.classList.add("right", "ac-" + b.dataset.key);
-            verdict.textContent = "✓ " + ANAT[b.dataset.key].k;
-            if (!why) { why = document.createElement("p"); why.className = "lab-why"; $(".lab-pick", b).after(why); }
-            why.textContent = PERSON_WHY[b.dataset.key] || "";
-          } else {
-            b.classList.add(quiet ? "unlabeled" : "wrong");
-            verdict.textContent = "Not quite. Try again.";
-            if (why) why.remove();
-          }
-        };
-        $all(".ablock", el).forEach((b) => {
-          const sel = $("select", b);
-          const i = b.dataset.i;
-          if (saved[i]) { sel.value = saved[i]; judge(b, saved[i], true); }
-          sel.addEventListener("change", () => {
-            state.labels[skill] = state.labels[skill] || {};
-            state.labels[skill][i] = sel.value; saveLocal();
-            void b.offsetWidth;
-            judge(b, sel.value);
-            score();
-          });
-        });
-        $(".lab-reveal", el).addEventListener("click", () => {
-          $all(".ablock", el).forEach((b) => { $("select", b).value = b.dataset.key; judge(b, b.dataset.key, true); });
-          el.dataset.cheered = "1";
-          score();
-        });
-        score();
-      }
-      $all(".more", el).forEach((m) => m.addEventListener("click", (e) => {
-        e.stopPropagation();
+      const front = blocks.filter((b) => b.key === "name" || b.key === "desc");
+      const body = blocks.filter((b) => b.key !== "name" && b.key !== "desc");
+      el.innerHTML = '<div class="anat-head"><div class="anat-top"><span class="chrome"><i></i><i></i><i></i></span>' + esc(skill) + "/SKILL.md</div><div></div>" +
+        (front.length ? '<div class="afront-note">Claude reads the name and description of every skill, in every chat, to decide when to use it.</div>' : "") + "</div>" +
+        '<div class="anat-rows">' +
+        (front.length ? '<div class="afront"><div class="afront-box">' + front.map(anatRow).join("") + "</div></div>" : "") +
+        (body.length ? '<div class="abody"><div class="abody-box"><div class="abody-note">The body: how Claude does the job</div>' + body.map(anatRow).join("") + "</div></div>" : "") + "</div>";
+      $all(".more", el).forEach((m) => m.addEventListener("click", () => {
         const b = m.closest(".ablock");
         b.classList.toggle("expanded");
         m.textContent = b.classList.contains("expanded") ? "Show less" : "Show all";
@@ -852,7 +809,15 @@
   }
   $all(".anatomy[data-skill]").forEach(renderAnatomy);
 
-  /* Step 6: show capture's real Safety rule 5 (the one that creates the preview). */
+  /* Step 4: short summary card, with the real description from SKILL.md. */
+  $all(".skill-summary[data-skill]").forEach((el) => {
+    fetch("skills/" + el.dataset.skill + "/SKILL.md", { cache: "no-store" }).then((r) => r.text()).then((t) => {
+      const m = /^description:\s*(.+)$/m.exec(t);
+      if (m) $(".ss-desc", el).textContent = m[1].trim();
+    }).catch(() => { $(".ss-desc", el).textContent = "Open the Overview tab in Claude to read it."; });
+  });
+
+  /* Step 5: show capture's real Safety rule 5 (the one that creates the preview). */
   fetch("skills/crm-capture-convo/SKILL.md", { cache: "no-store" }).then((r) => r.text()).then((t) => {
     const m = /\n(5\. \*\*Preview[\s\S]*?)\n\s*Example preview:/.exec(t);
     if (m) $("#capture-rule5").textContent = m[1].replace(/\*\*/g, "").replace(/\n {3}/g, "\n");
@@ -878,7 +843,7 @@
       '<div class="six-q' + (isNext && i === 6 ? " extra" : "") + '"><b>' + esc(q[0]) + '</b><span class="hint">' + esc(q[1]) + "</span>" +
       '<textarea rows="2" data-i="' + i + '" aria-label="' + esc(q[0]) + '"></textarea></div>').join("") +
       '<div class="six-actions"><button type="button" class="btn small ghost six-copy">Copy my answers</button><span class="small muted">' +
-      (isNext ? "Saved in this browser only." : "Saved in this browser only. Use them as notes, then write your request in your own words.") + "</span></div>";
+      "Saved in this browser only.</span></div>";
     $all("textarea", el).forEach((ta) => {
       ta.value = state.notes[key][ta.dataset.i] || "";
       ta.addEventListener("input", () => { state.notes[key][ta.dataset.i] = ta.value; saveLocal(); });
@@ -890,13 +855,56 @@
   }
   $all(".six[data-key]").forEach(renderSix);
 
-  /* compare checklist */
-  $all(".compare input[data-cmp]").forEach((cb) => {
-    cb.checked = !!state.cmp[cb.dataset.cmp];
-    cb.addEventListener("change", () => { state.cmp[cb.dataset.cmp] = cb.checked; saveLocal(); });
-  });
 
-  /* ---------- step 2 database tour ---------- */
+  /* ---------- step 1 database tour ---------- */
+
+  /* Arrow callouts: Table → active tab, Field → last column header, Record → last row, Link → its link chip.
+     Arrows are drawn on desktop; on phones the arrows hide and numbered marks sit on the targets instead. */
+  function drawDbAnno() {
+    const wrap = $("#dbanno");
+    if (!wrap || wrap.offsetParent === null) return;
+    const svg = $(".dbanno-arrows", wrap);
+    const panel = $(".db-panel:not([hidden])", wrap);
+    const rows = panel ? $all("tbody tr[data-rec]", panel) : [];
+    const lastRow = rows[rows.length - 1] || null;
+    const ths = panel ? $all("thead th", panel) : [];
+    const targets = {
+      table: $('.db-tab[aria-selected="true"]', wrap),
+      field: ths[ths.length - 1] || null,
+      record: lastRow ? lastRow.querySelector("td") : null,
+      link: lastRow ? lastRow.querySelector(".db-link") : null,
+    };
+    const NUM = { table: 1, field: 2, record: 3, link: 4 };
+    $all(".co-mark", wrap).forEach((m) => m.remove());
+    $all(".co-row", wrap).forEach((r) => r.classList.remove("co-row"));
+    $all(".co-col", wrap).forEach((r) => r.classList.remove("co-col"));
+    if (lastRow) lastRow.classList.add("co-row");
+    if (targets.field) targets.field.classList.add("co-col");
+    const box = wrap.getBoundingClientRect();
+    let paths = "";
+    Object.keys(targets).forEach((k) => {
+      const co = $('.callout[data-co="' + k + '"]', wrap);
+      const t = targets[k];
+      co.classList.toggle("dim", !t);
+      if (!t) return;
+      const mark = document.createElement("span");
+      mark.className = "co-mark"; mark.textContent = NUM[k]; mark.setAttribute("aria-hidden", "true");
+      if (k === "link") t.after(mark); else t.appendChild(mark);
+      const c = co.getBoundingClientRect();
+      const r = t.getBoundingClientRect();
+      const top = k === "table" || k === "field";
+      const sx = c.left + c.width / 2 - box.left;
+      const sy = (top ? c.bottom : c.top) - box.top;
+      const ex = (k === "record" ? r.left + Math.min(40, r.width / 2) : r.left + r.width / 2) - box.left;
+      const ey = (top ? r.top + 4 : r.bottom - 2) - box.top;
+      const my = (sy + ey) / 2;
+      const d = "M" + sx + " " + sy + " C" + sx + " " + my + " " + ex + " " + my + " " + ex + " " + ey;
+      paths += '<path class="halo" d="' + d + '"/><circle cx="' + sx + '" cy="' + sy + '" r="3.5"/><path marker-end="url(#co-head)" d="' + d + '"/>';
+    });
+    svg.innerHTML = '<defs><marker id="co-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1F1B2D" stroke="none"/></marker></defs>' + paths;
+  }
+  addEventListener("resize", () => drawDbAnno());
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => drawDbAnno());
 
   (function dbTour() {
     const tour = $("#dbtour");
@@ -905,13 +913,15 @@
     const CAPS = {
       companies: "Companies: one record per company. The People column shows who's linked to each one.",
       people: "People: one record per person. The Company column is a link field. Click a blue chip.",
-      notes: "Conversation Notes: one record per conversation, linked to one person. You'll add the first one in Step 6.",
+      notes: "Conversation Notes: one record per conversation, linked to one person. You'll add the first one in Step 5.",
     };
     const show = (name) => {
       $all(".db-tab", tour).forEach((t) => t.setAttribute("aria-selected", String(t.dataset.db === name)));
       $all(".db-panel", tour).forEach((p) => { p.hidden = p.dataset.panel !== name; });
       cap.textContent = CAPS[name];
+      drawDbAnno();
     };
+    $all(".db-panel", tour).forEach((p) => p.addEventListener("scroll", () => drawDbAnno(), { passive: true }));
     $all(".db-tab", tour).forEach((t) => t.addEventListener("click", () => show(t.dataset.db)));
     $all(".db-link", tour).forEach((l) => l.addEventListener("click", () => {
       const [table, rec] = l.dataset.goto.split(":");
@@ -929,15 +939,18 @@
 
   const drawer = $("#drawer");
   let lastFocus = null;
-  $("#drawer-rules").innerHTML = $("#house-rules").innerHTML;
   function openDrawer(groupId) {
     lastFocus = document.activeElement;
     drawer.hidden = false;
     drawer.classList.remove("closing");
     const body = $("#drawer-body");
     let gid = groupId || viewing;
+    if (gid === "quests") {
+      const openQ = $(".sub.quest.open", sections.quests);
+      gid = openQ ? openQ.dataset.sub : "sq-basics";
+    }
     if (gid === "setup") {
-      const openSub = $(".sub.open");
+      const openSub = $(".sub.open", sections.setup);
       gid = openSub ? openSub.dataset.sub : REQUIRED_SUBS.find((s) => !isDone(s)) || "setup-1";
     }
     $all(".stuck-group", body).forEach((g) => g.classList.toggle("here", g.dataset.group === gid));
@@ -991,8 +1004,8 @@
     return r.charAt(0).toUpperCase() + r.slice(1);
   }
   function renderRecap() {
-    $("#recap").innerHTML = STEPS.map((id) =>
-      '<li data-part="' + PART[id] + '"><span class="rn">' + esc(sections[id].dataset.num) + "</span><span>" + esc(recapLine(LEARNED[id])) + "</span></li>").join("");
+    $("#recap").innerHTML = STEPS.concat(BRANCHES.filter(isDone)).map((id) =>
+      '<li data-part="' + PART[id] + '"><span class="rn">' + esc(sections[id].dataset.num !== undefined ? sections[id].dataset.num : sections[id].dataset.icon) + "</span><span>" + esc(recapLine(LEARNED[id])) + "</span></li>").join("");
   }
   let rating = state.feedback ? state.feedback.rating : 0;
   (function feedback() {
@@ -1046,15 +1059,14 @@
   emailIn.addEventListener("input", formReady);
 
   function chrome(signedIn) {
-    ["#tabs", "#progress", "#stuck-open", "#who-wrap"].forEach((s) => { $(s).hidden = !signedIn; });
+    ["#progress", "#stuck-open", "#who-wrap"].forEach((s) => { $(s).hidden = !signedIn; });
     if (signedIn) {
       $("#who-btn").textContent = (state.name.trim()[0] || "?").toUpperCase();
       $("#whoami").textContent = "Signed in as " + state.name + " (" + state.email + ")" + (ROOM !== "default" ? " · room: " + ROOM : "");
-      requestAnimationFrame(placeTabPill);
     }
   }
   function showWelcome() {
-    app.hidden = true; $("#quests").hidden = true; welcome.hidden = false;
+    app.hidden = true; welcome.hidden = false;
     who.value = state.name; emailIn.value = state.email; formReady();
     chrome(false);
     setTimeout(() => who.focus(), 50);
@@ -1063,12 +1075,12 @@
     welcome.hidden = true;
     chrome(true);
     ORDER.forEach((id) => { sections[id].hidden = true; });
-    if (location.hash === "#side-quests") { app.hidden = true; $("#quests").hidden = false; $all(".tab").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === "quests"))); placeTabPill(); }
-    else app.hidden = false;
+    app.hidden = false;
     viewing = null;
-    go(currentId(), true);
+    const deep = { "#side-quests": "quests", "#design-your-own": "next" }[location.hash];
+    go(deep && reachable(deep) ? deep : currentId(), true);
     paintSubs();
-    requestAnimationFrame(() => { placeRailPill(); placeTabPill(); });
+    requestAnimationFrame(() => { placeRailPill(); });
   }
   $("#signin").addEventListener("submit", (e) => {
     e.preventDefault();

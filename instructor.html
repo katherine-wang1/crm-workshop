@@ -95,10 +95,10 @@
   <div class="grid2">
     <div>
       <section class="panel"><h2>Where the room is</h2><p class="psub">Finished each step, and who is on it now.</p><div id="where"></div></section>
-      <section class="panel"><h2>Median time per step</h2><p class="psub">From when a student opened the step to when they checked it off. Pre-work steps can run long; they're done at home.</p><div id="time"></div></section>
+      <section class="panel"><h2>Median time per step</h2><p class="psub">From when a student opened the step to when they checked it off. Setup steps can run long.</p><div id="time"></div></section>
     </div>
     <div>
-      <section class="panel"><h2>Setup (step 0)</h2><p class="psub">Each sub-step checked off. 0.6 is optional.</p><div id="prep"></div><div id="prep-missing"></div></section>
+      <section class="panel"><h2>Setup (step 0)</h2><p class="psub">Each sub-step checked off. 0.5 is optional.</p><div id="prep"></div><div id="prep-missing"></div></section>
       <section class="panel"><h2>Feedback</h2><p class="psub" id="fb-sub">Ratings and comments from the finish screen.</p><div id="ratings"></div><ul class="comments" id="comments"></ul></section>
     </div>
   </div>
@@ -115,9 +115,9 @@
 <script>
 (function () {
   "use strict";
-  var TITLES = { setup: "Sign in and set up", what: "What you're building", db: "First look at a database", skills: "Get your skills", company: "Add a company", person: "Add a person", capture: "Capture a conversation", build: "Build your own brief-me", next: "Design your next workflow", finish: "Finish" };
-  var NUM = { setup: "0", what: "1", db: "2", skills: "3", company: "4", person: "5", capture: "6", build: "7", next: "8", finish: "✓" };
-  var COLOR = { setup: "#3B82F6", what: "#3B82F6", db: "#3B82F6", skills: "#1F1B2D", company: "#FF7A45", person: "#FF7A45", capture: "#7C5CFF", build: "#14B8A6", next: "#1F1B2D", finish: "#22A06B" };
+  var TITLES = { what: "What you're building", setup: "Sign in and set up", db: "First look at a database", skills: "Get your skills", company: "Add a company", person: "Add a person", capture: "Capture a conversation", build: "Build your own brief-me", fork: "Core done (choosing what's next)", quests: "Side quests", next: "Design your own workflow", finish: "Finish" };
+  var NUM = { what: "✦", setup: "0", db: "1", skills: "2", company: "3", person: "4", capture: "5", build: "6", fork: "★", quests: "◆", next: "✎", finish: "✓" };
+  var COLOR = { what: "#3B82F6", setup: "#3B82F6", db: "#3B82F6", skills: "#1F1B2D", company: "#FF7A45", person: "#FF7A45", capture: "#7C5CFF", build: "#14B8A6", fork: "#22A06B", quests: "#F59E0B", next: "#1F1B2D", finish: "#22A06B" };
   var KEYSTORE = "aigsb-w2-instructor-key";
   var params = new URLSearchParams(location.search);
   var room = cleanRoom(params.get("room"));
@@ -168,15 +168,15 @@
   function stop() { clearInterval(timer); timer = null; }
 
   function derive() {
-    var steps = data.steps, subs = data.subSteps, now = new Date(data.now).getTime();
+    var steps = data.steps, subs = data.subSteps, branches = data.branchSteps || [], quests = data.questSteps || [], now = new Date(data.now).getTime();
     var fbBy = {}; data.feedback.forEach(function (f) { fbBy[f.id] = f; });
     var BREAK = 3 * 60;
-    var durations = {}; steps.forEach(function (id) { durations[id] = []; });
+    var durations = {}; steps.concat(branches).forEach(function (id) { durations[id] = []; });
     var students = data.students.map(function (s) {
-      var cur = "finish";
+      var cur = "fork"; // core build done
       for (var i = 0; i < steps.length; i++) if (!s.steps[steps[i]]) { cur = steps[i]; break; }
       var anchor = s.joinedAt ? new Date(s.joinedAt).getTime() : null;
-      steps.forEach(function (id) {
+      steps.concat(branches).forEach(function (id) {
         if (!s.stepAt[id]) return;
         var t = new Date(s.stepAt[id]).getTime();
         var start = s.viewAt && s.viewAt[id] ? new Date(s.viewAt[id]).getTime() : null;
@@ -188,11 +188,11 @@
       });
       return {
         id: s.id, name: s.name, email: s.email, steps: s.steps, cur: cur, done: s.doneCount,
-        prep: subs.filter(function (x) { return x !== "setup-6" && s.steps[x]; }).length,
+        prep: subs.filter(function (x) { return x !== "setup-5" && s.steps[x]; }).length,
         updatedAt: s.updatedAt, joinedAt: s.joinedAt, fb: fbBy[s.id] || null,
       };
     });
-    return { steps: steps, subs: subs, now: now, students: students, durations: durations };
+    return { steps: steps, subs: subs, branches: branches, quests: quests, now: now, students: students, durations: durations };
   }
 
   function render() {
@@ -206,20 +206,22 @@
     var tiles = [
       [n, "signed in"],
       [d.students.filter(function (s) { return s.steps.setup; }).length, "finished setup (step 0)"],
-      [d.students.filter(function (s) { return s.steps.db; }).length, "finished pre-work (0–2)"],
-      [d.students.filter(function (s) { return s.cur === "finish"; }).length, "finished the workshop"],
+      [d.students.filter(function (s) { return s.steps.db; }).length, "finished setup (through step 1)"],
+      [d.students.filter(function (s) { return s.cur === "fork"; }).length, "finished the core build"],
       [active, "active in the last 10 min"],
       [avg, "average rating (" + ratings.length + ")"],
     ];
     $("#tiles").innerHTML = tiles.map(function (t) { return '<div class="tile"><b>' + esc(t[0]) + "</b><span>" + esc(t[1]) + "</span></div>"; }).join("");
 
     var hereBy = {}; d.students.forEach(function (s) { (hereBy[s.cur] = hereBy[s.cur] || []).push(s); });
-    $("#where").innerHTML = d.steps.concat(["finish"]).map(function (id) {
-      var done = id === "finish" ? (hereBy.finish || []).length : d.students.filter(function (s) { return s.steps[id]; }).length;
-      var here = id === "finish" ? [] : (hereBy[id] || []);
+    $("#where").innerHTML = d.steps.concat(["fork"], d.branches).map(function (id) {
+      var opt = d.branches.indexOf(id) >= 0;
+      var done = id === "fork" ? (hereBy.fork || []).length : d.students.filter(function (s) { return s.steps[id]; }).length;
+      var here = id === "fork" || opt ? [] : (hereBy[id] || []);
       var pct = n ? Math.round(100 * done / n) : 0;
       return '<div class="where-row" style="--rc:' + COLOR[id] + '"><span class="where-n">' + NUM[id] + '</span><span class="where-t">' + esc(TITLES[id]) +
-        "<small>" + (id === "finish" ? done + " finished" : done + " done · " + here.length + " here now") + "</small></span>" +
+        "<small>" + (id === "fork" ? done + " finished the core" : opt ? done + " done · optional" : done + " done · " + here.length + " here now") +
+        (id === "quests" && d.quests.length ? " · by quest: " + d.quests.map(function (q) { return q.slice(-1) + ": " + d.students.filter(function (s) { return s.steps[q]; }).length; }).join(", ") : "") + "</small></span>" +
         '<div class="where-bar"><i style="width:' + pct + '%"></i><span>' + pct + "%</span></div>" +
         (here.length ? '<div class="here">' + here.map(function (s) { return '<span class="chip here-now">' + esc(s.name) + "</span>"; }).join("") + "</div>" : "") + "</div>";
     }).join("");
@@ -232,7 +234,7 @@
     $("#prep-missing").innerHTML = missing.length ? '<p class="psub" style="margin-top:12px">Not finished setup yet (' + missing.length + "):</p>" + '<div class="here" style="grid-column:auto">' +
       missing.map(function (s) { return '<span class="chip">' + esc(s.name) + " · " + s.prep + "/5</span>"; }).join("") + "</div>" : (n ? '<p class="empty">Everyone has finished setup.</p>' : "");
 
-    var rows = d.steps.map(function (id) { return { id: id, med: median(d.durations[id]), n: d.durations[id].length }; });
+    var rows = d.steps.concat(d.branches).map(function (id) { return { id: id, med: median(d.durations[id]), n: d.durations[id].length }; });
     var max = Math.max.apply(null, rows.map(function (r) { return Math.min(r.med || 0, 120); }).concat([1]));
     $("#time").innerHTML = rows.some(function (r) { return r.n; }) ? rows.map(function (r) {
       return '<div class="time-row" style="--rc:' + COLOR[r.id] + '"><span>' + NUM[r.id] + " · " + esc(TITLES[r.id]) + '</span><div class="mini"><i style="width:' + (r.med ? Math.min(100, 100 * Math.min(r.med, 120) / max) : 0) + '%"></i></div><span title="' + r.n + ' students">' + fmtMin(r.med) + "</span></div>";
@@ -254,7 +256,7 @@
     var list = d.students.filter(function (s) {
       return !q || (s.name + " " + s.email + " " + TITLES[s.cur] + " step " + NUM[s.cur]).toLowerCase().indexOf(q) >= 0;
     });
-    var order = d.steps.concat(["finish"]);
+    var order = d.steps.concat(["fork"]);
     var val = {
       name: function (s) { return s.name.toLowerCase(); }, email: function (s) { return s.email; },
       cur: function (s) { return order.indexOf(s.cur); }, done: function (s) { return s.done; }, prep: function (s) { return s.prep; },
@@ -264,7 +266,7 @@
     $("#count").textContent = list.length + " of " + d.students.length + " students";
     $("#rows").innerHTML = list.map(function (s) {
       return "<tr><td><strong>" + esc(s.name) + "</strong></td><td>" + esc(s.email) + "</td><td>" + NUM[s.cur] + " · " + esc(TITLES[s.cur]) + "</td><td>" + s.done + "/" + d.steps.length +
-        '</td><td><span class="dots">' + d.steps.map(function (id) { return '<i style="--rc:' + COLOR[id] + '" class="' + (s.steps[id] ? "on" : "") + '" title="' + esc(TITLES[id]) + '"></i>'; }).join("") + "</span></td>" +
+        '</td><td><span class="dots">' + d.steps.concat(d.branches).map(function (id) { return '<i style="--rc:' + COLOR[id] + '" class="' + (s.steps[id] ? "on" : "") + '" title="' + esc(TITLES[id]) + '"></i>'; }).join("") + "</span></td>" +
         "<td>" + s.prep + "/5</td><td>" + ago(s.updatedAt, d.now) + "</td><td>" + (s.fb ? s.fb.rating + "★" : "–") + "</td></tr>";
     }).join("") || '<tr><td colspan="8" class="empty">No students yet. Share the site link' + (data.room !== "default" ? " with ?room=" + esc(data.room) : "") + ".</td></tr>";
   }
@@ -276,14 +278,14 @@
   $("#csv").addEventListener("click", function () {
     if (!data) return;
     var d = derive();
-    var cols = ["name", "email", "on_step", "steps_done"].concat(d.subs.map(function (x) { return "done_0." + x.slice(-1); }), d.steps.map(function (x) { return "done_" + NUM[x] + "_" + x; }),
-      d.steps.map(function (x) { return "completed_at_" + NUM[x] + "_" + x; }), ["joined_at", "last_active", "rating", "comment"]);
+    var cols = ["name", "email", "on_step", "steps_done"].concat(d.subs.map(function (x) { return "done_0." + x.slice(-1); }), d.steps.concat(d.branches).map(function (x) { return "done_" + NUM[x] + "_" + x; }), d.quests.map(function (x) { return "done_side_quest_" + x.slice(-1); }),
+      d.steps.concat(d.branches).map(function (x) { return "completed_at_" + NUM[x] + "_" + x; }), ["joined_at", "last_active", "rating", "comment"]);
     var raw = {}; data.students.forEach(function (s) { raw[s.id] = s; });
     var lines = [cols.join(",")].concat(d.students.map(function (s) {
       var r = raw[s.id] || {};
       var vals = [s.name, s.email, NUM[s.cur] + " " + TITLES[s.cur], s.done]
-        .concat(d.subs.map(function (x) { return s.steps[x] ? 1 : 0; }), d.steps.map(function (x) { return s.steps[x] ? 1 : 0; }),
-          d.steps.map(function (x) { return (r.stepAt || {})[x] || ""; }), [s.joinedAt || "", s.updatedAt || "", s.fb ? s.fb.rating : "", s.fb ? s.fb.comment : ""]);
+        .concat(d.subs.map(function (x) { return s.steps[x] ? 1 : 0; }), d.steps.concat(d.branches).map(function (x) { return s.steps[x] ? 1 : 0; }), d.quests.map(function (x) { return s.steps[x] ? 1 : 0; }),
+          d.steps.concat(d.branches).map(function (x) { return (r.stepAt || {})[x] || ""; }), [s.joinedAt || "", s.updatedAt || "", s.fb ? s.fb.rating : "", s.fb ? s.fb.comment : ""]);
       return vals.map(function (v) { v = String(v == null ? "" : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(",");
     }));
     var blob = new Blob([lines.join("\n") + "\n"], { type: "text/csv" });

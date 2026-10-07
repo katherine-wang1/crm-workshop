@@ -11,7 +11,8 @@ Same stack and mechanics as the Workshop 1 site
 static HTML, three Vercel functions, and Upstash Redis. No framework and no build step.
 
 ```
-index.html            the student site: sign-in, steps 0–8, Finish, Side quests tab, Stuck? drawer.
+index.html            the student site: sign-in, What you're building, steps 0–6, the "You made it!" hub,
+                      Side quests and Design your own workflow (optional, any order), Finish, Stuck? drawer.
                       All student-facing text lives here.
 instructor.html       the instructor dashboard, served at /instructor (needs the key)
 css/site.css          styles (palette, type, transitions)
@@ -155,16 +156,16 @@ reload clears it, and the student pastes it again. Six-question notes and the
   descriptions are listed in `img/screens/README.md`. Empty slots show a labeled placeholder.
 - **Links that still need verifying** carry `data-verify` and show a yellow
   "verify" tag. Delete the attribute once checked.
-- **Template link:** in 0.3, replace `<span class="link-pending" …>` with
+- **Template link:** in 0.2, replace `<span class="link-pending" …>` with
   `<a class="go-link" href="…" target="_blank" rel="noopener">Open the template</a>`.
 - **Stuck? entries:** the `<section class="stuck-group" data-group="…">` blocks in the
-  drawer. `data-group` matches a step id (`setup-1`…`setup-6`, `db`, `skills`,
+  drawer. `data-group` matches a step id (`setup-1`…`setup-5`, `db`, `skills`,
   `company`, `person`, `capture`, `build`), so the drawer opens at the right place.
 - **House rules:** `<ol id="house-rules">` in step 1. The drawer copies them automatically.
 - **Draft notes for facilitators:** `<div class="draft-note">`. Hidden from students
   unless `?draft=1`.
-- **Steps list:** if you add, remove or rename a step id, update `STEPS` in
-  `js/app.js`, `MAIN_STEPS` in `lib/store.js`, and `TITLES`/`NUM`/`COLOR` in `instructor.html`.
+- **Steps list:** if you add, remove or rename a step id, update `STEPS` (or `BRANCHES`) in
+  `js/app.js`, `MAIN_STEPS` (or `BRANCH_STEPS`) in `lib/store.js`, and `TITLES`/`NUM`/`COLOR` in `instructor.html`.
 
 ## Skills
 

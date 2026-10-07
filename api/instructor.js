@@ -1,5 +1,5 @@
 import {
-  STEPS, MAIN_STEPS, SUB_STEPS, keys, cleanRoom, cleanSteps, cleanViewing, parseRecord, storeOr503,
+  STEPS, MAIN_STEPS, BRANCH_STEPS, SUB_STEPS, QUEST_STEPS, keys, cleanRoom, cleanSteps, cleanViewing, parseRecord, storeOr503,
   instructorCheck, getRedis,
 } from "../lib/store.js";
 
@@ -82,7 +82,9 @@ export default async function handler(req, res) {
       ok: true,
       room,
       steps: MAIN_STEPS,
+      branchSteps: BRANCH_STEPS,
       subSteps: SUB_STEPS,
+      questSteps: QUEST_STEPS,
       allSteps: STEPS,
       now: new Date().toISOString(),
       rooms: await listRooms(),

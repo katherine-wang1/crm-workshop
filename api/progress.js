@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     const viewing = cleanViewing(body.viewing);
     const session = String(body.session || "").replace(/[^a-z0-9]/gi, "").slice(0, 24);
     const viewAt = prev.viewAt && typeof prev.viewAt === "object" ? { ...prev.viewAt } : {};
-    if (viewing && viewing !== "finish" && !steps[viewing] && (!viewAt[viewing] || (session !== prev.session && Date.parse(now) - Date.parse(viewAt[viewing]) > BREAK_MS))) {
+    if (viewing && viewing !== "finish" && viewing !== "fork" && !steps[viewing] && (!viewAt[viewing] || (session !== prev.session && Date.parse(now) - Date.parse(viewAt[viewing]) > BREAK_MS))) {
       viewAt[viewing] = now;
     }
 
