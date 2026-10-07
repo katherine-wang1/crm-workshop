@@ -11,6 +11,7 @@
     "test-zip": "node scripts/test-zip.mjs"
   },
   "dependencies": {
-    "@upstash/redis": "^1.38.3"
+    "@upstash/redis": "^1.38.3",
+    "redis": "^6.3.0"
   }
 }
