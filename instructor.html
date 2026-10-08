@@ -98,7 +98,7 @@
       <section class="panel"><h2>Median time per step</h2><p class="psub">From when a student opened the step to when they checked it off. Setup steps can run long.</p><div id="time"></div></section>
     </div>
     <div>
-      <section class="panel"><h2>Setup (step 0)</h2><p class="psub">Each sub-step checked off. 0.5 is optional.</p><div id="prep"></div><div id="prep-missing"></div></section>
+      <section class="panel"><h2>Setup (step 0)</h2><p class="psub">Each sub-step checked off. 0.4 is optional.</p><div id="prep"></div><div id="prep-missing"></div></section>
       <section class="panel"><h2>Feedback</h2><p class="psub" id="fb-sub">Ratings and comments from the finish screen.</p><div id="ratings"></div><ul class="comments" id="comments"></ul></section>
     </div>
   </div>
@@ -115,7 +115,7 @@
 <script>
 (function () {
   "use strict";
-  var TITLES = { what: "What you're building", setup: "Sign in and set up", db: "First look at a database", skills: "Get your skills", company: "Add a company", person: "Add a person", capture: "Capture a conversation", build: "Build your own brief-me", fork: "Core done (choosing what's next)", quests: "Side quests", next: "Design your own workflow", finish: "Finish" };
+  var TITLES = { what: "What you're building", setup: "Sign in and set up", db: "First look at a database", skills: "Get your skills", company: "Add a company", person: "Add a person", capture: "Capture a conversation", build: "Build your own crm-brief-me", fork: "Core done (choosing what's next)", quests: "Side quests", next: "Build your next skill", finish: "Finish" };
   var NUM = { what: "✦", setup: "0", db: "1", skills: "2", company: "3", person: "4", capture: "5", build: "6", fork: "★", quests: "◆", next: "✎", finish: "✓" };
   var COLOR = { what: "#3B82F6", setup: "#3B82F6", db: "#3B82F6", skills: "#1F1B2D", company: "#FF7A45", person: "#FF7A45", capture: "#7C5CFF", build: "#14B8A6", fork: "#22A06B", quests: "#F59E0B", next: "#1F1B2D", finish: "#22A06B" };
   var KEYSTORE = "aigsb-w2-instructor-key";
@@ -188,7 +188,7 @@
       });
       return {
         id: s.id, name: s.name, email: s.email, steps: s.steps, cur: cur, done: s.doneCount,
-        prep: subs.filter(function (x) { return x !== "setup-5" && s.steps[x]; }).length,
+        prep: subs.filter(function (x) { return x !== "setup-4" && s.steps[x]; }).length,
         updatedAt: s.updatedAt, joinedAt: s.joinedAt, fb: fbBy[s.id] || null,
       };
     });
@@ -232,7 +232,7 @@
     }).join("");
     var missing = d.students.filter(function (s) { return !s.steps.setup; });
     $("#prep-missing").innerHTML = missing.length ? '<p class="psub" style="margin-top:12px">Not finished setup yet (' + missing.length + "):</p>" + '<div class="here" style="grid-column:auto">' +
-      missing.map(function (s) { return '<span class="chip">' + esc(s.name) + " · " + s.prep + "/5</span>"; }).join("") + "</div>" : (n ? '<p class="empty">Everyone has finished setup.</p>' : "");
+      missing.map(function (s) { return '<span class="chip">' + esc(s.name) + " · " + s.prep + "/3</span>"; }).join("") + "</div>" : (n ? '<p class="empty">Everyone has finished setup.</p>' : "");
 
     var rows = d.steps.concat(d.branches).map(function (id) { return { id: id, med: median(d.durations[id]), n: d.durations[id].length }; });
     var max = Math.max.apply(null, rows.map(function (r) { return Math.min(r.med || 0, 120); }).concat([1]));
@@ -267,7 +267,7 @@
     $("#rows").innerHTML = list.map(function (s) {
       return "<tr><td><strong>" + esc(s.name) + "</strong></td><td>" + esc(s.email) + "</td><td>" + NUM[s.cur] + " · " + esc(TITLES[s.cur]) + "</td><td>" + s.done + "/" + d.steps.length +
         '</td><td><span class="dots">' + d.steps.concat(d.branches).map(function (id) { return '<i style="--rc:' + COLOR[id] + '" class="' + (s.steps[id] ? "on" : "") + '" title="' + esc(TITLES[id]) + '"></i>'; }).join("") + "</span></td>" +
-        "<td>" + s.prep + "/5</td><td>" + ago(s.updatedAt, d.now) + "</td><td>" + (s.fb ? s.fb.rating + "★" : "–") + "</td></tr>";
+        "<td>" + s.prep + "/3</td><td>" + ago(s.updatedAt, d.now) + "</td><td>" + (s.fb ? s.fb.rating + "★" : "–") + "</td></tr>";
     }).join("") || '<tr><td colspan="8" class="empty">No students yet. Share the site link' + (data.room !== "default" ? " with ?room=" + esc(data.room) : "") + ".</td></tr>";
   }
   $("#filter").addEventListener("input", function () { if (data) renderTable(derive()); });

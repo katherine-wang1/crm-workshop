@@ -160,123 +160,126 @@
     <li><strong>Build the fourth skill yourself:</strong> a brief-me that preps you for your next conversation.</li>
     <li><strong>Design your next workflow.</strong></li>
   </ol>
+  <div class="callout-box info"><span class="cv-badge">Why Airtable?</span><p>We've decided to build our CRM database in Airtable, since it's an easy-to-use database. You could just as easily do the exact same thing in Notion, but sadly Stanford Claude accounts don't allow the Notion connector 😭</p></div>
 </section>
 
-<!-- ================= STEP 0 ================= -->
-<section class="step" data-step="setup" data-num="0" data-title="Sign in and set up" data-group="Set up" data-part="pre" hidden
-  data-learned="You're set up: your own CRM in Airtable, connected to Claude.">
+<!-- ================= STEP 0: SET UP (0.1–0.4, one page each) ================= -->
+<section class="step" data-step="setup-1" data-num="0.1" data-title="Create your Airtable account" data-sub-title="" data-group="Set up" data-part="pre" hidden
+  data-learned="">
   <header class="step-head">
-    <div class="step-meta"><span class="step-num">0</span></div>
-    <h2>Sign in and set up</h2>
-    <p class="step-lede">You need an Airtable account with your own copy of the CRM, and Claude connected to that Airtable account. You do not need a paid plan.</p>
+    <div class="step-meta"><span class="step-num">0.1</span><span class="when-chip">Step 0 · Set up</span></div>
+    <h2>Create your Airtable account</h2>
+    <p class="step-lede">You need an Airtable account with your own copy of the CRM, and Claude connected to that Airtable account. You do not need a paid plan. This part takes about 3 minutes.</p>
   </header>
 
-  <p class="note">Already done some of this? Check off what you've finished and open only what you need. Each part has a <strong>Check</strong> so you know it worked before moving on.</p>
+  <ol class="do">
+    <li>Go to Airtable's sign-up page, click <strong>Continue with Google</strong>, and log in with your <strong>@stanford.edu</strong> account.<br>
+      <a class="go-link" data-verify href="https://airtable.com/signup" target="_blank" rel="noopener">airtable.com/signup</a>
+      <figure class="shot" data-shot="0.1-a"><figcaption>Continue with Google, then log in with your @stanford.edu account.</figcaption></figure>
+    </li>
+  </ol>
+  <div class="check"><p><strong>Check:</strong> you can sign in and see the Airtable home page. Airtable gives new .edu accounts a 120-day Team trial automatically.</p></div>
+  <figure class="shot" data-shot="0.1-c"><figcaption>The page Airtable opens after you sign up.</figcaption></figure>
+  <p>This is the home page it will take you to. You don't need to do anything on this page, ignore it and just move on to the next step in our walkthrough here.</p>
+</section>
 
-  <!-- 0.1 -->
-  <div class="sub" data-sub="setup-1">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.1</span><span class="sub-title">Create your Airtable account<small>About 3 minutes</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
-      <ol class="do">
-        <li>Go to Airtable's sign-up page, click <strong>Continue with Google</strong>, and log in with your <strong>@stanford.edu</strong> account.<br>
-          <a class="go-link" data-verify href="https://airtable.com/signup" target="_blank" rel="noopener">airtable.com/signup</a>
-          <figure class="shot" data-shot="0.1-a"><figcaption>Continue with Google, then log in with your @stanford.edu account.</figcaption></figure>
-        </li>
-      </ol>
-      <div class="check"><p><strong>Check:</strong> you can sign in and see the Airtable home page. Airtable gives new .edu accounts a 120-day Team trial automatically.</p></div>
-      <figure class="shot" data-shot="0.1-c"><figcaption>The page Airtable opens after you sign up.</figcaption></figure>
-      <p>This is the home page it will take you to. You don't need to do anything on this page, just move on to the next step.</p>
-      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-1">Stuck on 0.1?</button></div>
-    </div></div></div>
-  </div>
+<section class="step" data-step="setup-2" data-num="0.2" data-title="Duplicate the CRM base" data-sub-title="" data-group="Set up" data-part="pre" hidden
+  data-learned="">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">0.2</span><span class="when-chip">Step 0 · Set up</span></div>
+    <h2>Duplicate the CRM base</h2>
+    <p class="step-lede">About 3 minutes.</p>
+  </header>
+  <div class="callout-box goal"><span class="cv-badge">Goal of this step</span><p>Set up your database! We're doing it in Airtable.</p></div>
 
-  <!-- 0.2 -->
-  <div class="sub" data-sub="setup-2">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.2</span><span class="sub-title">Duplicate the CRM base<small>About 3 minutes</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
-      <ol class="do">
-        <li>Open the template link.<br>
-          <span class="link-pending" data-url-id="0.2-a">Template link coming soon</span>
-          <div class="draft-note">[URL 0.2-a] Template base share link: LINK PENDING (waiting on Kate's testing). Replace the span above with a go-link once it's ready.</div>
-        </li>
-        <li>Click the <strong>dropdown arrow</strong> next to the base name, click the <strong>···</strong> menu, and choose <strong>Duplicate base</strong>.
-          <figure class="shot" data-shot="0.2-a"><figcaption>Dropdown arrow → ··· menu → Duplicate base.</figcaption></figure>
-        </li>
-        <li>Make sure your workspace is selected, then click <strong>Duplicate base</strong>.
-          <figure class="shot" data-shot="0.2-b"><figcaption>Your workspace selected as the destination.</figcaption></figure>
-        </li>
-        <li>Click <strong>Open base</strong>. Your copy opens, with three tabs at the top: Companies, People, Conversation Notes.
-          <figure class="shot" data-shot="0.2-c"><figcaption>Open base takes you to your copy.</figcaption></figure>
-        </li>
-        <li>Copy your <strong>Base URL</strong> from the browser's address bar. You'll paste it into this site to get your skills (Step 2).
-          <figure class="shot" data-shot="0.2-d"><figcaption>Copy the whole URL from the address bar (it starts <code>airtable.com/app…</code>).</figcaption></figure>
-        </li>
-      </ol>
-      <div class="check"><p><strong>Check:</strong> in your copy, People shows Maya Chen linked to Cedar Labs and Jordan Lee linked to Harbor Health. These are fictional examples for practice. Do not research them online.</p></div>
-      <div class="draft-note">[UPDATE once Maya is removed from the starter records: Cedar Labs and Jordan Lee only.] Also update the Step 1 tour table (People tab) at the same time.</div>
-      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-2">Stuck on 0.2?</button></div>
-    </div></div></div>
-  </div>
+  <ol class="do">
+    <li>Open the template link.<br>
+      <a class="go-link" href="https://airtable.com/invite/l?inviteId=inv5C2COajR6NDs6g&amp;inviteToken=094cc908c3e252731614991a0747dc11699a4aa0b4b5d54090e347e18f2b16aa" target="_blank" rel="noopener">Open the CRM template</a>
+    </li>
+    <li>Click the <strong>dropdown arrow</strong> next to the base name, click the <strong>···</strong> menu, and choose <strong>Duplicate base</strong>.
+      <figure class="shot" data-shot="0.2-a"><figcaption>Dropdown arrow → ··· menu → Duplicate base.</figcaption></figure>
+    </li>
+    <li>Make sure your workspace is selected, then click <strong>Duplicate base</strong>.
+      <figure class="shot" data-shot="0.2-b"><figcaption>Your workspace selected as the destination.</figcaption></figure>
+    </li>
+    <li>Click <strong>Open base</strong>. Your copy opens, with three tabs at the top: Companies, People, Conversation Notes.
+      <figure class="shot" data-shot="0.2-c"><figcaption>Open base takes you to your copy.</figcaption></figure>
+    </li>
+    <li>Copy your <strong>Base URL</strong> from the browser's address bar.
+      <figure class="shot" data-shot="0.2-d"><figcaption>Copy the whole URL from the address bar (it starts <code>airtable.com/app…</code>).</figcaption></figure>
+    </li>
+    <li>Paste your Base URL here. This site uses it to make your skills in Step 2.
+      <div class="zipgen compact" data-skills="" data-purpose="capture"></div>
+    </li>
+  </ol>
+  <div class="check"><p><strong>Check:</strong> in your copy, Companies shows Cedar Labs and Harbor Health, and People shows Jordan Lee linked to Harbor Health. These are fictional examples for practice. Do not research them online.</p></div>
+</section>
 
-  <!-- 0.3 -->
-  <div class="sub" data-sub="setup-3">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.3</span><span class="sub-title">Prepare Claude<small>About 2 minutes</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
-      <ol class="do">
-        <li>Open the Claude desktop app and sign in with the account you'll use in the workshop.</li>
-        <li>Confirm that you can use <strong>skills</strong> and <strong>code execution</strong> in your account. In <strong>Settings → Capabilities</strong>, make sure <strong>Code execution and file creation</strong> is on.
-          <div class="draft-note">[VERIFY: exact settings names and what Stanford accounts allow.] Wording above is from Claude's help center ("Settings &gt; Capabilities", "Code execution and file creation"; Team/Enterprise orgs control it under Organization settings &gt; Plugins &amp; skills). Check it against a student account.</div>
-          <figure class="shot" data-shot="0.3-a"><figcaption>The settings page, code execution toggle highlighted.</figcaption></figure>
-          <figure class="shot" data-shot="0.3-b"><figcaption>The settings page, skills toggle highlighted (if separate).</figcaption></figure>
-        </li>
-      </ol>
-      <div class="check"><p><strong>Check:</strong> Customize → Skills opens, and <strong>+ Add</strong> shows <strong>Upload skill</strong>.</p></div>
-      <figure class="shot" data-shot="claude-customize-skills"><figcaption>Customize in the left sidebar → Skills. Toggle to Yours to see your skills. + Add (top right) → Upload skill.</figcaption></figure>
-      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-3">Stuck on 0.3?</button></div>
-    </div></div></div>
-  </div>
+<section class="step" data-step="setup-3" data-num="0.3" data-title="Connect Airtable to Claude" data-sub-title="" data-group="Set up" data-part="pre" hidden
+  data-learned="You're set up: your own CRM in Airtable, connected to Claude.">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">0.3</span><span class="when-chip">Step 0 · Set up</span></div>
+    <h2>Connect Airtable to Claude</h2>
+    <p class="step-lede">About 3 minutes.</p>
+  </header>
+  <div class="callout-box goal"><span class="cv-badge">Goal of this step</span><p>Give Claude access to your database &amp; the ability to use tools to interact with it.</p></div>
 
-  <!-- 0.4 -->
-  <div class="sub" data-sub="setup-4">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.4</span><span class="sub-title">Connect Airtable to Claude<small>About 3 minutes. This is where most people get stuck.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
-      <ol class="do">
-        <li>In Claude, add the <strong>Airtable</strong> connector: <strong>Settings → Connectors</strong>.
-          <div class="draft-note">[VERIFY: exact menu path.] Airtable's own page says: Settings → Connectors → install the Airtable connector.</div>
-          <figure class="shot" data-shot="0.4-a"><figcaption>Connectors page, Airtable highlighted.</figcaption></figure>
-          <figure class="shot" data-shot="0.4-b"><figcaption>The Connect button.</figcaption></figure>
-        </li>
-        <li>Sign in to Airtable when prompted and give Claude access to your copied base.
-          <figure class="shot" data-shot="0.4-c"><figcaption>Airtable's permission screen, with your copied base selected. This is the step people miss most: make sure your copy is selected.</figcaption></figure>
-          <figure class="shot" data-shot="0.4-d"><figcaption>The final "Grant access" / allow button.</figcaption></figure>
-        </li>
-        <li>Start a new conversation and ask:
-          <div class="copy-card" data-copy="list-bases" data-title="Paste into a new Claude chat" data-sub="A quick test of the connection"></div>
-          <figure class="shot" data-shot="0.4-e"><figcaption>A good result: your copied base in the list.</figcaption></figure>
-        </li>
-      </ol>
-      <div class="check"><p><strong>Check:</strong> your copied base appears in the list. If it does not, the connector was not given access to that base. Repeat step 2 and select it.</p></div>
-      <figure class="shot" data-shot="0.4-f"><figcaption>Where to reopen the connector's access settings to add the base.</figcaption></figure>
-      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done, next →</button><button type="button" class="stuck-inline" data-stuck="setup-4">Stuck on 0.4?</button></div>
-    </div></div></div>
-  </div>
+  <ol class="do">
+    <li>In Claude, click <strong>Customize</strong> in the left sidebar → <strong>Connectors</strong>. Toggle from <strong>Yours</strong> to <strong>Discover</strong> and search <strong>Airtable</strong>.
+      <figure class="shot" data-shot="0.3-a"><figcaption>Customize → Connectors → toggle to Discover → search "Airtable".</figcaption></figure>
+    </li>
+    <li>Add the Airtable connector and click <strong>Connect</strong>.</li>
+    <li>The first screen you're brought to asks <strong>Finish connecting a connector?</strong> Click <strong>Continue connecting</strong>.
+      <figure class="shot" data-shot="0.3-ab"><figcaption>Click Continue connecting.</figcaption></figure>
+    </li>
+    <li>It will take you to log in to Airtable in your browser. Make sure it's the same account you set up the database in earlier (0.1 and 0.2). On Airtable's permission screen, select the base you just created in the previous step (0.2), then click <strong>Grant access</strong>.
+      <figure class="shot" data-shot="0.3-b"><figcaption>Airtable's permission screen: select the base you just duplicated in 0.2.</figcaption></figure>
+    </li>
+    <li>Start a new conversation and ask:
+      <div class="copy-card" data-copy="list-bases" data-title="Paste into a new Claude chat" data-sub="A quick test of the connection"></div>
+      <p>It will ask you for permission to use the tool. For the purposes of this workshop, select <strong>Always allow</strong>.</p>
+      <figure class="shot" data-shot="0.3-z"><figcaption>Select Always allow.</figcaption></figure>
+      <figure class="shot" data-shot="0.3-d"><figcaption>A good result: your copied base in the list. You should only see one base.</figcaption></figure>
+    </li>
+    <li><strong>Review what Claude can do in Airtable.</strong> Go to <strong>Customize</strong> → <strong>Connectors</strong> → <strong>Airtable</strong> and scroll to <strong>Tool permissions</strong>. Each row is one action Claude can take in Airtable, like "List records" or "Delete records." The three icons on the right set whether Claude can use that action on its own, has to ask you first, or can't use it at all.
+      <figure class="shot" data-shot="0.3-tools-a"><figcaption>Each row is a tool Claude can use in Airtable. The icons on the right control it.</figcaption></figure>
+      <p>Click the arrows next to <strong>Read-only tools</strong> and <strong>Write/delete tools</strong> to collapse both lists. Now you can see the totals: 25 read-only and 21 write/delete, so 46 actions for Airtable alone.</p>
+      <figure class="shot" data-shot="0.3-tools-b"><figcaption>Collapse both sections with the arrows to see the tool counts.</figcaption></figure>
+      <p>Use the dropdown on each group's row to set both groups to <strong>Always allow</strong> at once.</p>
+      <figure class="shot" data-shot="0.3-tools-c"><figcaption>Set each group to Always allow.</figcaption></figure>
+    </li>
+  </ol>
+  <div class="check"><p><strong>Check:</strong> your copied base appears in the list. If it does not, the connector was not given access to that base. Repeat step 4 and select it.</p></div>
 
-  <!-- 0.5 -->
-  <div class="sub" data-sub="setup-5" data-optional>
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">0.5</span><span class="sub-title">Optional: apply for the Airtable student plan<small>For long-term use. Not needed for the workshop.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <div class="collapse"><div class="collapse-inner"><div class="sub-body">
-      <p>The free plan is enough for the workshop. If you want to keep using your CRM afterward, apply for an Airtable student plan, which gives qualifying students 6–24 months of complimentary access.</p>
-      <ul>
-        <li>Apply through Airtable's student plan page:<br><a class="go-link" href="https://support.airtable.com/articles/4920135568-applying-for-non-profit-education-and-student-airtable-plans" target="_blank" rel="noopener">Applying for student Airtable plans</a></li>
-        <li>Use the same email address as your Airtable account.</li>
-        <li>Airtable says to expect a response in about 2 business days. After approval you have 4 weeks to activate the plan through Airtable support.</li>
-      </ul>
-      <p>You do not need approval before the workshop.</p>
-      <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done</button><span class="opt-chip">Optional</span><button type="button" class="stuck-inline" data-stuck="setup-5">Questions about 0.5?</button></div>
-    </div></div></div>
-  </div>
+  <aside class="primer">
+    <div class="primer-head"><span class="cv-badge">Security primer</span><h3>🔒 You decide what Claude can do</h3></div>
+    <p>Every app you connect gives Claude a set of actions it can take. For each action, you choose one of three settings:</p>
+    <div class="perm-grid">
+      <div class="perm allow"><span class="perm-ic" aria-hidden="true">✅</span><b>Always allow</b><span>Claude does it without asking.</span></div>
+      <div class="perm ask"><span class="perm-ic" aria-hidden="true">✋</span><b>Needs approval</b><span>Claude asks you every time before doing it.</span></div>
+      <div class="perm never"><span class="perm-ic" aria-hidden="true">🚫</span><b>Blocked</b><span>Claude can never do it.</span></div>
+    </div>
+    <p><strong>This is how you control what agents do on your behalf.</strong> A good rule of thumb: reading data is low risk, changing it is higher, and deleting or sending things is highest.</p>
+    <p><strong>Not every setup works this way.</strong> Different AI apps (like Claude and ChatGPT) and different services you connect (like Gmail and Outlook) give you different levels of control. Some let you set each action separately, and others are all-or-nothing. Before you connect something, check what you're allowing.</p>
+    <p><strong>For this workshop, we're using Always allow.</strong> The base is a practice CRM you just built, with nothing sensitive in it. You'll see every action Claude takes in the chat, and you can check the results in Airtable. Approving dozens of steps one by one would slow you down while you're learning. This is a personal choice, and you can change it anytime on this screen.</p>
+  </aside>
+</section>
 
-  <p class="foot-note" id="setup-gate">Check off 0.1 to 0.4 to finish this step. 0.5 is optional.</p>
+<section class="step" data-step="setup-4" data-num="0.4" data-title="Apply for the Airtable student plan" data-sub-title="Optional" data-group="Set up" data-part="pre" hidden
+  data-learned="">
+  <header class="step-head">
+    <div class="step-meta"><span class="step-num">0.4</span><span class="when-chip">Step 0 · Set up</span><span class="opt-chip">Optional</span></div>
+    <h2>Apply for the Airtable student plan</h2>
+  </header>
+  <div class="callout-box skip"><span class="cv-badge">Optional</span><p>Skip this for now, just wanted you guys to know in case you want to use it long term!</p></div>
+
+  <p>The free plan is enough for the workshop. If you want to keep using your CRM afterward, apply for an Airtable student plan, which gives qualifying students 6–24 months of complimentary access.</p>
+  <ul>
+    <li>Apply through Airtable's student plan page:<br><a class="go-link" href="https://support.airtable.com/articles/4920135568-applying-for-non-profit-education-and-student-airtable-plans" target="_blank" rel="noopener">Applying for student Airtable plans</a></li>
+    <li>Use the same email address as your Airtable account.</li>
+    <li>Airtable says to expect a response in about 2 business days. After approval you have 4 weeks to activate the plan through Airtable support.</li>
+  </ul>
+  <p>You do not need approval before the workshop.</p>
 </section>
 
 <!-- ================= STEP 1 ================= -->
@@ -332,7 +335,7 @@
     </div>
     <svg class="dbanno-arrows" aria-hidden="true"></svg>
   </div>
-  <div class="draft-note">Tour data mirrors the current seed records. When Maya is removed from the template, remove her row here too (and the "Maya Chen" chip on Cedar Labs).</div>
+  <p class="note">This is how all databases are structured, and Airtable is just one tool we could have used. Notion, Microsoft Access and the SQL databases engineers use all work the same way: tables, fields, records and links!</p>
 
   <div class="check"><p><strong>Check:</strong> you clicked a link chip and it took you to the record it points to.</p></div>
 </section>
@@ -343,10 +346,10 @@
   <header class="step-head">
     <div class="step-meta"><span class="step-num">2</span></div>
     <h2>Get your skills</h2>
-    <p class="step-lede">Paste your Base URL and download your skills. They're already pointed at your base. You'll upload each one to Claude in the step where you first use it.</p>
+    <p class="step-lede"><span class="needs-base">Paste your Base URL and download your skills.</span><span class="has-base">Download your three skills.</span> They're already pointed at your base. You'll upload each one to Claude in the step where you first use it.</p>
   </header>
 
-  <p>Your Base URL is the link you copied in 0.2: open your copy of the CRM in Airtable and copy the address bar. It starts with <code>https://airtable.com/app…</code></p>
+  <p class="needs-base">Your Base URL is the link you copied in 0.2: open your copy of the CRM in Airtable and copy the address bar. It starts with <code>https://airtable.com/app…</code></p>
   <div class="zipgen" data-skills="crm-company crm-person crm-capture-convo" data-all></div>
   <div class="check"><p><strong>Check:</strong> you have three zips in your Downloads folder: crm-company, crm-person and crm-capture-convo. You'll upload them to Claude in Steps 3–5.</p></div>
 </section>
@@ -387,8 +390,9 @@ Time zone: America/Los_Angeles
 Schema version: 1</pre>
     </div>
   </div>
+  <figure class="shot" data-shot="3-0"><figcaption>Where to look in Claude: the skill's Contents tab lists both files, SKILL.md and crm-config.txt.</figcaption></figure>
   <p><strong>Why two files?</strong> So everyone can get the same instructions, and only one small file changes per person. If your base were written inside SKILL.md, we'd need a different SKILL.md for every student.</p>
-  <p>Now find them in Claude. In Customize → Skills, toggle to <strong>Yours</strong> and click <strong>crm-company</strong>. The skill has two tabs:</p>
+  <p>Now look at them in Claude. After the upload you're already on <strong>crm-company</strong>'s page. The skill has two tabs:</p>
   <ul>
     <li><strong>Overview: the name and description.</strong> This is the part Claude reads to decide when to use the skill.</li>
     <li><strong>Contents: the files.</strong> Click <code>SKILL.md</code>, then <code>crm-config.txt</code>, to read each one.</li>
@@ -399,7 +403,6 @@ Schema version: 1</pre>
     <div class="collapse"><div class="collapse-inner"><div class="fold-body">
       <p>There's no single right structure. A few ways it could have gone:</p>
       <ul>
-        <li><strong>Facts about you moved to memory.</strong> We started with a <code>my-profile.txt</code> file in the zip, and moved it to Claude's memory. Who you are isn't specific to one skill.</li>
         <li><strong>Config could live inside SKILL.md.</strong> Fine for a skill only you use. We split it out so one SKILL.md works for everyone.</li>
         <li><strong>You could add reference files</strong>, like a schema file or example outputs, for Claude to read when it needs them.</li>
         <li><strong>You could share one config</strong> across several skills.</li>
@@ -409,13 +412,29 @@ Schema version: 1</pre>
   </div>
 
   <h3><span class="h-num">4</span>Run it on a real company</h3>
-  <p>Pick a company you're actually curious about, so you see real research. In a new chat, there are two ways to run it:</p>
-  <ul>
-    <li><strong>Paste the prompt below</strong> (change the company name). Claude picks the skill from its description.</li>
-    <li><strong>Or type <kbd>/</kbd></strong>, start typing <strong>crm</strong>, pick <strong>crm-company</strong>, then name the company.</li>
-  </ul>
-  <div class="copy-card" data-copy="add-company" data-title="Example: change the company name" data-sub="Use a real company, not Cedar Labs or Harbor Health (they're fictional, so research is skipped)"></div>
-  <figure class="shot" data-shot="3-a"><figcaption>Typing /crm in the message box, with the CRM skills listed.</figcaption></figure>
+  <p>This may be the first time you've run a skill (or at least known you were). Here's what's happening.</p>
+  <p><strong>There are two ways a skill gets used:</strong></p>
+  <div class="invoke-grid">
+    <div class="invoke-card">
+      <div class="ik">Method 1 · Claude picks it</div>
+      <h4>Natural language prompt</h4>
+      <p>You just ask in plain words. Claude compares your message with every skill's <strong>description</strong> (the part you saw in the anatomy above), sees that it matches crm-company's, and uses that skill.</p>
+      <p class="ik-ex"><span>You type</span>Add Stripe to my CRM.</p>
+    </div>
+    <div class="invoke-card">
+      <div class="ik">Method 2 · You pick it</div>
+      <h4>Call the skill directly</h4>
+      <p>Type <kbd>/</kbd>, pick <strong>crm-company</strong> from the list, then say what you want. Claude uses that skill because you told it to, whatever the description says.</p>
+      <p class="ik-ex"><span>You type</span>/crm-company Add Stripe</p>
+    </div>
+  </div>
+  <p>Either way, Claude then follows the same SKILL.md: the body decides <em>how</em> it does the job. Method 1 is how you'll usually work. Use Method 2 when you want to be sure which skill runs.</p>
+
+  <h4>Try it</h4>
+  <p>Pick a company you're actually curious about, so you see real research. Start a new chat and use either method.</p>
+  <div class="copy-card" data-copy="add-company" data-title="Method 1: Natural Language prompt" data-sub="Change the company name. Use a real company, not Cedar Labs or Harbor Health (they're fictional, so research is skipped)"></div>
+  <p class="shot-title">Method 2: Call the skill directly</p>
+  <figure class="shot" data-shot="3-a"><figcaption>Type / and start typing crm-company; pick it from the list, then name the company.</figcaption></figure>
   <p>As it runs, match what Claude does to lines in the skill's <strong>Workflow</strong>:</p>
   <table class="maptable">
     <thead><tr><th>What you see in Claude</th><th></th><th>Why it happens</th></tr></thead>
@@ -435,7 +454,6 @@ Schema version: 1</pre>
       <div class="label">Memory moment #1</div>
       <h4>"Fit for me" uses what Claude knows about you.</h4>
       <p>The research summary ends with a labeled <em>Fit for me</em> inference, based on your goals and target roles. If it's skipped, that's why: Claude doesn't know enough about you yet. Tell it in a chat ("I'm a first-year MBA looking at product roles in health tech"), then refresh the research.</p>
-      <div class="draft-note">Open question from the outline: is memory available to students on their plans, and can installed skills use it? If not, the "tell it in a chat" line is the fallback.</div>
     </div>
   </aside>
   <div class="check"><p><strong>Check:</strong> your company is in Airtable with a research summary, and you can point to the Workflow line behind each thing Claude did.</p></div>
@@ -456,10 +474,10 @@ Schema version: 1</pre>
       <div class="ss-row"><span class="ss-k">Name</span><span><code>crm-person</code></span></div>
       <div class="ss-row"><span class="ss-k">Description</span><span class="ss-desc">Loading…</span></div>
     </div>
-    <div class="ss-row"><span class="ss-k">Body, in short</span><span>Adds or updates people: new contacts, outreach you made, facts you learned, job changes, meetings. Writes to People only, and hands a new company to crm-company. Never researches people online.</span></div>
+    <div class="ss-row ss-body"><span class="ss-k">Body</span><div class="ss-bodywrap"><pre class="ss-pre">Loading…</pre><button type="button" class="ss-more" hidden>See all</button></div></div>
     <div class="ss-row"><span class="ss-k">Config</span><span><code>crm-config.txt</code>, the same settings file as crm-company.</span></div>
   </div>
-  <p>Once it's uploaded, open it in Claude and skim the body on the Contents tab. What does it do that crm-company doesn't?</p>
+  <p>Once it's uploaded, you land on its page in Claude. Skim the body on the Contents tab. What does it do that crm-company doesn't?</p>
 
   <h3><span class="h-num">2</span>Upload it to Claude</h3>
   <div class="upload-skill" data-skill="crm-person"></div>
@@ -468,7 +486,6 @@ Schema version: 1</pre>
   <p>Add Maya Chen at Cedar Labs (a fictional sample), including that you're meeting her for coffee. That becomes her Next action and sets up Step 5. Or add a real person. If their company isn't in your CRM yet, crm-company runs on it automatically.</p>
   <p>Paste the prompt below, or type <kbd>/crm-person</kbd> and describe her in your own words.</p>
   <div class="copy-card" data-copy="add-maya" data-title="Paste into a new Claude chat" data-sub="Or describe a real person in your own words"></div>
-  <div class="draft-note">The coffee date matches the sample transcript's date (2026-10-05), so Step 5's "But wait…" example lines up. Change both together if the transcript date changes.</div>
   <p>Then open Maya in Airtable and click her <strong>Company</strong> link. It goes straight to Cedar Labs: records are linked by ID, not by name.</p>
   <figure class="shot" data-shot="4-a"><figcaption>Maya's record with the Company link to Cedar Labs, and Next action showing the coffee.</figcaption></figure>
 
@@ -476,7 +493,6 @@ Schema version: 1</pre>
   <p>In a new message, <strong>without a slash</strong>, say:</p>
   <div class="copy-card" data-copy="emailed-maya" data-title="No slash this time" data-sub="Claude has to pick the skill on its own"></div>
   <p>Claude picks crm-person from its <strong>description</strong>. That's the "when" part of a skill doing its job.</p>
-  <div class="draft-note">Open question from the outline: does a skill trigger reliably from natural language, without the slash? A Stuck? entry covers it if it doesn't.</div>
   <div class="check"><p><strong>Check:</strong> Maya is in People, linked to Cedar Labs, and "I emailed Maya today" updated her without a slash.</p></div>
 </section>
 
@@ -488,33 +504,13 @@ Schema version: 1</pre>
     <h2>Capture a conversation: <code>crm-capture-convo</code></h2>
   </header>
 
-  <aside class="butwait">
-    <div class="butwait-head"><svg><use href="#i-warn"/></svg>But wait…</div>
-    <div class="butwait-body">
-      <p>So far, Claude has saved straight to your CRM without asking. That was fine: adding a company or a person only adds information.</p>
-      <p><strong>Capturing a conversation is different: it replaces what's already in your CRM.</strong> Maya's Next action currently says you're meeting her for coffee (from Step 4). Capturing the transcript replaces it with this conversation's action items. AI also wrote those from a transcript, so a misread commitment would land in your CRM.</p>
-      <p>So this skill shows you a preview first. It shows what's being replaced and dropped, and nothing is saved until you confirm:</p>
-      <div class="preview-mock" aria-label="Example preview">People › Maya Chen<br>
-Status: Conversation scheduled → Conversation held<br>
-Last contact: 2026-10-05<br>
-Next action: <span class="old">Coffee with Maya on 2026-10-05</span> → <span class="new">1) Send Maya your resume and a few lines on what you'd want to work on; 2) Waiting on Maya: intro to Priya, by Friday</span><br>
-Dropped from Next action: Coffee with Maya on 2026-10-05<br>
-…<br>
-<span class="confirm">NOT SAVED YET. CONFIRM?</span></div>
-      <p>Here's the Safety rule that creates the preview. crm-company and crm-person have a different rule 5 ("Save directly").</p>
-      <div class="rule-quote" id="capture-rule5">5. Preview, approve, write, verify. Before any write, show what will be saved and wait for my approval. Write only what was approved.</div>
-      <div class="draft-note">"But wait…" example built as drafted (outline: WAITING on Kate to confirm after seeing it on the site). The mock's Status line assumes Step 4 set Maya to "Conversation scheduled" (crm-person does this for a confirmed meeting); if students don't give a date, she may still be "To reach out". Rule 5's text is loaded from the live SKILL.md.</div>
-    </div>
-  </aside>
-
   <h3><span class="h-num">1</span>Upload the skill to Claude</h3>
   <div class="upload-skill" data-skill="crm-capture-convo"></div>
 
   <h3><span class="h-num">2</span>Make it yours: edit the "My process" section of the skill</h3>
   <p>Before you run it, change one or two things in capture's <strong>My process</strong> section, so your first run already works the way you want. You'll edit the text yourself. Leave the Safety rules alone.</p>
   <ol class="do">
-    <li>In Customize → Skills, toggle to <strong>Yours</strong> and click <strong>crm-capture-convo</strong>.</li>
-    <li>Open the <strong>Contents</strong> tab and click <strong>SKILL.md</strong>.</li>
+    <li>After the upload you're already on <strong>crm-capture-convo</strong>'s page. Open the <strong>Contents</strong> tab and click <strong>SKILL.md</strong>.</li>
     <li>Click <strong>Edit</strong> (top right).</li>
     <li>Scroll down to <strong>My process (edit this)</strong> and change the text directly.</li>
     <li>Click <strong>Save Version</strong>.</li>
@@ -526,13 +522,25 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
     <li>At the bottom of My process, add a line: "Under Suggestions, add 2 questions to ask next time."</li>
     <li>Change the <strong>Title</strong> format, or what counts as an action item under <strong>Next action</strong>.</li>
   </ul>
-  <p><strong>Don't use Edit with Claude for this one.</strong> The point is to see that a skill is just text you can change yourself.</p>
 
   <h3><span class="h-num">3</span>Run it on the coffee chat</h3>
   <p>Copy the Maya coffee-chat transcript, or use your own notes from a real conversation. In a new chat, say "Here's the transcript from my coffee with Maya Chen" and paste it. Or type <kbd>/crm-capture-convo</kbd> and paste the transcript.</p>
   <div class="copy-card tall" data-copy="transcript" data-title="Coffee with Maya Chen: transcript (fictional)" data-sub="28 minutes, about 900 words" data-download="coffee-with-maya-transcript.md"></div>
   <p><strong>Review the preview</strong> line by line. What's being replaced? What's being dropped? Look for your My process change too. Then confirm.</p>
-  <figure class="shot" data-shot="5-a"><figcaption>Claude's preview ending in NOT SAVED YET. CONFIRM?</figcaption></figure>
+
+  <div class="reveal">
+    <div class="q">🤔 What's different here?</div>
+    <p>When you added a company and a person, Claude saved straight to your CRM. This time it stopped and asked you to confirm. Your Airtable permissions are still on Always allow, so why did it ask?</p>
+    <div class="fold" style="background:#fff">
+      <button type="button" class="fold-head" aria-expanded="false">Click to see why<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+      <div class="collapse"><div class="collapse-inner"><div class="fold-body">
+        <p><strong>It's in the skill.</strong> crm-capture-convo's Safety rules include:</p>
+        <div class="rule-quote" id="capture-rule5">5. Preview, approve, write, verify. Before any write, show what will be saved and wait for my approval. Write only what was approved.</div>
+        <p>crm-company and crm-person say "Save directly" instead.</p>
+        <p>Tool permissions control what Claude <em>can</em> do. A skill can also tell Claude to check with you first, even when it's allowed to go ahead. The next section shows why this skill does that.</p>
+      </div></div></div>
+    </div>
+  </div>
 
   <h3><span class="h-num">4</span>How does this update your database?</h3>
   <div class="history-state">
@@ -547,11 +555,11 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 </section>
 
 <!-- ================= STEP 6 ================= -->
-<section class="step" data-step="build" data-num="6" data-title="Build your own brief-me" data-sub-title="Core exercise" data-group="Part C" data-part="C" hidden
+<section class="step" data-step="build" data-num="6" data-title="Build your own crm-brief-me" data-sub-title="Core exercise" data-group="Part C" data-part="C" hidden
   data-learned="Now you know how to build a skill: describe the problem, tell it where your data lives, and test it before you save.">
   <header class="step-head">
     <div class="step-meta"><span class="step-num">6</span><span class="part-chip">Part C · Build your own</span></div>
-    <h2>Build your own brief-me</h2>
+    <h2>Build your own: <code>crm-brief-me</code></h2>
     <p class="step-lede"><strong>The problem:</strong> you have a conversation coming up. You may have talked to this person before, but you can't remember what about, what you promised them, or what they're working on now. Think about what that's like for you: what do you usually scramble to find, and what would actually help in the five minutes before a chat?</p>
   </header>
   <p>You'll build this skill on your own using Claude's skill builder. You can have the skill do whatever would be most helpful in your day to day.</p>
@@ -621,8 +629,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
     <li><strong>Turn a chat into a skill</strong> when you notice you're repeating the same prompting.</li>
     <li><strong>Upload a file</strong>, like you did with the three zips.</li>
   </ul>
-  <div class="draft-note">Open item from the outline: Kate to test this approach (prompt with blanks plus the CRM block) in the skill builder. Are database reads still reliable without the field list? Does it fit workshop time?</div>
-  <div class="check"><p><strong>Check:</strong> you have a brief-me skill, yours or ours, and it gave you a brief on Maya that matches what's in Airtable.</p></div>
+  <div class="check"><p><strong>Check:</strong> you have a crm-brief-me skill, yours or ours, and it gave you a brief on Maya that matches what's in Airtable.</p></div>
 </section>
 
 <!-- ================= YOUR TURN: FORK (after Part C, no number) ================= -->
@@ -650,9 +657,9 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
     <a class="path-card" href="#design-your-own" data-go="next" data-part="core">
       <span class="path-icon" aria-hidden="true">✎</span>
       <span class="path-kicker">Option 2</span>
-      <span class="path-title">Design your own workflow</span>
-      <span class="path-body">Take what you just did to a problem of your own. Open-ended questions to work out what your next skill should be and how to build it.</span>
-      <span class="path-go"><span class="when-todo">Design your own →</span><span class="when-done"><svg class="tick" aria-hidden="true"><use href="#i-check"/></svg> Done. Open again →</span></span>
+      <span class="path-title">Build your next skill</span>
+      <span class="path-body">Take what you just did to a problem of your own. A framework to work out what your next skill should be and how to build it.</span>
+      <span class="path-go"><span class="when-todo">Build your next skill →</span><span class="when-done"><svg class="tick" aria-hidden="true"><use href="#i-check"/></svg> Done. Open again →</span></span>
     </a>
   </div>
 
@@ -739,7 +746,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
   <!-- Side quest 1 -->
   <div class="sub quest" data-sub="quest-1" id="quest-1">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">1</span><span class="sub-title">Auto-update your CRM from email and calendar<small>About 20 minutes. Needs Gmail and Google Calendar, and a plan with scheduled tasks to automate it.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">📬</span><span class="sub-title">Auto-update your CRM from email and calendar<small>About 20 minutes. Needs Gmail and Google Calendar, and a plan with scheduled tasks to automate it.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Putting skills on a schedule, and why some skills can run with no one watching while others shouldn't.</p>
       <p>You email someone new, book a coffee, get a reply, and forget to log it. Here Claude reads your email and calendar on a schedule and updates your CRM with the two skills you already have, crm-person and crm-company. New to scheduled tasks? Read <a href="#sq-basics">Scheduling basics</a> first.</p>
@@ -753,7 +760,6 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
       <ol class="do">
         <li><strong>Connect your email and calendar.</strong> In Claude, open <strong>Customize → Connectors</strong> and connect <strong>Gmail</strong> and <strong>Google Calendar</strong>. Sign in with the Google account you network from.
-          <div class="draft-note">[VERIFY: menu path.] Anthropic's help center now says "Customize &gt; Connectors" (setup 0.4 says Settings → Connectors; align both).</div>
         </li>
         <li><strong>Decide what it's allowed to do.</strong> A scheduled run happens while you're away, so nobody is there to click Allow, and it reads email that strangers can write. Set each tool now. In <strong>Customize → Connectors</strong>, click a connector to see its tools:
           <ul>
@@ -818,7 +824,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
   <!-- Side quest 2 -->
   <div class="sub quest" data-sub="quest-2" id="quest-2">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">2</span><span class="sub-title">Networking reminders<small>About 20 minutes. The scheduling part needs a paid Claude plan (Pro or above).</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">⏰</span><span class="sub-title">Networking reminders<small>About 20 minutes. The scheduling part needs a paid Claude plan (Pro or above).</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Putting a read-only skill over your database on a schedule.</p>
       <p>Once a week, Claude tells you who you've gone quiet with and gives you a reason to reach out to each. It only reads your CRM. You build it as a small skill, test it by hand, then put it on a schedule.</p>
@@ -881,7 +887,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
   <!-- Side quest 3 -->
   <div class="sub quest" data-sub="quest-3" id="quest-3">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">3</span><span class="sub-title">Write a follow up email draft as part of the crm-capture-convo skill<small>About 15 minutes. Needs crm-capture-convo from Step 5. No new connectors.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">✍️</span><span class="sub-title">Write a follow up email draft as part of the crm-capture-convo skill<small>About 15 minutes. Needs crm-capture-convo from Step 5. No new connectors.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Extending a skill you already have by adding an output step.</p>
       <p>After a coffee chat, the next thing you do is send a thank-you. You'll add one step to crm-capture-convo so it writes that draft for you, right after it saves the conversation. You can always ask Claude for a draft; this way you don't have to remember to.</p>
@@ -929,7 +935,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
   <!-- Side quest 4 -->
   <div class="sub quest" data-sub="quest-4" id="quest-4">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">4</span><span class="sub-title">Target-company watch<small>About 15 minutes. Scheduling needs a paid Claude plan; the first run works on any plan.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">🔭</span><span class="sub-title">Target-company watch<small>About 15 minutes. Scheduling needs a paid Claude plan; the first run works on any plan.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Scheduled research, with the web as a tool.</p>
       <p>Every Monday, Claude checks the web for news on the companies you care most about and tells you only what's new: funding, news, open roles. Your CRM doesn't change. New to scheduled tasks? Read <a href="#sq-basics">Scheduling basics</a> first.</p>
@@ -987,7 +993,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
   <!-- Side quest 5 -->
   <div class="sub quest" data-sub="quest-5" id="quest-5">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num">5</span><span class="sub-title">Daily Granola-to-Airtable sync<small>About 20 minutes. Personal Claude account on a paid plan, and a Granola account.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">🥣</span><span class="sub-title">Daily Granola-to-Airtable sync<small>About 20 minutes. Personal Claude account on a paid plan, and a Granola account.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Scheduling, and what approval looks like when no one is there.</p>
       <p class="note"><strong>Personal accounts only.</strong> Stanford accounts won't have a Granola connector, and scheduled tasks need a paid Claude plan (Pro or higher). No personal paid account? You can still get your Granola notes into your CRM by hand: open the meeting in Granola, copy the notes, and paste them into a new chat after <kbd>/crm-capture-convo</kbd>, just like <button type="button" class="linkish" data-go="capture">Step 5</button>.</p>
@@ -997,13 +1003,12 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
       <h4>Before you start</h4>
       <ul>
         <li>Your <strong>personal</strong> Claude account, on Pro or higher.</li>
-        <li>On that account: Airtable connected to your base, and <strong>crm-capture-convo</strong> and <strong>crm-company</strong> uploaded. Did the workshop on a Stanford account? Repeat <button type="button" class="linkish" data-go="setup">0.4</button> and upload the zips again on your personal account.</li>
+        <li>On that account: Airtable connected to your base, and <strong>crm-capture-convo</strong> and <strong>crm-company</strong> uploaded. Did the workshop on a Stanford account? Repeat <button type="button" class="linkish" data-go="setup-3">0.3</button> and upload the zips again on your personal account.</li>
         <li>A Granola account with at least one recorded coffee chat or call. The free plan is enough: it covers your own notes from the last 30 days.</li>
       </ul>
 
       <ol class="do">
         <li>Connect Granola to Claude: <strong>Customize → Connectors</strong>, search for <strong>Granola</strong>, click <strong>Connect</strong>, and sign in with your Granola account.
-          <div class="draft-note">[VERIFY: menu path.] Claude's help center now says Customize → Connectors; setup 0.4 on this site says Settings → Connectors. Granola's own docs use both. Use whichever matches the current desktop app, and match 0.4.</div>
         </li>
         <li>Check Claude can see your meetings and tell networking chats from everything else. This only reads; nothing is saved.
           <div class="copy-card" data-copy="q5-test" data-title="Paste into a new Claude chat" data-sub="Read-only test of Granola and the filter"></div>
@@ -1060,17 +1065,51 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 </section>
 
 <!-- ================= DESIGN YOUR OWN WORKFLOW (was step 7) ================= -->
-<section class="step" data-step="next" data-icon="✎" data-title="Design your own workflow" data-sub-title="Open-ended" data-group="Your turn" data-part="core" hidden
-  data-learned="Now you know one framework for any workflow: the same questions, then manual or scheduled.">
+<section class="step" data-step="next" data-icon="✎" data-title="Build your next skill" data-sub-title="Open-ended" data-group="Your turn" data-part="core" hidden
+  data-learned="Now you know one framework for any skill: pick how to make it, answer the same questions, then decide manual or scheduled.">
   <header class="step-head">
     <div class="step-meta"><span class="step-num">✎</span><span class="part-chip">Your turn · Optional</span></div>
-    <h2>Design your own workflow</h2>
-    <p class="step-lede">Use the same kind of questions you answered for brief-me, on a workflow of your own. One framework, not two.</p>
+    <h2>Build your next skill</h2>
+    <p class="step-lede">You just built crm-brief-me. Here's how to do it again for anything. Pick something you do again and again: following up after a recruiting event, keeping in touch with people who matter to you, prepping for a class, tracking applications.</p>
   </header>
-  <div class="draft-note">Kate: open-ended questions on how to go about making your own skills go here. For now this page is the old step 7 (the six questions plus manual or scheduled), minus "Then pick a side quest".</div>
-  <p>Pick something you do again and again: following up after a recruiting event, keeping in touch with people who matter to you, prepping for a class, tracking applications. Then answer:</p>
-  <div class="six" data-key="next" data-variant="next"></div>
-  <div class="check"><p><strong>Check:</strong> you've answered the six questions (plus manual or scheduled) for one workflow of your own.</p></div>
+
+  <h3><span class="h-num">1</span>Pick how you'll make it</h3>
+  <p>You've already seen all four ways to make a skill in Claude:</p>
+  <div class="ways">
+    <div class="way"><b>Upload a file</b><span>When someone gives you a skill (a zip).</span><small>Seen in Steps 3–5</small></div>
+    <div class="way"><b>Create with Claude</b><span>When you know the problem but not the wording. The skill builder asks you questions and writes it.</span><small>Seen in Step 6</small></div>
+    <div class="way"><b>Turn a chat into a skill</b><span>When you notice you're typing the same instructions again.</span><small>Mentioned in Step 6</small></div>
+    <div class="way"><b>Edit one you have</b><span>When it mostly works but isn't quite yours.</span><small>Seen in Step 5 (My process)</small></div>
+  </div>
+  <p class="aside-tip"><strong>Up for an extra challenge?</strong> <strong>Create a skill</strong> has you write it from scratch.</p>
+
+  <h3><span class="h-num">2</span>Know what to tell it</h3>
+  <p>Whichever way you pick, these are the questions to answer. They're the same blanks you filled in for crm-brief-me. Each one turns into a part of the skill.</p>
+  <ul class="skill-qs">
+    <li><b>When would you use it?</b> What you'd say to start it. <span class="q-tag">Becomes the description</span><span class="q-note">This is how Claude knows to use the skill.</span></li>
+    <li><b>What will you give it?</b> A name, notes, a link, or nothing. <span class="q-tag">Inputs</span></li>
+    <li><b>Where does it get information?</b> Your apps, the web, what Claude knows about you. If it saves anything, where does it go? <span class="q-tag">Workflow</span></li>
+    <li><b>What should come back?</b> What's in it, in what format, and how long. <span class="q-tag">Output</span></li>
+    <li><b>What should it never do?</b> Where do you want to approve before it acts? <span class="q-tag">Safety rules</span><span class="q-note">Like crm-capture-convo's preview in Step 5, and your tool permissions from 0.3.</span></li>
+    <li><b>How will you know it worked?</b> Test it on a real example before you save. <span class="q-tag">Testing</span></li>
+  </ul>
+
+  <h3><span class="h-num">3</span>Decide how it runs: manual or scheduled?</h3>
+  <div class="history-state">
+    <div class="hs hist"><div class="k">Manual</div><div class="t">You start it</div>
+      <p>Usually because you're giving it something: notes, a name, a question.</p>
+      <ul><li>crm-capture-convo, crm-brief-me</li><li><a href="#quest-3" class="quest-jump">✍️ Follow-up email draft</a></li></ul></div>
+    <div class="hs now"><div class="k">Scheduled</div><div class="t">It runs on its own</div>
+      <p>It works on information that arrives without you: email, your calendar, the web.</p>
+      <ul><li><a href="#quest-1" class="quest-jump">📬 CRM sync</a>, <a href="#quest-2" class="quest-jump">⏰ reminders</a></li><li><a href="#quest-4" class="quest-jump">🔭 Company watch</a>, <a href="#quest-5" class="quest-jump">🥣 Granola sync</a></li></ul></div>
+  </div>
+  <p><strong>Rule of thumb:</strong> scheduled works best for skills that read and report. If a skill changes or sends things, run it manually, or set its tool permissions so it can't do anything you'd want to approve. No one is there to approve a scheduled run.</p>
+
+  <h3><span class="h-num">4</span>Copy the template</h3>
+  <p>Fill in the blanks and paste it into the skill builder (<strong>Customize</strong> → <strong>Skills</strong> → <strong>+ Add</strong> → <strong>Create with Claude</strong>). Keep it for next time.</p>
+  <div class="copy-card" data-copy="skill-template" data-title="Your skill-builder template" data-sub="Fill in the blanks in your own words. A few words each is enough."></div>
+
+  <div class="check"><p><strong>Check:</strong> you've picked one workflow and pasted the template into the skill builder.</p></div>
 </section>
 
 <!-- ================= FINISH ================= -->
@@ -1101,7 +1140,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
   <div class="card" data-part="C">
     <h3 style="margin-top:0">Keep going</h3>
-    <p>Side quests and Design your own workflow stay open after today. <button type="button" class="linkish" data-go="quests">Side quests</button> · <button type="button" class="linkish" data-go="next">Design your own workflow</button></p>
+    <p>Side quests and Build your next skill stay open after today. <button type="button" class="linkish" data-go="quests">Side quests</button> · <button type="button" class="linkish" data-go="next">Build your next skill</button></p>
   </div>
 </section>
 
@@ -1129,23 +1168,19 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
       <section class="stuck-group" data-group="setup-2"><h3>0.2 Duplicate the CRM base</h3>
         <details class="stuck-item"><summary>"Duplicate base" is missing</summary><div class="fix"><p>You're probably not signed in. Sign in to Airtable, then open the template link again.</p></div></details>
         <details class="stuck-item"><summary>I duplicated it into the wrong workspace</summary><div class="fix"><p>That's fine if you're the Owner or a Creator there. Otherwise, open the template link again and duplicate it into your own workspace. Use the new copy from then on.</p></div></details>
-        <details class="stuck-item"><summary>I copied the URL of the template, not my copy</summary><div class="fix"><p>This site will tell you in Step 2 ("That's the workshop template"). Go to your Airtable home page, open <em>your</em> copy of the base, and copy the address bar from there.</p></div></details>
-        <details class="stuck-item"><summary>I don't see Maya Chen or Jordan Lee</summary><div class="fix"><p>Check you're on the <strong>People</strong> tab of your copy. If the tables are empty, the copy may not have included records: open the template link again and copy it once more.</p></div></details>
+        <details class="stuck-item"><summary>I copied the URL of the template, not my copy</summary><div class="fix"><p>This site will tell you when you paste it ("That's the workshop template"). Go to your Airtable home page, open <em>your</em> copy of the base, and copy the address bar from there.</p></div></details>
+        <details class="stuck-item"><summary>I don't see Jordan Lee</summary><div class="fix"><p>Check you're on the <strong>People</strong> tab of your copy. If the tables are empty, the copy may not have included records: open the template link again and copy it once more.</p></div></details>
       </section>
 
-      <section class="stuck-group" data-group="setup-3"><h3>0.3 Prepare Claude</h3>
-        <details class="stuck-item"><summary>There's no Customize option</summary><div class="fix"><p>Update the Claude desktop app and restart it. Check you're signed in to the account you'll use in the workshop.</p></div></details>
-        <details class="stuck-item"><summary>Skills or code execution is greyed out</summary><div class="fix"><p>That's a plan or admin restriction. If your account is managed by an organization, an admin may have turned it off. Tell the workshop team so we can sort it out.</p></div></details>
-      </section>
 
-      <section class="stuck-group" data-group="setup-4"><h3>0.4 Connect Airtable to Claude</h3>
-        <details class="stuck-item"><summary>My base isn't in the list</summary><div class="fix"><p>The connector wasn't given access to that base. Reopen the connector's access settings (screenshot 0.4-f), select your copied base, save, and ask again in a <strong>new</strong> conversation.</p></div></details>
+      <section class="stuck-group" data-group="setup-3"><h3>0.3 Connect Airtable to Claude</h3>
+        <details class="stuck-item"><summary>My base isn't in the list</summary><div class="fix"><p>The connector wasn't given access to that base. Disconnect Airtable in Customize → Connectors, connect again, select your copied base on Airtable's permission screen, and ask again in a <strong>new</strong> conversation.</p></div></details>
         <details class="stuck-item"><summary>Claude says it has no Airtable tools</summary><div class="fix"><p>The connector isn't enabled in this conversation. In the chat, open the tools menu by the message box and turn Airtable on. Then try again.</p></div></details>
         <details class="stuck-item"><summary>I signed in to a different Airtable account</summary><div class="fix"><p>Disconnect Airtable in Claude's connector settings, connect again, and sign in with the account that owns your copy.</p></div></details>
         <details class="stuck-item"><summary>Permission errors when Claude writes</summary><div class="fix"><p>Claude needs edit access to the base. Reconnect and make sure your copied base is selected, and that the base is in a workspace where you're Owner or Creator.</p></div></details>
       </section>
 
-      <section class="stuck-group" data-group="setup-5"><h3>0.5 Student plan</h3>
+      <section class="stuck-group" data-group="setup-4"><h3>0.4 Student plan</h3>
         <details class="stuck-item"><summary>Do I need the student plan for the workshop?</summary><div class="fix"><p>No. The free plan is enough. Apply only if you want to keep using your CRM afterward.</p></div></details>
       </section>
 
@@ -1158,6 +1193,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
       <section class="stuck-group" data-group="company"><h3>3 Add a company</h3>
         <details class="stuck-item"><summary>I uploaded the unzipped folder</summary><div class="fix"><p>Upload the <strong>.zip</strong> itself. Safari unzips downloads automatically. If you only have a folder, right-click it → <strong>Compress</strong> to make a zip again, and upload that. Don't rename the folder inside: its name has to match the skill's name.</p></div></details>
+        <details class="stuck-item"><summary>I picked the zip but the skill isn't there</summary><div class="fix"><p>You probably didn't click the <strong>Upload</strong> button after choosing the zip. Go to Customize → Skills → <strong>+ Add</strong> → <strong>Upload skill</strong>, pick the zip again, and click <strong>Upload</strong>.</p></div></details>
         <details class="stuck-item"><summary>The skill doesn't show up when I type /</summary><div class="fix"><p>In Customize → Skills, toggle to <strong>Yours</strong> and check it's there and switched on. Then start a new chat.</p></div></details>
         <details class="stuck-item"><summary>I can't find my skill in Customize → Skills</summary><div class="fix"><p>Toggle from <strong>Discover</strong> to <strong>Yours</strong> (top of the Skills tab). Your uploaded skills are listed there.</p></div></details>
         <details class="stuck-item"><summary>Claude asks for my Base ID</summary><div class="fix"><p>The skill's config still has the placeholder: the zip didn't come from this site with your Base URL. Make the zip again (Step 2, or "Need the zip again?" under the upload steps), then upload it again.</p></div></details>
@@ -1180,7 +1216,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
         <details class="stuck-item"><summary>My edit to My process didn't change anything</summary><div class="fix"><p>Start a new chat after editing, and check you edited SKILL.md in crm-capture-convo (Customize → Skills → Yours → Contents) and clicked <strong>Save Version</strong>.</p></div></details>
       </section>
 
-      <section class="stuck-group" data-group="build"><h3>6 Build your own brief-me</h3>
+      <section class="stuck-group" data-group="build"><h3>6 Build your own crm-brief-me</h3>
         <details class="stuck-item"><summary>The builder copied my other CRM skills, or made two files</summary><div class="fix"><p>Remind it: "Build this from scratch as a single SKILL.md file. Don't open or copy my other CRM skills." That line is already in the prompt.</p></div></details>
         <details class="stuck-item"><summary>My skill can't find my base</summary><div class="fix"><p>Check it has a "My CRM" section with your Base ID, and that it says to always use that Base ID with the Airtable connector.</p></div></details>
         <details class="stuck-item"><summary>My skill tried to change a record</summary><div class="fix"><p>A brief should be read-only. Ask the builder to add: "Read-only: never create, change, or delete records, and never send anything."</p></div></details>
@@ -1283,7 +1319,7 @@ Dropped from Next action: Coffee with Maya on 2026-10-05<br>
 
 <script type="text/plain" id="src-emailed-maya">I emailed Maya today</script>
 
-<script type="text/plain" id="src-brief-prompt">Help me build a skill called my-brief-me that preps me for an upcoming conversation with someone in my network.
+<script type="text/plain" id="src-brief-prompt">Help me build a skill called crm-brief-me that preps me for an upcoming conversation with someone in my network.
 
 When I'd use it (what I'd say to start it): 
 What I'll give it: 
@@ -1298,7 +1334,20 @@ How to reach my CRM:
 - Read-only: never create, change, or delete records, and never send anything.
 - Build this from scratch as a single SKILL.md file. Don't open or copy my other CRM skills.</script>
 
-<script type="text/plain" id="src-example-request">Help me build a skill called my-brief-me that preps me for an upcoming conversation with someone in my network.
+<script type="text/plain" id="src-skill-template">Help me build a skill called ___ that ___.
+
+When I'd use it (what I'd say to start it): 
+What I'll give it: 
+Where it gets information (my connected apps, the web, what you know about me): 
+If it saves anything, where it goes: 
+What I want back (what's in it, format, length): 
+What it should never do, and where I want to approve before it acts: 
+Manual or scheduled: 
+
+If it uses one of my connected apps, tell me which one, and check what's actually there before you rely on it.
+Before I save, test it on a real example with me.</script>
+
+<script type="text/plain" id="src-example-request">Help me build a skill called crm-brief-me that preps me for an upcoming conversation with someone in my network.
 
 When I'd use it (what I'd say to start it): before a coffee chat or call, e.g. "prep me for my chat with Maya"
 What I'll give it: just the person's name

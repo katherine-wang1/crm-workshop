@@ -202,6 +202,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .rail-sub { display: block; font-size: .76rem; color: var(--ink-3); margin-top: 2px; }
 .rail-legend { font-size: .78rem; color: var(--ink-3); margin: 14px 6px 0; display: flex; gap: 6px; align-items: baseline; }
 .rail-legend b { color: var(--sun); text-shadow: 0 1px 0 #c99a00; }
+/* Step 0's sub-steps (0.1–0.4), indented under "0 · Sign in and set up" */
+.rail-subitem button { padding: 4px 10px 4px 30px; gap: 10px; }
+.rail-subitem .node { width: 24px; height: 24px; font: 800 .64rem/1 var(--font-display); letter-spacing: -.02em; }
+.rail-subitem .node .tick { width: 12px; height: 12px; }
+.rail-subitem .rail-title { font-weight: 500; font-size: .86rem; }
+.rail-subitem .rail-sub { font-size: .7rem; }
+.rail-parent.current:not(.done) .node { transform: none; }
+body:not(.base-set) .has-base, body.base-set .needs-base { display: none; }
+.shot-title { margin: 14px 0 4px; font-weight: 700; }
 
 .part-chip { display: inline-flex; align-items: center; gap: 4px; font: 800 .7rem/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; padding: .35em .6em; border-radius: 999px; background: var(--pc-soft, var(--paper-2)); color: var(--pc, var(--ink-2)); }
 
@@ -256,6 +265,7 @@ ol.do > li { counter-increment: do; position: relative; padding-left: 40px; marg
 ol.do > li::before { content: counter(do); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--pc, var(--ink)); font: 800 .9rem/28px var(--font-display); text-align: center; }
 
 /* ---------- screenshot slots ---------- */
+.must { background: var(--sun-soft); box-shadow: 0 0 0 2px var(--sun); border-radius: 6px; padding: 0 .3em; font-weight: 700; }
 .shot { margin: 12px 0 16px; }
 .shot img { border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow); cursor: zoom-in; background: #fff; }
 .shot figcaption { font-size: .84rem; color: var(--ink-3); margin-top: 6px; }
@@ -524,6 +534,41 @@ body.draft .draft-note::before { content: "Draft note for Kate (hidden from stud
 .anat-caveat { display: flex; gap: 12px; align-items: flex-start; background: var(--sun-soft); border: 2px solid var(--sun); border-radius: 14px; padding: 12px 16px; margin: -8px 0 26px; font-size: .94rem; }
 .anat-caveat .cv-badge { flex: none; font: 800 .66rem/1 var(--font-body); letter-spacing: .05em; text-transform: uppercase; background: var(--ink); color: #fff; padding: .5em .7em; border-radius: 999px; margin-top: 2px; }
 .anat-caveat p { margin: 0; }
+/* callout boxes: badge + one line */
+.callout-box { display: flex; gap: 12px; align-items: flex-start; border-radius: 14px; padding: 12px 16px; margin: 4px 0 22px; font-size: .98rem; border: 2px solid var(--line-2); background: #fff; }
+.callout-box p { margin: 0; }
+.callout-box .cv-badge { flex: none; font: 800 .66rem/1 var(--font-body); letter-spacing: .05em; text-transform: uppercase; background: var(--ink); color: #fff; padding: .5em .7em; border-radius: 999px; margin-top: 3px; white-space: nowrap; }
+.callout-box.goal { background: var(--accent-soft); border-color: var(--accent); }
+.callout-box.goal .cv-badge { background: var(--pc, var(--ink)); }
+.callout-box.info { background: var(--paper-2); border-color: var(--line-2); margin-top: 18px; }
+.callout-box.skip { background: var(--sun-soft); border-color: var(--sun); }
+/* 0.3 security primer */
+.primer { margin: 28px 0 8px; padding: 20px 22px; border-radius: 18px; background: var(--coral-soft); border: 2px solid var(--coral); box-shadow: 5px 5px 0 var(--coral); }
+.primer-head h3 { color: #B4252C; }
+.primer .perm.never { background: #fff; }
+.primer-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.primer-head h3 { margin: 0; }
+.primer .cv-badge { font: 800 .66rem/1 var(--font-body); letter-spacing: .05em; text-transform: uppercase; background: #F2545B; color: #fff; padding: .5em .7em; border-radius: 999px; }
+.perm-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0 16px; }
+.perm { border-radius: 14px; padding: 12px 14px; display: grid; gap: 4px; font-size: .9rem; align-content: start; }
+.perm b { font-size: .98rem; }
+.perm span:last-child { color: var(--ink-2); }
+.perm-ic { font-size: 1.3rem; line-height: 1; }
+.perm.allow { background: #E3F5EC; } .perm.ask { background: var(--sun-soft); } .perm.never { background: #FDE3E4; }
+.primer p:last-of-type { margin-bottom: 0; }
+/* step 3: two ways a skill gets used */
+.invoke-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 10px 0 14px; }
+.invoke-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; box-shadow: var(--shadow); display: grid; align-content: start; }
+.invoke-card .ik { font: 800 .7rem/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--pc, var(--ink-3)); }
+.invoke-card h4 { margin: 8px 0 6px; }
+.invoke-card p { margin: 0 0 10px; font-size: .94rem; }
+.ik-ex { font: .84rem/1.4 var(--font-mono); background: var(--paper); border-radius: 10px; padding: 8px 10px; margin: auto 0 0 !important; }
+.ik-ex span { display: block; font: 700 .66rem/1.4 var(--font-body); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+/* step 4: real skill body, first lines + See all */
+.ss-bodywrap { min-width: 0; }
+.ss-pre { margin: 0; font: .76rem/1.55 var(--font-mono); white-space: pre-wrap; word-break: break-word; max-height: calc(5 * 1.55em); overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+.ss-open .ss-pre { max-height: none; -webkit-mask-image: none; mask-image: none; }
+.ss-more { margin-top: 6px; font: 700 .76rem/1 var(--font-body); border: 0; background: #fff; border-radius: 999px; padding: .45em .8em; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
 .ac-name { --ac: #7C5CFF; } .ac-desc { --ac: #A855F7; } .ac-title { --ac: #94A3B8; } .ac-what { --ac: #3B82F6; } .ac-inputs { --ac: #0EA5E9; }
 .ac-fields { --ac: #14B8A6; } .ac-workflow { --ac: #FF7A45; } .ac-process { --ac: #22A06B; } .ac-safety { --ac: #F2545B; } .ac-other { --ac: #94A3B8; }
 .anat-loading { padding: 24px; color: var(--ink-3); }
@@ -704,6 +749,8 @@ body.draft .draft-note::before { content: "Draft note for Kate (hidden from stud
   .rail-title { font-size: .84rem; white-space: nowrap; }
   .rail-item:not(.current) .rail-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .rail-pill { border-radius: 999px; top: 0; left: 0; right: auto; }
+  .rail-parent { display: none; }
+  .rail-subitem button { padding: 6px 10px 6px 6px; }
   .node { width: 28px; height: 28px; font-size: .8rem; }
   .stage { padding: 22px 16px 120px; }
 }
@@ -729,6 +776,8 @@ body.draft .draft-note::before { content: "Draft note for Kate (hidden from stud
   .abody-box::before { left: 5px; right: 5px; }
   .abody-note { left: 14px; max-width: calc(100% - 28px); background: #fff; }
   .anat-caveat { flex-direction: column; gap: 8px; }
+  .callout-box { flex-direction: column; gap: 8px; }
+  .perm-grid, .invoke-grid { grid-template-columns: 1fr; }
   .arow { grid-template-columns: minmax(0, 1fr); }
   .aarrow { display: none; }
   .aexp { padding: 0 14px 14px; position: relative; }
@@ -777,5 +826,18 @@ body.draft .draft-note::before { content: "Draft note for Kate (hidden from stud
 .sub.quest { scroll-margin-top: 90px; }
 .sub.quest .sub-num { color: #A86500; }
 .sub.quest.done .sub-num { color: var(--green); }
+.sub-num.sub-emoji { font: 400 1.35rem/1 var(--font-body); }
 .sub-body h4 { margin: 22px 0 8px; }
 .sub-body .quest-teaches { margin: 0 0 12px; }
+
+/* Build your next skill */
+.ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 12px 0 14px; }
+.way { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; font-size: .92rem; }
+.way b { font-size: 1rem; }
+.way small { color: var(--ink-3); font-size: .78rem; }
+.skill-qs { list-style: none; padding: 0; display: grid; gap: 8px; margin: 12px 0 22px; }
+.skill-qs li { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.q-tag { display: inline-block; margin-left: 6px; font: 700 .7rem/1 var(--font-body); letter-spacing: .03em; background: var(--accent-soft, var(--paper-2)); color: var(--pc, var(--ink-2)); padding: .35em .6em; border-radius: 999px; vertical-align: 2px; }
+.q-note { display: block; color: var(--ink-3); font-size: .86rem; margin-top: 4px; }
+@media (max-width: 640px) { .ways { grid-template-columns: 1fr; } }
+

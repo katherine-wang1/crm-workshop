@@ -156,10 +156,9 @@ reload clears it, and the student pastes it again. Six-question notes and the
   descriptions are listed in `img/screens/README.md`. Empty slots show a labeled placeholder.
 - **Links that still need verifying** carry `data-verify` and show a yellow
   "verify" tag. Delete the attribute once checked.
-- **Template link:** in 0.2, replace `<span class="link-pending" …>` with
-  `<a class="go-link" href="…" target="_blank" rel="noopener">Open the template</a>`.
+- **Template link:** in 0.2 ("Open the CRM template"), an Airtable invite link to Kate's template base. Students duplicate it into their own workspace.
 - **Stuck? entries:** the `<section class="stuck-group" data-group="…">` blocks in the
-  drawer. `data-group` matches a step id (`setup-1`…`setup-5`, `db`, `skills`,
+  drawer. `data-group` matches a step id (`setup-1`…`setup-4`, `db`, `skills`,
   `company`, `person`, `capture`, `build`), so the drawer opens at the right place.
 - **House rules:** `<ol id="house-rules">` in step 1. The drawer copies them automatically.
 - **Draft notes for facilitators:** `<div class="draft-note">`. Hidden from students
