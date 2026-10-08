@@ -598,7 +598,7 @@
 
   /* ---------- copy cards ---------- */
 
-  const BASE_CARDS = { "brief-prompt": 1, "q2-builder": 1, "q4-watch": 1 };
+  const BASE_CARDS = { "brief-prompt": 1, "example-request": 1, "q2-builder": 1, "q4-watch": 1 };
   function crmCardText(id) {
     return srcText(id)
       .replace(/\{\{BASE_URL\}\}/g, BASE ? BASE.baseUrl : "{{BASE_URL}}")
@@ -616,7 +616,7 @@
     const text = isCrm ? crmCardText(id) : srcText(id);
     card.innerHTML =
       '<div class="copy-top"><div class="copy-title"><b>' + esc(card.dataset.title || "Copy this") + "</b>" +
-      (card.dataset.sub ? "<span>" + esc(isCrm && !BASE ? "Paste your Base URL below to fill it in" : card.dataset.sub) + "</span>" : "") + "</div>" +
+      (card.dataset.sub ? "<span>" + esc(isCrm && !BASE && !card.hasAttribute("data-keep-sub") ? "Paste your Base URL below to fill it in" : card.dataset.sub) + "</span>" : "") + "</div>" +
       '<div class="copy-actions"><button type="button" class="btn small copy-btn">Copy</button>' +
       (card.dataset.download ? '<button type="button" class="btn small ghost dl-btn">Download</button>' : "") + "</div></div>" +
       '<pre class="copy-pre">' + (isCrm ? crmCardHtml(id) : esc(text)) + "</pre>";
@@ -639,7 +639,7 @@
       copyText(t).then(() => {
         cb.textContent = "Copied ✓"; cb.classList.add("copied");
         setTimeout(() => { cb.textContent = "Copy"; cb.classList.remove("copied"); }, 1800);
-        toast(id === "brief-prompt" || id === "skill-template" ? "Copied. Paste it into the skill builder and fill in the blanks." : id === "q2-builder" ? "Copied. Paste it into the skill builder." : "Copied. Paste it into Claude.");
+        toast(id === "brief-prompt" || id === "skill-template" ? "Copied. Paste it into the skill builder and fill in the blanks." : id === "q2-builder" || id === "example-request" ? "Copied. Paste it into the skill builder." : "Copied. Paste it into Claude.");
       }, () => toast("Copy was blocked. Select the text and copy it by hand."));
     });
     const db = $(".dl-btn", card);
@@ -719,7 +719,7 @@
     const all = el.hasAttribute("data-all") && skills.length > 1;
     const cards = skills.map((s) =>
       '<div class="zip-card' + (animate ? " flip" : "") + '" data-skill="' + s + '"><span class="zstep">' + esc(SKILL_INFO[s].step) + '</span><span class="zn">' + s + ".zip</span>" +
-      '<span class="zd">' + esc(SKILL_INFO[s].d) + '</span><button type="button" class="btn small">Download</button></div>').join("");
+      '<span class="zd">' + esc(SKILL_INFO[s].d) + '</span>' + (all ? "" : '<button type="button" class="btn small">Download</button>') + "</div>").join("");
     el.innerHTML =
       (compact ? "" : '<div class="zip-ok"><span class="idchip' + (animate ? " lift" : "") + '">Base ID ' + esc(BASE.baseId) + '</span><span class="url-echo">' + urlEcho(lastRaw || BASE.baseUrl, BASE.baseId) + "</span></div>") +
       (all ? '<div class="zip-all"><button type="button" class="btn big dl-all">Download all ' + skills.length + ' skills</button><span class="small muted">Three .zip files. Keep them zipped.</span></div>' : "") +
@@ -728,7 +728,8 @@
       '<button type="button" class="linkish zip-clear">Use a different base</button></p>';
     $all(".zip-card", el).forEach((c, i) => {
       if (animate) c.style.animationDelay = 0.25 + i * 0.12 + "s";
-      $(".btn", c).addEventListener("click", () => downloadSkill(c.dataset.skill, c));
+      const b = $(".btn", c);
+      if (b) b.addEventListener("click", () => downloadSkill(c.dataset.skill, c));
     });
     $(".zip-clear", el).addEventListener("click", () => { BASE = null; lastRaw = ""; renderAllBase(); });
     const dlAll = $(".dl-all", el);

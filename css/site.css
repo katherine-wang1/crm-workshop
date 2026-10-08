@@ -474,6 +474,7 @@ body.draft .draft-note::before { content: "Draft note for Kate (hidden from stud
 .zip-card .zstep { font: 700 .72rem/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--zc-ink, var(--ink-3)); }
 .zip-card .btn { justify-content: center; background: var(--zc, var(--ink)); }
 .zip-card.downloaded .btn::after { content: " ✓"; }
+.zip-cards.small-cards .zip-card.downloaded .zn::after { content: " ✓"; }
 .zip-card[data-skill="crm-company"], .zip-card[data-skill="crm-person"] { --zc: var(--tangerine); --zc-soft: var(--tangerine-soft); --zc-ink: #C2481A; }
 .zip-card[data-skill="crm-capture-convo"] { --zc: var(--violet); --zc-soft: var(--violet-soft); --zc-ink: #5B3DE0; }
 .zip-card[data-skill="crm-brief-me"] { --zc: var(--teal); --zc-soft: var(--teal-soft); --zc-ink: #0B7F72; }

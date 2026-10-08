@@ -235,21 +235,14 @@
     <li>It will take you to log in to Airtable in your browser. Make sure it's the same account you set up the database in earlier (0.1 and 0.2). On Airtable's permission screen, select the base you just created in the previous step (0.2), then click <strong>Grant access</strong>.
       <figure class="shot" data-shot="0.3-b"><figcaption>Airtable's permission screen: select the base you just duplicated in 0.2.</figcaption></figure>
     </li>
-    <li>Start a new conversation and ask:
-      <div class="copy-card" data-copy="list-bases" data-title="Paste into a new Claude chat" data-sub="A quick test of the connection"></div>
-      <p>It will ask you for permission to use the tool. For the purposes of this workshop, select <strong>Always allow</strong>.</p>
-      <figure class="shot" data-shot="0.3-z"><figcaption>Select Always allow.</figcaption></figure>
-      <figure class="shot" data-shot="0.3-d"><figcaption>A good result: your copied base in the list. You should only see one base.</figcaption></figure>
-    </li>
-    <li><strong>Review what Claude can do in Airtable.</strong> Go to <strong>Customize</strong> → <strong>Connectors</strong> → <strong>Airtable</strong> and scroll to <strong>Tool permissions</strong>. Each row is one action Claude can take in Airtable, like "List records" or "Delete records." The three icons on the right set whether Claude can use that action on its own, has to ask you first, or can't use it at all.
+    <li><strong>Review what Claude can do in Airtable.</strong> Once Airtable is connected, you're brought to its page in Claude's connector settings (to find it later: <strong>Customize</strong> → <strong>Connectors</strong> → <strong>Airtable</strong>). Scroll to <strong>Tool permissions</strong>. Each row is one action Claude can take in Airtable, like "List records" or "Delete records." The three icons on the right set whether Claude can use that action on its own, has to ask you first, or can't use it at all.
       <figure class="shot" data-shot="0.3-tools-a"><figcaption>Each row is a tool Claude can use in Airtable. The icons on the right control it.</figcaption></figure>
       <p>Click the arrows next to <strong>Read-only tools</strong> and <strong>Write/delete tools</strong> to collapse both lists. Now you can see the totals: 25 read-only and 21 write/delete, so 46 actions for Airtable alone.</p>
       <figure class="shot" data-shot="0.3-tools-b"><figcaption>Collapse both sections with the arrows to see the tool counts.</figcaption></figure>
-      <p>Use the dropdown on each group's row to set both groups to <strong>Always allow</strong> at once.</p>
+      <p>Use the dropdown on each group's row to set both groups to <strong>Always allow</strong> at once. On a Stanford account? See the note at the end of the security primer below.</p>
       <figure class="shot" data-shot="0.3-tools-c"><figcaption>Set each group to Always allow.</figcaption></figure>
     </li>
   </ol>
-  <div class="check"><p><strong>Check:</strong> your copied base appears in the list. If it does not, the connector was not given access to that base. Repeat step 4 and select it.</p></div>
 
   <aside class="primer">
     <div class="primer-head"><span class="cv-badge">Security primer</span><h3>🔒 You decide what Claude can do</h3></div>
@@ -262,7 +255,18 @@
     <p><strong>This is how you control what agents do on your behalf.</strong> A good rule of thumb: reading data is low risk, changing it is higher, and deleting or sending things is highest.</p>
     <p><strong>Not every setup works this way.</strong> Different AI apps (like Claude and ChatGPT) and different services you connect (like Gmail and Outlook) give you different levels of control. Some let you set each action separately, and others are all-or-nothing. Before you connect something, check what you're allowing.</p>
     <p><strong>For this workshop, we're using Always allow.</strong> The base is a practice CRM you just built, with nothing sensitive in it. You'll see every action Claude takes in the chat, and you can check the results in Airtable. Approving dozens of steps one by one would slow you down while you're learning. This is a personal choice, and you can change it anytime on this screen.</p>
+    <p><strong>Personal or Stanford account?</strong> Some of you are on personal Claude accounts and others on Stanford accounts. Stanford accounts don't let you pick <strong>Always allow</strong> for a whole group at once. You can either click each tool individually to allow it, or approve tools on the fly as you walk through the workshop.</p>
   </aside>
+
+  <ol class="do" style="counter-reset: do 5">
+    <li>Start a new conversation and ask:
+      <div class="copy-card" data-copy="list-bases" data-title="Paste into a new Claude chat" data-sub="A quick test of the connection"></div>
+      <p>If you didn't update the permissions in Airtable before, it will ask you for permission to use the tool. For the purposes of this workshop, select <strong>Always allow</strong>.</p>
+      <figure class="shot" data-shot="0.3-z"><figcaption>Select Always allow.</figcaption></figure>
+      <figure class="shot" data-shot="0.3-d"><figcaption>A good result: your copied base in the list. You should only see one base.</figcaption></figure>
+    </li>
+  </ol>
+  <div class="check"><p><strong>Check:</strong> your copied base appears in the list. If it does not, the connector was not given access to that base. Repeat step 4 and select it.</p></div>
 </section>
 
 <section class="step" data-step="setup-4" data-num="0.4" data-title="Apply for the Airtable student plan" data-sub-title="Optional" data-group="Set up" data-part="pre" hidden
@@ -483,7 +487,7 @@ Schema version: 1</pre>
   <div class="upload-skill" data-skill="crm-person"></div>
 
   <h3><span class="h-num">3</span>Add Maya Chen</h3>
-  <p>Add Maya Chen at Cedar Labs (a fictional sample), including that you're meeting her for coffee. That becomes her Next action and sets up Step 5. Or add a real person. If their company isn't in your CRM yet, crm-company runs on it automatically.</p>
+  <p>Open a new conversation. Add Maya Chen at Cedar Labs (a fictional sample), including that you're meeting her for coffee. That becomes her Next action and sets up Step 5. Or add a real person. If their company isn't in your CRM yet, crm-company runs on it automatically.</p>
   <p>Paste the prompt below, or type <kbd>/crm-person</kbd> and describe her in your own words.</p>
   <div class="copy-card" data-copy="add-maya" data-title="Paste into a new Claude chat" data-sub="Or describe a real person in your own words"></div>
   <p>Then open Maya in Airtable and click her <strong>Company</strong> link. It goes straight to Cedar Labs: records are linked by ID, not by name.</p>
@@ -530,7 +534,7 @@ Schema version: 1</pre>
 
   <div class="reveal">
     <div class="q">🤔 What's different here?</div>
-    <p>When you added a company and a person, Claude saved straight to your CRM. This time it stopped and asked you to confirm. Your Airtable permissions are still on Always allow, so why did it ask?</p>
+    <p>When you added a company and a person, Claude saved straight to your CRM. This time it stopped and asked you to confirm. This is different from the Airtable tool permissions we set earlier. So why did it ask?</p>
     <div class="fold" style="background:#fff">
       <button type="button" class="fold-head" aria-expanded="false">Click to see why<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
       <div class="collapse"><div class="collapse-inner"><div class="fold-body">
@@ -578,7 +582,7 @@ Schema version: 1</pre>
   <div class="fold">
     <button type="button" class="fold-head" aria-expanded="false">Need an example?<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="fold-body">
-      <div class="copy-card" data-copy="example-request" data-title="The top half, filled in" data-sub="Yours can be different. Keep the CRM part of the prompt as is."></div>
+      <div class="copy-card crm-card tall" data-copy="example-request" data-keep-sub data-title="The whole prompt, filled in" data-sub="Yours can be different. Keep the CRM part of the prompt as is."></div>
     </div></div></div>
   </div>
 
@@ -911,7 +915,7 @@ Schema version: 1</pre>
       <h4>2. Test it on a call with Jordan</h4>
       <p>Jordan Lee, a starter record in your CRM, introduced you to Maya. Here are your notes from a quick call to say thanks. Paste them into a <strong>new</strong> chat.</p>
       <div class="copy-card" data-copy="q3-jordan-notes" data-title="Paste into a new Claude chat" data-sub="Your notes from a 15-minute call (fictional)"></div>
-      <div class="draft-note">Call date (2026-10-06) is the day after the Maya coffee (2026-10-05) and on or before the workshop, so it's never in the future. Change it with the transcript's date. Expected result to check in testing: Conversation Notes "Call with Jordan — 2026-10-06", Source "My notes", Notes verbatim; Jordan: Status To reach out → Conversation held, Last contact 2026-10-06, Next action roughly "1) Email Jordan two dates for the clinic shadow day (by 2026-10-15); 2) Send Jordan the hospital procurement article; 3) Waiting on Jordan: confirm the date with the clinic manager", Follow-up date 2026-10-15. Draft: thanks for the Maya intro, a callback (no-shows or the pilot), [two dates] and [article link] in brackets.</div>
+      <div class="draft-note">Call date (2026-10-12) is the workshop day, later the same day as the Maya coffee (2026-10-12), so it's never in the future. Change it with the transcript's date. Expected result to check in testing: Conversation Notes "Call with Jordan — 2026-10-12", Source "My notes", Notes verbatim; Jordan: Status To reach out → Conversation held, Last contact 2026-10-12, Next action roughly "1) Email Jordan two dates for the clinic shadow day (by 2026-10-15); 2) Send Jordan the hospital procurement article; 3) Waiting on Jordan: confirm the date with the clinic manager", Follow-up date 2026-10-15. Draft: thanks for the Maya intro, a callback (no-shows or the pilot), [two dates] and [article link] in brackets.</div>
       <ol class="do">
         <li>Review the preview. It should look like Step 5's, with <strong>no draft yet</strong>. Confirm.</li>
         <li>Read the reply: the <strong>Saved:</strong> line, then your draft email to Jordan.
@@ -1025,9 +1029,9 @@ Schema version: 1</pre>
           <div class="draft-note">[VERIFY: button label and behavior.] Reported in April 2026 as "Allow for all scheduled runs" / "Accept for all scheduled runs", from when runs were local. Check the label, and that the approval sticks, on a cloud run after the October 6 change.</div>
         </li>
         <li>Read what the run left you. It ends like this, one preview per networking chat:
-          <div class="preview-mock" aria-label="Example end of a scheduled run">1) Coffee with Maya — 2026-10-05 · Granola link<br>
+          <div class="preview-mock" aria-label="Example end of a scheduled run">1) Coffee with Maya — 2026-10-12 · Granola link<br>
       People › Maya Chen<br>
-      Next action: <span class="old">Coffee with Maya on 2026-10-05</span> → <span class="new">1) Send Maya your resume; 2) Waiting on Maya: intro to Priya</span><br>
+      Next action: <span class="old">Coffee with Maya on 2026-10-12</span> → <span class="new">1) Send Maya your resume; 2) Waiting on Maya: intro to Priya</span><br>
       …<br>
       <span class="confirm">NOT SAVED YET. CONFIRM?</span><br>
       Already in your CRM: none<br>
@@ -1315,7 +1319,7 @@ Schema version: 1</pre>
 
 <script type="text/plain" id="src-add-company">Add Stripe to my CRM.</script>
 
-<script type="text/plain" id="src-add-maya">Add Maya Chen, product lead at Cedar Labs, to my CRM. I'm meeting her for coffee on October 5, 2026.</script>
+<script type="text/plain" id="src-add-maya">Add Maya Chen, product lead at Cedar Labs, to my CRM. I'm meeting her for coffee on October 12, 2026.</script>
 
 <script type="text/plain" id="src-emailed-maya">I emailed Maya today</script>
 
@@ -1353,7 +1357,14 @@ When I'd use it (what I'd say to start it): before a coffee chat or call, e.g. "
 What I'll give it: just the person's name
 What I want back (what's in it, format, length): who they are, what we talked about last time, anything I promised them, and 3 questions to ask. Short bullets, one screen.
 Where else it should look, besides my CRM (the web, what you know about me, nowhere): nowhere. If something isn't in my CRM, say so instead of guessing.
-What it should never do: change my CRM or send anything</script>
+What it should never do: change my CRM or send anything
+
+How to reach my CRM:
+- It's an Airtable base. Base URL: {{BASE_URL}}. Base ID: {{BASE_ID}}. Put these in a "My CRM" section near the top of the skill, and always use this Base ID with the Airtable connector. Never search for the base by name.
+- It has three linked tables: People, Companies, and Conversation Notes. Check the actual fields before reading. To look someone up, find them in People, then follow their Company link and their Conversation Notes links.
+- In Next action, "Waiting on <name>:" means it's their action, not mine.
+- Read-only: never create, change, or delete records, and never send anything.
+- Build this from scratch as a single SKILL.md file. Don't open or copy my other CRM skills.</script>
 
 <!-- Side quest 1 -->
 <script type="text/plain" id="src-q1-sync">Update my networking CRM from my email and calendar. Use my crm-person and crm-company skills for every change. This may run while I'm away: never stop to wait for me.
@@ -1447,7 +1458,7 @@ Test it as if today were six weeks from now before I save it.</script>
 <script type="text/plain" id="src-q3-jordan-notes">Here are my notes from a call with Jordan Lee.
 
 Call with Jordan Lee, Harbor Health (fictional practice notes)
-Tuesday, October 6, 2026 · phone · 15 min
+Monday, October 12, 2026 · phone · 15 min
 
 - Thanked Jordan for introducing me to Maya Chen at Cedar Labs. Told Jordan the coffee went well and Maya is introducing me to Priya Nair for the summer strategy role.
 - Jordan runs operations for Harbor Health's 12 outpatient clinics. Biggest problem right now: no-shows, close to 18% at some clinics.
@@ -1511,7 +1522,7 @@ My filter (edit this):
 Fictional test material for crm-capture-convo. Maya Chen and Cedar Labs are invented seed records; do not research them online.
 
 Meeting: Coffee chat, Cedar Labs office café
-Date: Monday, October 5, 2026
+Date: Monday, October 12, 2026
 Duration: 28 min
 Speakers: Me, Maya Chen
 
