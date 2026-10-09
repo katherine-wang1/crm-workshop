@@ -29,6 +29,9 @@ label and description.
 | **3-b.png** ✓ | Step 3 | The new company (Stripe) in Airtable's Companies table |
 | **4-a.png** ✓ | Step 4 | Maya's People record: Cedar Labs link, Conversation scheduled, coffee Next action |
 | **edit-capture-convo.png** ✓ | Step 5 | crm-capture-convo's Contents tab with the Edit button boxed (students edit My process by hand) |
+| **sq2-a.png** ✓ | Side quest 2 | People table: scroll right, the + after the last field (Kate's annotation) |
+| **sq2-b.png** ✓ | Side quest 2 | New field dialog: Keep in touch, Single select, three options |
+| **sq2-c.png** ✓ | Side quest 2 | Maya's Keep in touch cell dropdown, Every month |
 
 ✓ = already uploaded. Steps are numbered as on the site after the 2026-10-06 feedback round
 (2026-10-07: 0.3-c and 0.3-e slots removed; 0.3-ab and 0.3-z added. Earlier 2026-10-07: old "workspace" and "Prepare Claude" steps removed; setup is now 0.1 account, 0.2 duplicate base, 0.3 connect Airtable, 0.4 optional student plan. What you're building first, then 0 Setup, 1 Database … 7 Next workflow).

@@ -679,78 +679,36 @@ Schema version: 1</pre>
     <p class="step-lede">The four core skills keep your database up to date. Side quests go beyond that: each one extends the core build and teaches something the core build doesn't. Pick any, in any order. Each takes 15 to 20 minutes.</p>
   </header>
 
-  <p>Four of the five put Claude on a timer with a <strong>scheduled task</strong>, so it works while you're away. That needs a Claude plan with scheduled tasks. On any plan you can still run each prompt by hand. Short on time, or not sure about your plan? Start with <a href="#quest-3" class="quest-jump">Side quest 3</a>: no scheduling, no new connectors.</p>
+  <p>Four of the five put Claude on a timer with a <strong>scheduled task</strong>, so it works while you're away. Short on time? Start with <a href="#quest-3" class="quest-jump">Side quest 3</a>: no scheduling, no new connectors.</p>
 
-  <!-- Shared: Scheduling basics (quests 1, 2, 3, 5 link here) -->
+  <!-- Shared: Scheduling basics (quests 1, 2, 4, 5 link here) -->
   <div class="fold sq-basics" id="sq-basics">
-    <button type="button" class="fold-head" aria-expanded="false">How scheduled tasks work<small>Read this before Side quests 1, 2, 4 and 5. About 3 minutes.</small><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="fold-head" aria-expanded="false">How scheduled tasks work<small>Read this before Side quests 1, 2, 4 and 5. About 1 minute.</small><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="fold-body">
-        <p>A <strong>scheduled task</strong> is a prompt you save once and Claude runs on a timer: every weekday morning, every Monday, every hour. Each run is its own task you can open later, like a chat. It's the trigger from the talk: so far your skills only ran when you asked.</p>
+        <p>A <strong>scheduled task</strong> is a prompt you save once, and Claude runs it on a timer: every weekday morning, every Monday. So far your skills only ran when you asked. A scheduled task runs them for you.</p>
+        <p>A run can use your <strong>skills</strong> and <strong>connectors</strong>, just like a chat. So a task's prompt can be one line, like <code>/my-keep-in-touch</code>, and the skill does the rest. That's one more reason skills are worth building: you write the logic once and reuse it anywhere, in a chat or on a schedule.</p>
 
-        <h4>Who has it</h4>
-        <ul>
-          <li><strong>Paid plans</strong> (Pro, Max, Team, Enterprise): yes.</li>
-          <li><strong>Your Stanford Claude account</strong> (Claude for Education): Cowork is included, so scheduled tasks should be too. See "Where it runs" below.</li>
-          <li><strong>Free plan:</strong> no. You can still do every side quest by pasting its prompt into a chat whenever you want. Same result, you're the timer.</li>
-        </ul>
-        <div class="draft-note">[VERIFY on a Stanford student account: is "Scheduled" in the left sidebar, and can a task be created?] Stanford's Claude for Education Standard tier is free for all students since 2026-06-30, is "equivalent to Anthropic's Claude Enterprise $20 per month plan", and includes Cowork. Help center: scheduled tasks are on all paid plans (Pro, Max, Team, Enterprise).</div>
+        <div class="draft-note">Facilitator only: Stanford accounts don't support cloud runs right now, so a scheduled task runs on the student's computer (awake, Claude desktop app open). Personal Pro/Max runs in the cloud. Plan requirements deliberately not mentioned to students.</div>
 
-        <h4>Where it runs</h4>
-        <ul>
-          <li><strong>Pro and Max:</strong> in the cloud. Runs happen even when your laptop is asleep or the Claude app is closed.</li>
-          <li><strong>Stanford accounts:</strong> probably on your computer. Your computer has to be awake and the Claude desktop app open. If a run is missed, it runs when you're back.</li>
-          <li><strong>Any plan:</strong> a task that uses files on your computer runs only there. None of the side quests need a folder, so leave it empty.</li>
-        </ul>
-        <div class="draft-note">[VERIFY: Stanford behavior.] Since 2026-10-06, new Cowork tasks and scheduled tasks on Pro and Max run in the cloud. On Team and Enterprise, Cowork in the cloud is in beta "where an admin has enabled it", and Stanford's FAQ says "Claude Cowork in the Cloud" and "Claude Cloud Sessions" are not covered by the Stanford agreement. So Stanford runs are likely local (the pre-October behavior: "only run while your computer is awake and the Claude Desktop app is open"; skipped runs run on wake). Confirm on a student account before the workshop.</div>
+        <h4>Set one up</h4>
+        <p><strong>Scheduled</strong> (left sidebar) → <strong>New task</strong> → <strong>Set up manually</strong>. Paste your prompt, pick how often, and click <strong>Save</strong>. Leave the folder empty. Each side quest gives you the exact settings. Or just ask in a chat: "Every weekday at 8 AM, &lt;your prompt&gt;."</p>
 
-        <h4>Create one</h4>
-        <ol class="do">
-          <li>Click <strong>Scheduled</strong> in the left sidebar, then <strong>New task</strong> (top right).
-          </li>
-          <li>Choose <strong>Set up manually</strong>, so you paste your prompt exactly as you tested it. (<strong>Create with Claude</strong> has Claude write the task for you instead.)
-          </li>
-          <li>Fill in the name, the prompt, the approval mode, how often it runs, and (optionally) the model. Leave the folder empty. Click <strong>Save</strong>.
-          </li>
-        </ol>
-        <p>You can also ask in a chat: "Every weekday at 8 AM, &lt;your prompt&gt;." Claude proposes a name, schedule and instructions, and you click <strong>Schedule</strong>. In Cowork, type <kbd>/schedule</kbd> in a task.</p>
-        <div class="draft-note">[VERIFY: labels in the current desktop app.] Two UIs exist right now. Pro/Max accounts with the new "one Claude" experience (no Chat/Cowork toggle in the message box) create tasks from any conversation; Cowork accounts (incl. Stanford, Team, Enterprise) use Scheduled → New task → Create with Claude / Set up manually, or /schedule.</div>
-
-        <h4>What a run can use</h4>
-        <p>The same as a normal task: your <strong>connectors</strong> (Airtable, Gmail, Calendar…), your <strong>skills</strong>, and web search. A side quest prompt can say "use my crm-person skill" and the run will.</p>
-
-        <h4>Approvals: nobody's there to click Allow</h4>
-        <p>When an action needs your approval and you're away, the run stops and waits. Decide before you schedule:</p>
-        <ul>
-          <li><strong>Per tool</strong>, in <strong>Customize → Connectors</strong> → a connector: <strong>Always allow</strong> what the task needs, <strong>Blocked</strong> for what it must never do (send email, delete records). Blocked holds in every mode.</li>
-          <li><strong>Approval mode</strong>, in the task: <strong>Automatically approve</strong> lets Claude keep going and checks each action for safety first. <strong>Manually approve</strong> asks for anything not on Always allow, so an unattended run may stall. Don't use <strong>Skip all approvals</strong>.</li>
-          <li><strong>Side quest 5 is the exception:</strong> it uses <strong>Manually approve</strong> on purpose, so nothing can save while you're away. You'll see why there.</li>
-          <li><strong>Questions:</strong> Claude can't ask you mid-run either. Each side quest prompt says what to do when it's unsure: write nothing and list it for you.</li>
-        </ul>
-        <div class="draft-note">[VERIFY: what a waiting run looks like, and whether you can approve it from the task page or your phone.] Help center: "When Claude finishes a task or needs your input, you'll get a notification on your phone." Team/Enterprise admins can turn off Automatically approve and can require approval for write tools, so on Stanford accounts "Always allow" for Airtable writes may not apply. A third-party bug report mentions an "Accept for all scheduled runs" button on approval prompts in scheduled runs; not in the help center.</div>
-
-        <h4>Where results show up</h4>
-        <ul>
-          <li><strong>Scheduled</strong> → your task → <strong>past runs</strong>. Each run opens like a chat, with Claude's summary at the end.</li>
-          <li>Anything a skill saved is in <strong>Airtable</strong>. Check Airtable, not just the chat.</li>
-          <li>With the Claude mobile app, you may get a notification when a run finishes or needs you.</li>
-        </ul>
-
-        <h4>Change, pause, delete</h4>
-        <p><strong>Scheduled</strong> → click the task. From there you can edit the prompt or schedule, <strong>Run now</strong>, <strong>Pause</strong> and <strong>Resume</strong>, or <strong>Delete</strong>.</p>
+        <h4>Nobody's there to click Allow</h4>
+        <p>If a tool needs your approval mid-run, the run waits. So before you schedule, set the tools the task needs to <strong>Always allow</strong> (Customize → Connectors). In the task, pick <strong>Automatically approve</strong>, never <strong>Skip all approvals</strong>.</p>
+        <div class="draft-note">[VERIFY: what a waiting run looks like, and whether you can approve it from the task page or your phone.] Team/Enterprise admins can turn off Automatically approve and require approval for write tools, so Stanford accounts may behave differently.</div>
 
         <h4>Good habits</h4>
         <ul>
-          <li><strong>Run the prompt by hand first,</strong> check the result, then schedule the same text.</li>
-          <li><strong>Read the first few runs.</strong> Then spot-check.</li>
-          <li><strong>Mind the limits.</strong> Every run uses your Claude usage, and Airtable's free plan allows about 1,000 API calls a month. Once a day is plenty; hourly is not.</li>
-          <li><strong>Pause what you're not using.</strong></li>
+          <li><strong>Run the prompt by hand first,</strong> then schedule the same text.</li>
+          <li><strong>Check the first few runs:</strong> Scheduled → your task → past runs, and in Airtable.</li>
+          <li><strong>Pause what you're not using:</strong> Scheduled → your task → Pause. Every run uses your Claude usage and Airtable calls (the free Airtable plan allows about 1,000 a month).</li>
         </ul>
     </div></div></div>
   </div>
 
   <!-- Side quest 1 -->
   <div class="sub quest" data-sub="quest-1" id="quest-1">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">📬</span><span class="sub-title">Auto-update your CRM from email and calendar<small>About 20 minutes. Needs Gmail and Google Calendar, and a plan with scheduled tasks to automate it.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">📬</span><span class="sub-title">Auto-update your CRM from email and calendar<small>About 20 minutes. Needs Gmail and Google Calendar.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Putting skills on a schedule, and why some skills can run with no one watching while others shouldn't.</p>
       <p>You email someone new, book a coffee, get a reply, and forget to log it. Here Claude reads your email and calendar on a schedule and updates your CRM with the two skills you already have, crm-person and crm-company. New to scheduled tasks? Read <a href="#sq-basics">Scheduling basics</a> first.</p>
@@ -759,7 +717,6 @@ Schema version: 1</pre>
       <ul>
         <li><strong>crm-person and crm-company</strong> installed and working (Part A).</li>
         <li><strong>Your networking email and calendar:</strong> Gmail and Google Calendar.</li>
-        <li><strong>To put it on a schedule:</strong> a paid Claude plan, or your Stanford Claude account. On the free plan, do steps 1–4 and run the prompt by hand whenever you like.</li>
       </ul>
 
       <ol class="do">
@@ -828,7 +785,7 @@ Schema version: 1</pre>
 
   <!-- Side quest 2 -->
   <div class="sub quest" data-sub="quest-2" id="quest-2">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">⏰</span><span class="sub-title">Networking reminders<small>About 20 minutes. The scheduling part needs a paid Claude plan (Pro or above).</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">⏰</span><span class="sub-title">Networking reminders<small>About 20 minutes.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Putting a read-only skill over your database on a schedule.</p>
       <p>Once a week, Claude tells you who you've gone quiet with and gives you a reason to reach out to each. It only reads your CRM. You build it as a small skill, test it by hand, then put it on a schedule.</p>
@@ -838,9 +795,12 @@ Schema version: 1</pre>
       <p>Your CRM doesn't say who matters to you yet, so you'll add one field. One field does two jobs: if it's filled in, you want to stay in touch; the value says how often.</p>
       <ol class="do">
         <li>In Airtable, open your base and go to the <strong>People</strong> tab.</li>
-        <li>Click <strong>+</strong> at the right end of the field names. Name the field <strong>Keep in touch</strong> (exactly that), choose <strong>Single select</strong>, and add three options: <strong>Every month</strong>, <strong>Every 3 months</strong>, <strong>Every 6 months</strong>. Click <strong>Create field</strong>.
+        <li>Scroll right on the table and click <strong>+</strong> at the right end of the field names.
+          <figure class="shot" data-shot="sq2-a"><figcaption>Scroll right on the table to find the + after the last field.</figcaption></figure> Name the field <strong>Keep in touch</strong> (exactly that), choose <strong>Single select</strong>, and add three options: <strong>Every month</strong>, <strong>Every 3 months</strong>, <strong>Every 6 months</strong>. Click <strong>Create field</strong>.
+          <figure class="shot" data-shot="sq2-b"><figcaption>Name it Keep in touch, choose Single select, add the three options, then Create.</figcaption></figure>
         </li>
         <li>Set <strong>Maya Chen</strong> to <strong>Every month</strong>. Set anyone else you've added, if you like. Leave it blank for people you don't need to track.
+          <figure class="shot" data-shot="sq2-c"><figcaption>Click Maya's Keep in touch cell and pick Every month.</figcaption></figure>
         </li>
       </ol>
       <p>Your other skills don't know about this field, and that's fine: a skill only reads the fields it uses.</p>
@@ -901,8 +861,8 @@ Schema version: 1</pre>
       <p>In Step 5 you edited My process by hand, to see that a skill is just text. This time you describe the change and Claude edits the skill for you.</p>
       <ol class="do">
         <li>In Customize → Skills, toggle to <strong>Yours</strong> and click <strong>crm-capture-convo</strong>.</li>
-        <li>Click <strong>Edit with Claude</strong>.
-          <div class="draft-note">[VERIFY: where the Edit with Claude button sits on the skill page, and what the save button is called after Claude edits (Save Version?).]</div>
+        <li>Click <strong>Edit with Claude</strong>. Don't see it? Sometimes it's in the <strong>···</strong> menu at the top right.
+          <div class="draft-note">[VERIFY: what the save button is called after Claude edits (Save Version?).]</div>
         </li>
         <li>Paste this request. It asks for four rules at the end of My process and nothing else.
           <div class="copy-card" data-copy="q3-edit-request" data-title="Paste into Edit with Claude" data-sub="Four rules: when, what, format, tone"></div>
@@ -939,7 +899,7 @@ Schema version: 1</pre>
 
   <!-- Side quest 4 -->
   <div class="sub quest" data-sub="quest-4" id="quest-4">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">🔭</span><span class="sub-title">Target-company watch<small>About 15 minutes. Scheduling needs a paid Claude plan; the first run works on any plan.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">🔭</span><span class="sub-title">Target-company watch<small>About 15 minutes.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Scheduled research, with the web as a tool.</p>
       <p>Every Monday, Claude checks the web for news on the companies you care most about and tells you only what's new: funding, news, open roles. Your CRM doesn't change. New to scheduled tasks? Read <a href="#sq-basics">Scheduling basics</a> first.</p>
@@ -997,16 +957,16 @@ Schema version: 1</pre>
 
   <!-- Side quest 5 -->
   <div class="sub quest" data-sub="quest-5" id="quest-5">
-    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">🥣</span><span class="sub-title">Daily Granola-to-Airtable sync<small>About 20 minutes. Personal Claude account on a paid plan, and a Granola account.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button type="button" class="sub-head" aria-expanded="false"><span class="sub-num sub-emoji" aria-hidden="true">🥣</span><span class="sub-title">Daily Granola-to-Airtable sync<small>About 20 minutes. Personal Claude account and a Granola account.</small></span><span class="sub-tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="sub-body">
       <p class="quest-teaches"><strong>Teaches:</strong> Scheduling, and what approval looks like when no one is there.</p>
-      <p class="note"><strong>Personal accounts only.</strong> Stanford accounts won't have a Granola connector, and scheduled tasks need a paid Claude plan (Pro or higher). No personal paid account? You can still get your Granola notes into your CRM by hand: open the meeting in Granola, copy the notes, and paste them into a new chat after <kbd>/crm-capture-convo</kbd>, just like <button type="button" class="linkish" data-go="capture">Step 5</button>.</p>
+      <p class="note"><strong>Personal accounts only.</strong> Stanford accounts won't have a Granola connector. On a Stanford account? You can still get your Granola notes into your CRM by hand: open the meeting in Granola, copy the notes, and paste them into a new chat after <kbd>/crm-capture-convo</kbd>, just like <button type="button" class="linkish" data-go="capture">Step 5</button>.</p>
 
       <p>Every morning, Claude reads yesterday's Granola meetings, picks out your networking chats, and gets each one ready to capture. It doesn't save them. Capture replaces what's in your CRM, so it waits for you, even when it runs at 7:30 AM and you're asleep. New to scheduling? Read <a href="#sq-basics">Scheduling basics</a> first.</p>
 
       <h4>Before you start</h4>
       <ul>
-        <li>Your <strong>personal</strong> Claude account, on Pro or higher.</li>
+        <li>Your <strong>personal</strong> Claude account.</li>
         <li>On that account: Airtable connected to your base, and <strong>crm-capture-convo</strong> and <strong>crm-company</strong> uploaded. Did the workshop on a Stanford account? Repeat <button type="button" class="linkish" data-go="setup-3">0.3</button> and upload the zips again on your personal account.</li>
         <li>A Granola account with at least one recorded coffee chat or call. The free plan is enough: it covers your own notes from the last 30 days.</li>
       </ul>
@@ -1021,7 +981,7 @@ Schema version: 1</pre>
           <ul>
             <li><strong>Name:</strong> Granola to CRM</li>
             <li><strong>Schedule:</strong> Daily, 7:30 AM</li>
-            <li><strong>Approval mode:</strong> Manual</li>
+            <li><strong>Approval mode:</strong> Manually approve</li>
           </ul>
           <div class="copy-card" data-copy="q5-task" data-title="Scheduled task instructions" data-sub="Edit My filter at the bottom to match your week"></div>
         </li>
@@ -1228,7 +1188,7 @@ Schema version: 1</pre>
       </section>
 
       <section class="stuck-group" data-group="sq-basics"><h3>Scheduling basics</h3>
-        <details class="stuck-item"><summary>I don't see Scheduled in the sidebar</summary><div class="fix"><p>Scheduled tasks need a paid plan or your Stanford Claude account. Update the Claude desktop app and restart it. On the free plan, run the prompt by hand instead.</p></div></details>
+        <details class="stuck-item"><summary>I don't see Scheduled in the sidebar</summary><div class="fix"><p>Update the Claude desktop app and restart it. Still missing? Run the prompt by hand in a chat instead.</p></div></details>
         <details class="stuck-item"><summary>Cowork is greyed out in the desktop app (Stanford account)</summary><div class="fix"><p>Stanford lists this as a known app bug. Quit and reopen the app, then sign out and back in. Still greyed out? Reinstall the latest version, or contact Stanford IT.</p></div></details>
         <details class="stuck-item"><summary>My scheduled run didn't happen</summary><div class="fix"><p>On accounts where tasks run on your computer, it needs your computer awake and the Claude app open; a missed run runs when you're back. Check <strong>Scheduled</strong> → your task → past runs, and make sure the task isn't paused.</p></div></details>
         <details class="stuck-item"><summary>The run stopped, waiting for my approval</summary><div class="fix"><p>Open the run and approve, or stop it. Then set that tool to <strong>Always allow</strong> in Customize → Connectors (or <strong>Blocked</strong> if the task shouldn't use it), or set the task's approval mode to <strong>Automatically approve</strong>.</p></div></details>
@@ -1252,7 +1212,7 @@ Schema version: 1</pre>
         <details class="stuck-item"><summary>Nobody shows up as overdue</summary><div class="fix"><p>That's normal today: you just talked to Maya. Use the test prompt ("Pretend today is six weeks from now"). Still nothing? Check that at least one person has Keep in touch set <em>and</em> a Last contact date.</p></div></details>
         <details class="stuck-item"><summary>Maya isn't on the list in the test</summary><div class="fix"><p>Check her row in Airtable. If Status is <strong>Conversation scheduled</strong>, she's skipped on purpose (you already have something booked). If Last contact is blank, she's under "No contact logged yet".</p></div></details>
         <details class="stuck-item"><summary>The skill builder is slow or I'm short on time</summary><div class="fix"><p>Skip the builder: paste the same prompt into a normal chat, minus the last line, and it runs once. You can build the skill later.</p></div></details>
-        <details class="stuck-item"><summary>I don't see Scheduled in the sidebar</summary><div class="fix"><p>Scheduled tasks need a paid Claude plan. Update the desktop app and check your plan. On a free plan, run the skill yourself each Monday instead. See <a href="#sq-basics">Scheduling basics</a>.</p></div></details>
+        <details class="stuck-item"><summary>I don't see Scheduled in the sidebar</summary><div class="fix"><p>Update the Claude desktop app and restart it. Still missing? Run the skill yourself each Monday instead. See <a href="#sq-basics">Scheduling basics</a>.</p></div></details>
         <details class="stuck-item"><summary>The scheduled run can't find my skill or my base</summary><div class="fix"><p>Check the prompt starts with <code>/my-keep-in-touch</code> and the skill is switched on in Customize → Skills → Yours. If it says it has no Airtable tools, check the Airtable connector is on for scheduled tasks (see <a href="#sq-basics">Scheduling basics</a>).</p></div></details>
         <details class="stuck-item"><summary>The scheduled run is waiting for my approval</summary><div class="fix"><p>Open the task, set its approval mode to <strong>Automatically approve</strong>, and run it again. This task only reads, so there's nothing to approve.</p></div></details>
         <details class="stuck-item"><summary>It changed a record</summary><div class="fix"><p>It shouldn't. Undo the change in Airtable (open the record and check its revision history). Then edit the skill and add: "Read-only: never create, change, or delete records, and never send anything."</p></div></details>
@@ -1270,7 +1230,7 @@ Schema version: 1</pre>
       </section>
 
       <section class="stuck-group" data-group="quest-4"><h3>Side quest 4: Target-company watch</h3>
-        <details class="stuck-item"><summary>I don't see Scheduled in the sidebar</summary><div class="fix"><p>Scheduled tasks need a paid Claude plan. Update the desktop app and check your plan. On a free plan, paste the watch prompt into a new chat yourself each Monday. See <a href="#sq-basics">Scheduling basics</a>.</p></div></details>
+        <details class="stuck-item"><summary>I don't see Scheduled in the sidebar</summary><div class="fix"><p>Update the Claude desktop app and restart it. Still missing? Paste the watch prompt into a new chat yourself each Monday. See <a href="#sq-basics">Scheduling basics</a>.</p></div></details>
         <details class="stuck-item"><summary>It says none of my companies are High</summary><div class="fix"><p>In Airtable, set the <strong>Priority</strong> field to <strong>High</strong> on a company (pick it from the list; don't type it in Notes or Why interested). Then run it again.</p></div></details>
         <details class="stuck-item"><summary>It reported news I already knew</summary><div class="fix"><p>The watch skips anything already in Research summary or Notes. Say "refresh research on &lt;company&gt;" in a chat (that moves its Research date), or tell Claude the fact ("Stripe just raised a Series X") so crm-company adds it to Notes.</p></div></details>
         <details class="stuck-item"><summary>It didn't search the web</summary><div class="fix"><p>Start a new chat and ask "Can you search the web?" If it says no, your account may have web search off. Raise your hand, or check with whoever manages your Claude account.</p></div></details>
@@ -1281,7 +1241,7 @@ Schema version: 1</pre>
 
       <section class="stuck-group" data-group="quest-5"><h3>Side quest 5: Daily Granola-to-Airtable sync</h3>
         <details class="stuck-item"><summary>I can't find Granola in Connectors</summary><div class="fix"><p>Check you're signed in to your <strong>personal</strong> Claude account, not Stanford. Search "Granola" in the connector directory. Still missing? Update the desktop app. On a Stanford account, use the fallback: copy the notes from Granola and run <kbd>/crm-capture-convo</kbd> by hand.</p></div></details>
-        <details class="stuck-item"><summary>There's no Scheduled option</summary><div class="fix"><p>Scheduled tasks need a paid plan (Pro or higher). On a paid plan with no Chat / Cowork switch in the message box, ask in any chat instead: "Every day at 7:30 AM, run these instructions" and paste the prompt. See Scheduling basics.</p></div></details>
+        <details class="stuck-item"><summary>There's no Scheduled option</summary><div class="fix"><p>Update the Claude desktop app and restart it. No Chat / Cowork switch in the message box? Ask in any chat instead: "Every day at 7:30 AM, run these instructions" and paste the prompt. See Scheduling basics.</p></div></details>
         <details class="stuck-item"><summary>The run is stuck waiting for me to Allow something</summary><div class="fix"><p>That's the app's approval: in Manual mode a run pauses until you answer. Open the run from Scheduled. Allow Granola and Airtable reads for all scheduled runs. Deny anything that creates or updates Airtable records: this run only prepares previews.</p></div></details>
         <details class="stuck-item"><summary>The run says there's nothing to capture, but I had a coffee chat</summary><div class="fix"><p>The run only looks at yesterday and today. Check the meeting is in the Granola account you connected, and that its notes are finished. If it's listed under Skipped, My filter left it out: reply "Capture that one too", and add a line to My filter so it counts next time.</p></div></details>
         <details class="stuck-item"><summary>It prepared a preview for a class or team meeting</summary><div class="fix"><p>Reply "Skip 2". Nothing was saved. Then edit the task's instructions from Scheduled and add a line to My filter, for example "Skip anything titled 'Team sync'".</p></div></details>
