@@ -199,8 +199,8 @@
     <li>Click the <strong>dropdown arrow</strong> next to the base name, click the <strong>···</strong> menu, and choose <strong>Duplicate base</strong>.
       <figure class="shot" data-shot="0.2-a"><figcaption>Dropdown arrow → ··· menu → Duplicate base.</figcaption></figure>
     </li>
-    <li>Make sure your workspace is selected, then click <strong>Duplicate base</strong>.
-      <figure class="shot" data-shot="0.2-b"><figcaption>Your workspace selected as the destination.</figcaption></figure>
+    <li>You can rename the base if you want, that's fine. Keep <strong>Duplicate records</strong> and <strong>Duplicate comments</strong> turned on. Make sure your workspace is selected from the dropdown, then click <strong>Duplicate base</strong>.
+      <figure class="shot" data-shot="0.2-b"><figcaption>Rename if you like, keep records and comments on, and pick your workspace from the dropdown.</figcaption></figure>
     </li>
     <li>Click <strong>Open base</strong>. Your copy opens, with three tabs at the top: Companies, People, Conversation Notes.
       <figure class="shot" data-shot="0.2-c"><figcaption>Open base takes you to your copy.</figcaption></figure>
@@ -259,8 +259,8 @@
   </aside>
 
   <ol class="do" style="counter-reset: do 5">
-    <li>Start a new conversation and ask:
-      <div class="copy-card" data-copy="list-bases" data-title="Paste into a new Claude chat" data-sub="A quick test of the connection"></div>
+    <li>Start a new conversation (Chat, Cowork, or Claude Code all work) and ask:
+      <div class="copy-card" data-copy="list-bases" data-title="Paste into a new Claude conversation" data-sub="A quick test of the connection"></div>
       <p>If you didn't update the permissions in Airtable before, it will ask you for permission to use the tool. For the purposes of this workshop, select <strong>Always allow</strong>.</p>
       <figure class="shot" data-shot="0.3-z"><figcaption>Select Always allow.</figcaption></figure>
       <figure class="shot" data-shot="0.3-d"><figcaption>A good result: your copied base in the list. You should only see one base.</figcaption></figure>
@@ -681,12 +681,14 @@ Schema version: 1</pre>
 
   <p>Four of the five put Claude on a timer with a <strong>scheduled task</strong>, so it works while you're away. Short on time? Start with <a href="#quest-3" class="quest-jump">Side quest 3</a>: no scheduling, no new connectors.</p>
 
+  <p><strong>Do I need a skill to schedule a task?</strong> No. A scheduled task is just a saved prompt, and any prompt works. But skills make it a lot easier. Each skill you built already spells out the job: which Airtable base and fields to use, the steps to follow (its Workflow), your defaults (My process), and the Safety rules (never delete, never save something twice, check every save). Without a skill, your task's prompt has to include all of that, every time. With one, it can just say "use my crm-person skill." Compare <a href="#quest-2" class="quest-jump">Side quest 2</a>'s task prompt (one line) with <a href="#quest-4" class="quest-jump">Side quest 4</a>'s (the whole process written out).</p>
+
   <!-- Shared: Scheduling basics (quests 1, 2, 4, 5 link here) -->
   <div class="fold sq-basics" id="sq-basics">
     <button type="button" class="fold-head" aria-expanded="false">How scheduled tasks work<small>Read this before Side quests 1, 2, 4 and 5. About 1 minute.</small><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <div class="collapse"><div class="collapse-inner"><div class="fold-body">
         <p>A <strong>scheduled task</strong> is a prompt you save once, and Claude runs it on a timer: every weekday morning, every Monday. So far your skills only ran when you asked. A scheduled task runs them for you.</p>
-        <p>A run can use your <strong>skills</strong> and <strong>connectors</strong>, just like a chat. So a task's prompt can be one line, like <code>/my-keep-in-touch</code>, and the skill does the rest. That's one more reason skills are worth building: you write the logic once and reuse it anywhere, in a chat or on a schedule.</p>
+        <p>A run can use your <strong>skills</strong> and <strong>connectors</strong>, just like a chat.</p>
 
         <div class="draft-note">Facilitator only: Stanford accounts don't support cloud runs right now, so a scheduled task runs on the student's computer (awake, Claude desktop app open). Personal Pro/Max runs in the cloud. Plan requirements deliberately not mentioned to students.</div>
 
@@ -951,6 +953,7 @@ Schema version: 1</pre>
       <h4>What it costs</h4>
       <p>Each run reads Airtable a couple of times, however many companies you watch. A weekly watch uses about 15 Airtable API calls a month; the free Airtable plan allows 1,000 per workspace. The web searches count toward your Claude usage, which is why the prompt checks at most 5 companies.</p>
       <div class="draft-note">[VERIFY: whether calls made through Claude's Airtable connector count toward Airtable's monthly "Public API calls" (Workspace settings → Usage shows the count on Free plans).]</div>
+      <p class="aside-tip">This one isn't a skill, so the whole process lives in the prompt. Like it? Turn it into a skill (see <button type="button" class="linkish" data-go="next">Build your next skill</button>).</p>
       <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done</button><button type="button" class="stuck-inline" data-stuck="quest-4">Stuck on side quest 4?</button></div>
     </div></div></div>
   </div>
