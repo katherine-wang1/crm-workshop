@@ -153,6 +153,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .field input:focus, .field textarea:focus, .input:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 4px var(--violet-soft); }
 .form-err { color: var(--coral); font-weight: 600; font-size: .9rem; }
 .privacy { font-size: .82rem; color: var(--ink-3); margin-top: 16px; }
+.byline { font-size: .82rem; color: var(--ink-3); text-align: center; margin: 18px 0 0; }
 .blob { position: absolute; border-radius: 50%; filter: blur(2px); opacity: .9; animation: drift 14s ease-in-out infinite alternate; }
 .blob.b1 { width: 320px; height: 320px; background: var(--tangerine-soft); top: -60px; left: -80px; }
 .blob.b2 { width: 260px; height: 260px; background: var(--violet-soft); bottom: -40px; right: -40px; animation-delay: -4s; }
@@ -678,6 +679,8 @@ body.draft .draft-note::before { content: "Draft note for Kate (hidden from stud
 .star svg { width: 100%; height: 100%; fill: var(--line); transition: fill .2s; }
 .star.on svg { fill: var(--sun); stroke: #D9A800; }
 .star:hover { transform: scale(1.12) rotate(-6deg); }
+.feedback-cta { text-align: center; }
+.feedback-btn { display: flex; justify-content: center; font-size: 1.25rem; padding: 1em 1.4em; margin-top: 14px; text-decoration: none; }
 .fb-status { font-weight: 600; margin-top: 10px; }
 .fb-status.ok { color: var(--green); }
 .fb-status.err { color: var(--coral); }

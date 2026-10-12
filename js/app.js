@@ -1042,45 +1042,10 @@
     $("#recap").innerHTML = STEPS.concat(BRANCHES.filter(isDone)).filter((id) => LEARNED[id]).map((id) =>
       '<li data-part="' + PART[id] + '"><span class="rn">' + esc(sections[id].dataset.num !== undefined ? sections[id].dataset.num : sections[id].dataset.icon) + "</span><span>" + esc(recapLine(LEARNED[id])) + "</span></li>").join("");
   }
-  let rating = state.feedback ? state.feedback.rating : 0;
-  (function feedback() {
-    const stars = $(".stars");
-    for (let i = 1; i <= 5; i++) {
-      const b = document.createElement("button");
-      b.type = "button"; b.className = "star"; b.setAttribute("role", "radio"); b.setAttribute("aria-label", i + (i === 1 ? " star" : " stars"));
-      b.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z" stroke-width="1.2"/></svg>';
-      b.addEventListener("click", () => { rating = i; paintStars(); });
-      stars.appendChild(b);
-    }
-    const comment = $("#fb-comment");
-    if (state.feedback) comment.value = state.feedback.comment || "";
-    function paintStars() {
-      $all(".star", stars).forEach((s, i) => { s.classList.toggle("on", i < rating); s.setAttribute("aria-checked", String(i + 1 === rating)); });
-      $("#fb-send").disabled = !rating;
-    }
-    paintStars();
-    $("#fb-send").addEventListener("click", () => {
-      const st = $("#fb-status");
-      const btn = $("#fb-send");
-      btn.disabled = true;
-      state.feedback = { rating, comment: comment.value.trim() };
-      saveLocal();
-      fetch("/api/feedback?room=" + encodeURIComponent(ROOM), {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: state.name, email: state.email, rating, comment: comment.value.trim() }),
-      }).then((r) => r.json().catch(() => ({})).then((j) => ({ ok: r.ok, j }))).then(({ ok, j }) => {
-        st.hidden = false;
-        if (ok) {
-          st.className = "fb-status ok"; st.textContent = "Thank you. Sent to the workshop team.";
-          const r = btn.getBoundingClientRect(); burst(r.left + r.width / 2, r.top, 70, PALETTE.finish, 11);
-          paintNav();
-        } else {
-          st.className = "fb-status err"; st.textContent = (j && j.error === "storage_unconfigured") ? "Couldn't send: no database is connected yet. Tell us in person instead!" : "Couldn't send that. Try again in a moment.";
-        }
-        btn.disabled = false; btn.textContent = "Send again";
-      }).catch(() => { st.hidden = false; st.className = "fb-status err"; st.textContent = "Couldn't send that. Check your connection and try again."; btn.disabled = false; });
-    });
-  })();
+  /* Feedback is a Google Form now. Opening it counts as finishing the workshop. */
+  $("#fb-link").addEventListener("click", () => {
+    if (!state.feedback) { state.feedback = { form: true }; saveLocal(); paintNav(); }
+  });
 
   /* ---------- sign in ---------- */
 
