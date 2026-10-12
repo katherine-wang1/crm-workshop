@@ -667,6 +667,32 @@ Schema version: 1</pre>
     </a>
   </div>
 
+  <!-- Not tied to Airtable: other databases / existing CRMs -->
+  <div class="fold" id="other-databases">
+    <button type="button" class="fold-head" aria-expanded="false">Already have a CRM, or want to use something other than Airtable?<small>About 2 minutes.</small><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <div class="collapse"><div class="collapse-inner"><div class="fold-body">
+        <p><strong>Airtable is just one of many places to store a database.</strong> Notion, Google Sheets, HubSpot, Salesforce and the SQL databases engineers use all work the same way: tables, fields, records and links. What you built today carries over to any of them. A skill is a written-down process (Workflow, My process, Safety rules) plus a connector to wherever your data lives. Change where the data lives and the process still holds.</p>
+        <p>Only a few things in your skills are specific to Airtable: the base in <code>crm-config.txt</code>, the word "Airtable" in each description, and a couple of Safety rules (link records by record ID, check field types and select options). Swap those and everything else still applies.</p>
+
+        <p><strong>Moving to Notion (or another database)</strong></p>
+        <ol>
+          <li><strong>Check the connector.</strong> Claude needs a connector for the new tool (<strong>Customize</strong> → <strong>Connectors</strong>). Stanford accounts can't use the Notion connector, so this is a personal-account path for now.</li>
+          <li><strong>Rebuild the structure first.</strong> Ask Claude to recreate your three tables, their fields and the links between them in the new tool. In Notion, linked fields become relations.</li>
+          <li><strong>Move the data.</strong> For a small CRM, Claude can copy it across with both connectors on. For a bigger one, export each Airtable table to CSV and import it. Linked records usually come in as plain text, so the links need redoing (Claude can do this).</li>
+          <li><strong>Point your skills at the new home.</strong> For each skill, open <strong>Edit with Claude</strong> and ask it to switch the skill from Airtable to the new tool, including the config.</li>
+          <li><strong>Test before you switch over.</strong> Run each skill once on a test record and check it saved. Keep Airtable around, unedited, for a week before you let it go.</li>
+        </ol>
+
+        <p><strong>Already have a CRM somewhere else?</strong></p>
+        <ul>
+          <li><strong>Pick one source of truth.</strong> Don't keep two CRMs in parallel; they drift apart within a week. Either point your skills at the CRM you already have, or import your existing contacts into this Airtable base once (CSV) and use it from now on.</li>
+          <li><strong>Check for a connector.</strong> If Claude can't connect to your tool, the skills can't write to it. Then importing into Airtable is the practical option.</li>
+          <li><strong>Map your fields to the skill's.</strong> Your "Stage" might be our "Status," and you may not have a "Next action" at all. Give Claude both lists and have it rewrite the skill around your fields, not the other way round.</li>
+          <li><strong>Shared or work CRM? Be careful.</strong> <code>crm-person</code> and <code>crm-company</code> save without asking first. In a CRM other people use, change My process to always show you a preview before saving, and check your company allows connecting it.</li>
+        </ul>
+    </div></div></div>
+  </div>
+
   <p class="fork-finish">Done for today? <button type="button" class="linkish" data-go="finish">Finish the workshop</button> and tell us how it went.</p>
 </section>
 

@@ -842,3 +842,8 @@ body.draft .draft-note::before { content: "Draft note for Kate (hidden from stud
 .q-note { display: block; color: var(--ink-3); font-size: .86rem; margin-top: 4px; }
 @media (max-width: 640px) { .ways { grid-template-columns: 1fr; } }
 
+
+/* Congrats hub: "Already have a CRM…" callout, brighter so it stands out */
+#other-databases { background: var(--violet-soft); border: 2px solid var(--violet); }
+#other-databases .fold-head small { color: var(--violet); }
+#other-databases code { background: #fff; }
