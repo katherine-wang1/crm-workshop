@@ -716,14 +716,12 @@ Schema version: 1</pre>
         <p>A <strong>scheduled task</strong> is a prompt you save once, and Claude runs it on a timer: every weekday morning, every Monday. So far your skills only ran when you asked. A scheduled task runs them for you.</p>
         <p>A run can use your <strong>skills</strong> and <strong>connectors</strong>, just like a chat.</p>
 
-        <div class="draft-note">Facilitator only: Stanford accounts don't support cloud runs right now, so a scheduled task runs on the student's computer (awake, Claude desktop app open). Personal Pro/Max runs in the cloud. Plan requirements deliberately not mentioned to students.</div>
 
         <h4>Set one up</h4>
         <p><strong>Scheduled</strong> (left sidebar) → <strong>New task</strong> → <strong>Set up manually</strong>. Paste your prompt, pick how often, and click <strong>Save</strong>. Leave the folder empty. Each side quest gives you the exact settings. Or just ask in a chat: "Every weekday at 8 AM, &lt;your prompt&gt;."</p>
 
         <h4>Nobody's there to click Allow</h4>
         <p>If a tool needs your approval mid-run, the run waits. So before you schedule, set the tools the task needs to <strong>Always allow</strong> (Customize → Connectors). In the task, pick <strong>Automatically approve</strong>, never <strong>Skip all approvals</strong>.</p>
-        <div class="draft-note">[VERIFY: what a waiting run looks like, and whether you can approve it from the task page or your phone.] Team/Enterprise admins can turn off Automatically approve and require approval for write tools, so Stanford accounts may behave differently.</div>
 
         <h4>Good habits</h4>
         <ul>
@@ -756,7 +754,6 @@ Schema version: 1</pre>
             <li><strong>Airtable:</strong> reading, creating and updating records on <strong>Always allow</strong>. Anything that deletes records or changes tables or fields: <strong>Blocked</strong>.</li>
           </ul>
           A blocked tool can't be used, whatever an email tells Claude to do.
-          <div class="draft-note">[VERIFY: where per-tool permissions live and their exact labels.] Help center names the three settings "Always allow", "Needs approval", "Blocked". On Stanford (Enterprise-equivalent) accounts, the org may require approval for write tools, so "Always allow" may not stick for Airtable writes.</div>
         </li>
         <li><strong>Run it once by hand.</strong> Paste the prompt into a new chat. Stay with it: if Claude asks you something, answer. At the end you get the skills' usual reports, then a summary in four parts: <strong>Saved</strong>, <strong>Capture these</strong>, <strong>Needs you</strong>, <strong>Skipped</strong>.
           <div class="copy-card" data-copy="q1-sync" data-title="Paste into a new Claude chat" data-sub="Edit the Never include / Always include lines to fit you"></div>
@@ -779,7 +776,6 @@ Schema version: 1</pre>
             <li><strong>Folder:</strong> leave it empty. A folder makes the task run only on your computer.</li>
           </ul>
           Click <strong>Save</strong>, then <strong>Run now</strong> once so you see a scheduled run work before tomorrow.
-          <div class="draft-note">[VERIFY: field names and options in the Create scheduled task form, and whether "Run now" is on the task page.] From the help center (updated 2026-10-06): task name, prompt, approval mode, frequency (hourly, daily, weekly, weekdays, manually), model (optional), folder (optional). Stanford accounts: see the Scheduling basics draft note on where runs happen.</div>
         </li>
         <li><strong>Check a run.</strong> <strong>Scheduled</strong> → your task → open the latest run. It's the same summary as your hand run. Then look at Airtable. <strong>Capture these</strong> and <strong>Needs you</strong> are yours to do: capture a meeting with crm-capture-convo and your notes, or answer a question in a new chat.
         </li>
@@ -849,7 +845,6 @@ Schema version: 1</pre>
       <p>New to scheduled tasks? Read <a href="#sq-basics">Scheduling basics</a> first.</p>
       <ol class="do">
         <li>In the left sidebar, click <strong>Scheduled</strong>, then <strong>New task</strong> → <strong>Set up manually</strong>.
-          <div class="draft-note">[VERIFY: exact labels. Help center (updated 2026-10-06): "click 'Scheduled' in the left sidebar", "Click 'New task' in the upper right, then choose 'Create with Claude'" or "Set up manually". Check on a student Pro account.]</div>
         </li>
         <li>Fill in the form:
           <ul>
@@ -860,7 +855,6 @@ Schema version: 1</pre>
             <li><strong>Folder:</strong> leave it blank. This task doesn't need files on your computer.</li>
           </ul>
           <div class="copy-card" data-copy="q2-schedule" data-title="Paste into the task's Prompt" data-sub="One line: the skill does the rest"></div>
-          <div class="draft-note">[VERIFY: approval mode option names in the task form, and whether a Manual-mode run stalls on the first Airtable read. Also whether a skill made with the skill builder can be picked with "/" in the scheduled task's prompt.]</div>
         </li>
         <li>Save, then open the task and run it once now, so you know it works without you.
         </li>
@@ -890,7 +884,6 @@ Schema version: 1</pre>
       <ol class="do">
         <li>In Customize → Skills, toggle to <strong>Yours</strong> and click <strong>crm-capture-convo</strong>.</li>
         <li>Click <strong>Edit with Claude</strong>. Don't see it? Sometimes it's in the <strong>···</strong> menu at the top right.
-          <div class="draft-note">[VERIFY: what the save button is called after Claude edits (Save Version?).]</div>
         </li>
         <li>Paste this request. It asks for four rules at the end of My process and nothing else.
           <div class="copy-card" data-copy="q3-edit-request" data-title="Paste into Edit with Claude" data-sub="Four rules: when, what, format, tone"></div>
@@ -903,7 +896,6 @@ Schema version: 1</pre>
       <h4>2. Test it on a call with Jordan</h4>
       <p>Jordan Lee, a starter record in your CRM, introduced you to Maya. Here are your notes from a quick call to say thanks. Paste them into a <strong>new</strong> chat.</p>
       <div class="copy-card" data-copy="q3-jordan-notes" data-title="Paste into a new Claude chat" data-sub="Your notes from a 15-minute call (fictional)"></div>
-      <div class="draft-note">Call date (2026-10-12) is the workshop day, later the same day as the Maya coffee (2026-10-12), so it's never in the future. Change it with the transcript's date. Expected result to check in testing: Conversation Notes "Call with Jordan — 2026-10-12", Source "My notes", Notes verbatim; Jordan: Status To reach out → Conversation held, Last contact 2026-10-12, Next action roughly "1) Email Jordan two dates for the clinic shadow day (by 2026-10-15); 2) Send Jordan the hospital procurement article; 3) Waiting on Jordan: confirm the date with the clinic manager", Follow-up date 2026-10-15. Draft: thanks for the Maya intro, a callback (no-shows or the pilot), [two dates] and [article link] in brackets.</div>
       <ol class="do">
         <li>Review the preview. It should look like Step 5's, with <strong>no draft yet</strong>. Confirm.</li>
         <li>Read the reply: the <strong>Saved:</strong> line, then your draft email to Jordan.
@@ -959,10 +951,8 @@ Schema version: 1</pre>
         </li>
         <li>Name it <strong>Target-company watch</strong> and paste the prompt you just ran, with your edits.</li>
         <li>Set it to run <strong>weekly, on Monday at 7:00 AM</strong>.
-          <div class="draft-note">[VERIFY: whether "Weekly" in Set up manually lets you pick the day and time, and in which time zone. If not, use Create with Claude and say "every Monday at 7 AM Pacific".]</div>
         </li>
         <li>Set the approval mode to <strong>Automatically approve</strong>. This task only reads, so there's nothing for you to sign off on. Don't use <strong>Skip all approvals</strong>.
-          <div class="draft-note">[VERIFY: approval mode names in the scheduled task form, and whether a Manually approve run stalls on the first Airtable read or web search.]</div>
         </li>
         <li>Click <strong>Save</strong>. Then open the task and click <strong>Run now</strong>, so you don't wait a week to see it work.
         </li>
@@ -978,7 +968,6 @@ Schema version: 1</pre>
 
       <h4>What it costs</h4>
       <p>Each run reads Airtable a couple of times, however many companies you watch. A weekly watch uses about 15 Airtable API calls a month; the free Airtable plan allows 1,000 per workspace. The web searches count toward your Claude usage, which is why the prompt checks at most 5 companies.</p>
-      <div class="draft-note">[VERIFY: whether calls made through Claude's Airtable connector count toward Airtable's monthly "Public API calls" (Workspace settings → Usage shows the count on Free plans).]</div>
       <p class="aside-tip">This one isn't a skill, so the whole process lives in the prompt. Like it? Turn it into a skill (see <button type="button" class="linkish" data-go="next">Build your next skill</button>).</p>
       <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done</button><button type="button" class="stuck-inline" data-stuck="quest-4">Stuck on side quest 4?</button></div>
     </div></div></div>
@@ -1015,7 +1004,6 @@ Schema version: 1</pre>
           <div class="copy-card" data-copy="q5-task" data-title="Scheduled task instructions" data-sub="Edit My filter at the bottom to match your week"></div>
         </li>
         <li>Click <strong>Run now</strong> and open the run. When Claude asks to use a Granola tool or to read from Airtable, choose the option that allows it <strong>for all scheduled runs</strong>. If it ever asks to <em>create</em> or <em>update</em> Airtable records during a run, click <strong>Deny</strong>: this run isn't supposed to save.
-          <div class="draft-note">[VERIFY: button label and behavior.] Reported in April 2026 as "Allow for all scheduled runs" / "Accept for all scheduled runs", from when runs were local. Check the label, and that the approval sticks, on a cloud run after the October 6 change.</div>
         </li>
         <li>Read what the run left you. It ends like this, one preview per networking chat:
           <div class="preview-mock" aria-label="Example end of a scheduled run">1) Coffee with Maya — 2026-10-12 · Granola link<br>
@@ -1048,12 +1036,10 @@ Schema version: 1</pre>
 
       <p class="aside-tip"><strong>Want more?</strong> Tune <strong>My filter</strong> after a week: open the task from <strong>Scheduled</strong>, edit its instructions, and add what it got wrong ("Skip anything titled 'Sync'"). Or have it skip people who are already <strong>Staying in touch</strong>.</p>
 
-      <div class="draft-note">Facilitator: this quest needs a paid personal Claude plan and a Granola account, so expect a small group. Kate to test end to end on a personal Pro account: Run now → approval prompts → preview → confirm by replying in the run. If replying in a run doesn't work, the fallback is a new chat: "/crm-capture-convo" plus the Granola link from the preview.</div>
       <div class="sub-foot"><button type="button" class="btn small accent sub-done">Done</button><button type="button" class="stuck-inline" data-stuck="quest-5">Stuck on side quest 5?</button></div>
     </div></div></div>
   </div>
 
-  <div class="draft-note">Five side quests drafted 2026-10-06, one agent each; drafts and sources in the build log entry. Everything marked [VERIFY] needs a test on the account type students will use (Stanford Claude for Education vs personal Pro).</div>
   <div class="check"><p><strong>Check:</strong> you've finished at least one side quest.</p></div>
 </section>
 
